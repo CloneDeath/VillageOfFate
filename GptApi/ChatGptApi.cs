@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -9,28 +11,29 @@ using GptApi.Exceptions;
 
 namespace GptApi;
 
-public class ChatGptApi
-{
+public class ChatGptApi {
 	private readonly HttpClient _httpClient;
 	private const string _apiUrl = "https://api.openai.com/v1/chat/completions";
 
-	public ChatGptApi(string apiKey)
-	{
+	public GptModel Model { get; set; } = GptModel.Gpt_35_Turbo;
+
+	public ChatGptApi(string apiKey) {
 		_httpClient = new HttpClient();
 		_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 	}
 
-	public async Task<ChatGptResponse> GetChatGptResponseAsync(Message[] messages, GptFunction[]? functions = null)
-	{
-		var requestBody = new ChatGptRequest
-		{
-			Model = "gpt-4-0613",
+	public async Task<ChatGptResponse> GetChatGptResponseAsync(Message[] messages, IEnumerable<GptFunction>? functions = null, ToolChoice? toolChoice = null) {
+		var requestBody = new ChatGptRequest {
+			Model = Model.ToModelString(),
 			Messages = messages,
-			Functions = functions,
+			Tools = functions?.Select(f => new GptTool {
+				Function = f
+			}).ToArray(),
+			ToolChoice = toolChoice,
 			MaxTokens = 1000
 		};
 
-		var jsonContent = JsonSerializer.Serialize(requestBody, new JsonSerializerOptions());
+		var jsonContent = JsonSerializer.Serialize(requestBody);
 		var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
 		var response = await _httpClient.PostAsync(_apiUrl, content);

@@ -11,9 +11,19 @@ public class Message {
 	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public string? Name { get; set; }
 
-	[JsonPropertyName("function_call")]
+	[JsonPropertyName("tool_calls")]
 	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-	public FunctionCall? FunctionCall { get; set; }
+	public ToolCall[]? ToolCalls { get; set; }
+
+	[JsonPropertyName("tool_call_id")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public string? ToolCallId { get; set; }
+}
+
+public class ToolCall {
+	[JsonPropertyName("id")] public string Id { get; set; } = string.Empty;
+	[JsonPropertyName("type")] public string Type { get; set; } = "function";
+	[JsonPropertyName("function")] public FunctionCall Function { get; set; } = new();
 }
 
 public class FunctionCall {
@@ -27,7 +37,7 @@ public enum Role
 	[JsonPropertyName("user")] User,
 	[JsonPropertyName("system")] System,
 	[JsonPropertyName("assistant")] Assistant,
-	[JsonPropertyName("function")] Function
+	[JsonPropertyName("tool")] Tool
 }
 
 public class LowerCaseEnumConverter() : JsonStringEnumConverter(new LowerCaseNamingPolicy());
