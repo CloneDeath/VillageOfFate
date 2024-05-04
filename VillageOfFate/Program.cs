@@ -8,7 +8,7 @@ namespace VillageOfFate;
 public class Program {
 	public static async Task Main() {
 		var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
-					 ?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
+			?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
 
 		var chatGptApi = new ChatGptApi(apiKey);
 
