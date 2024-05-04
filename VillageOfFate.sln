@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VillageOfFate", "VillageOfFate\VillageOfFate.csproj", "{6B226763-BD66-45CE-A15A-FBF413A8E775}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GptApi", "GptApi\GptApi.csproj", "{067E6BD9-C1D1-4BE0-8B99-14B528617757}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B226763-BD66-45CE-A15A-FBF413A8E775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B226763-BD66-45CE-A15A-FBF413A8E775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B226763-BD66-45CE-A15A-FBF413A8E775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B226763-BD66-45CE-A15A-FBF413A8E775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067E6BD9-C1D1-4BE0-8B99-14B528617757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067E6BD9-C1D1-4BE0-8B99-14B528617757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067E6BD9-C1D1-4BE0-8B99-14B528617757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067E6BD9-C1D1-4BE0-8B99-14B528617757}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
