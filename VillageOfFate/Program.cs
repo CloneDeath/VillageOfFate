@@ -1,7 +1,9 @@
-﻿namespace VillageOfFate;
+﻿using System;
 
-class Program {
-	static void Main(string[] args) {
+namespace VillageOfFate;
+
+public class Program {
+	public static void Main(string[] args) {
 		Console.WriteLine("Hello, World!");
 	}
 }

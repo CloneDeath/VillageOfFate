@@ -3,14 +3,8 @@ using System.Text.Json;
 
 namespace GptApi.Exceptions;
 
-public class BadRequestException : Exception {
-	public ErrorResponse Response { get; }
-	public ChatGptRequest Request { get; }
-
-	public BadRequestException(ErrorResponse response, ChatGptRequest request)
-		: base("BadRequest: " + JsonSerializer.Serialize(response) + ", Request: " +
-			   JsonSerializer.Serialize(request)) {
-		Response = response;
-		Request = request;
-	}
+public class BadRequestException(ErrorResponse response, ChatGptRequest request)
+	: Exception($"BadRequest: {JsonSerializer.Serialize(response)}, Request: {JsonSerializer.Serialize(request)}") {
+	public ErrorResponse Response { get; } = response;
+	public ChatGptRequest Request { get; } = request;
 }

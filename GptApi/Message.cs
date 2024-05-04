@@ -6,13 +6,13 @@ namespace GptApi;
 public class Message {
 	[JsonPropertyName("role")] public Role Role { get; set; } = Role.User;
 	[JsonPropertyName("content")] public string? Content { get; set; } = string.Empty;
-	
-	[JsonPropertyName("name")] 
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+
+	[JsonPropertyName("name")]
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public string? Name { get; set; }
-	
+
 	[JsonPropertyName("function_call")]
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] 
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public FunctionCall? FunctionCall { get; set; }
 }
 
@@ -30,9 +30,7 @@ public enum Role
 	[JsonPropertyName("function")] Function
 }
 
-public class LowerCaseEnumConverter : JsonStringEnumConverter {
-	public LowerCaseEnumConverter() : base(new LowerCaseNamingPolicy()) { }
-}
+public class LowerCaseEnumConverter() : JsonStringEnumConverter(new LowerCaseNamingPolicy());
 
 public class LowerCaseNamingPolicy : JsonNamingPolicy {
 	public override string ConvertName(string name) => name.ToLower();
