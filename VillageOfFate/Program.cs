@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GptApi;
+using VillageOfFate.VillagerActions;
 
 namespace VillageOfFate;
 
@@ -41,50 +42,23 @@ public class Program {
 					+ "Act like a real person in a fantasy world. Don't declare your actions, just do them."
 					+ "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
 			});
-			var response = await chatGptApi.GetChatGptResponseAsync(messages.ToArray(), new []{
-            	new GptFunction {
-            		Name = "Speak",
-            		Description = "Say something",
-            		Parameters = new {
-            			type = "object",
-            			properties = new {
-            				content = new {
-            					type = "string",
-            					description = "what to say"
-            				}
-            			}
-            		}
-            	},
-            	new GptFunction {
-            		Name = "DoNothing",
-            		Description = "Do nothing, and observe"
-            	},
-            	new GptFunction {
-            		Name = "Interact",
-            		Description = "Interact with someone else",
-            		Parameters = new {
-            			type = "object",
-            			properties = new {
-            				targets = new {
-            					type = "array",
-            					items = new {
-            						type = "string"
-            					},
-            					description = "who the action is directed at"
-            				},
-            				action = new {
-            					type = "string",
-            					description = "A description of the interaction you are performing"
-            				}
-            			}
-            		}
-            	}
-            }, ToolChoice.Required);
+			List<IVillagerAction> actions = [
+				new SpeakAction(),
+				new DoNothingAction(),
+				new InteractAction()
+			];
+			var response = await chatGptApi.GetChatGptResponseAsync(messages.ToArray(),
+			   actions.Select(a => new GptFunction {
+				   Name = a.Name,
+				   Description = a.Description,
+				   Parameters = a.Parameters
+			   }), ToolChoice.Required);
             var calls = response.Choices.First().Message.ToolCalls;
             foreach (var call in calls ?? []) {
             	var activity = $"{villager.Name}: {call.Function.Name} {call.Function.Arguments}";
-				Console.WriteLine(activity);
-				history.Add(activity);
+				foreach (var v in villagers) {
+					v.AddMemory(activity);
+				}
 			}
 		}
 
