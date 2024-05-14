@@ -1,0 +1,14 @@
+GPT Cost: 311 Tokens (273 Prompt Tokens, 38 Completion Tokens)
+Gamz: Speak {"content":"Stay close and quiet, everyone. We've been through a lot, but we need to focus now. Goblins might still be around."}
+GPT Cost: 393 Tokens (306 Prompt Tokens, 87 Completion Tokens)
+Chemm: Interact {"targets": ["Gamz"], "action": "reach out and hold his hand tightly, seeking comfort and strength from my big brother."}
+Chemm: Speak {"content": "Everyone, let's trust in the god of fate to guide us out of here safely. Stay close and watch your steps."}
+GPT Cost: 418 Tokens (336 Prompt Tokens, 82 Completion Tokens)
+Carol: Interact {"targets": ["Gamz"], "action": "hold Gamz's hand tightly. I'm a bit scared and need some comfort."}
+Carol: Interact {"targets": ["Chemm"], "action": "look at Chemm and nod, trying to be brave like him."}
+GPT Cost: 416 Tokens (341 Prompt Tokens, 75 Completion Tokens)
+Lyra: Speak {"content": "Stay calm, everyone. Lodis, keep an eye on Carol. Chemm's right, let's keep moving."}
+Lyra: Interact {"targets": ["Carol"], "action": "holding her hand firmly to offer reassurance"}
+GPT Cost: 456 Tokens (378 Prompt Tokens, 78 Completion Tokens)
+Lodis: Interact {"targets": ["Carol"], "action": "hold her hand tightly to comfort her and ensure she stays close."}
+Lodis: Speak {"content": "Alright, everyone. Let's move cautiously and stay together. Trust each other and keep your senses sharp."}

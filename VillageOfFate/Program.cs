@@ -12,7 +12,9 @@ public class Program {
 		var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
 			?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
 
-		var chatGptApi = new ChatGptApi(apiKey);
+		var chatGptApi = new ChatGptApi(apiKey) {
+			Model = GptModel.Gpt_4_Omni
+		};
 
 		var villagers = GetInitialVillagers();
 
@@ -59,8 +61,12 @@ public class Program {
             var calls = response.Choices.First().Message.ToolCalls;
             foreach (var call in calls ?? []) {
             	var activity = $"{villager.Name}: {call.Function.Name} {call.Function.Arguments}";
-				foreach (var v in villagers) {
-					v.AddMemory(activity);
+				if (call.Function.Name == "Speak") {
+					foreach (var v in villagers) {
+						v.AddMemory(activity);
+					}
+				} else {
+					villager.AddMemory(activity);
 				}
 				Console.WriteLine(activity);
 			}
