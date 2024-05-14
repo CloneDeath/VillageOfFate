@@ -53,12 +53,16 @@ public class Program {
 				   Description = a.Description,
 				   Parameters = a.Parameters
 			   }), ToolChoice.Required);
+
+			Console.WriteLine($"GPT Cost: {response.Usage.TotalTokens} Tokens ({response.Usage.PromptTokens} Prompt Tokens, {response.Usage.CompletionTokens} Completion Tokens)");
+
             var calls = response.Choices.First().Message.ToolCalls;
             foreach (var call in calls ?? []) {
             	var activity = $"{villager.Name}: {call.Function.Name} {call.Function.Arguments}";
 				foreach (var v in villagers) {
 					v.AddMemory(activity);
 				}
+				Console.WriteLine(activity);
 			}
 		}
 
