@@ -28,7 +28,7 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 	};
 
 	public void Execute(string arguments, VillagerActionState state) {
-		var args = JsonSerializer.Deserialize<IInteractArguments>(arguments) ?? throw new NullReferenceException();
+		var args = JsonSerializer.Deserialize<InteractArguments>(arguments) ?? throw new NullReferenceException();
 		var targets = state.Others.Where(o => args.Targets.Contains(o.Name));
 
 		var targetNames = joinNames(args.Targets);
@@ -51,10 +51,7 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 	}
 }
 
-public interface IInteractArguments {
-	[JsonPropertyName("targets")]
-	public string[] Targets { get; set; }
-
-	[JsonPropertyName("action")]
-	public string Action { get; set; }
+public class InteractArguments {
+	[JsonPropertyName("targets")] public string[] Targets { get; set; } = [];
+	[JsonPropertyName("action")] public string Action { get; set; } = string.Empty;
 }

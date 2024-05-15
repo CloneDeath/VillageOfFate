@@ -19,7 +19,7 @@ public class SpeakAction(VillageLogger logger) : IVillagerAction {
 	};
 
 	public void Execute(string arguments, VillagerActionState state) {
-		var args = JsonSerializer.Deserialize<ISpeakArguments>(arguments) ?? throw new NullReferenceException();
+		var args = JsonSerializer.Deserialize<SpeakArguments>(arguments) ?? throw new NullReferenceException();
 		var activity = $"{state.Actor.Name} says: \"{args.Content}\"";
 		logger.LogActivity(activity);
 		foreach (var v in state.Others.Append(state.Actor)) {
@@ -28,7 +28,6 @@ public class SpeakAction(VillageLogger logger) : IVillagerAction {
 	}
 }
 
-public interface ISpeakArguments {
-	[JsonPropertyName("content")]
-	public string Content { get; set; }
+public class SpeakArguments {
+	[JsonPropertyName("content")] public string Content { get; set; } = string.Empty;
 }

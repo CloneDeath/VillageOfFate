@@ -1,0 +1,11 @@
+GPT Usage: 451 Tokens (411 Prompt Tokens, 40 Completion Tokens)
+Gamz says: "Everyone, stay close and keep quiet. We need to find a safe place to rest and gather our thoughts. We're not out of danger yet."
+GPT Usage: 454 Tokens (446 Prompt Tokens, 8 Completion Tokens)
+GPT Usage: 471 Tokens (445 Prompt Tokens, 26 Completion Tokens)
+Carol says: "Okay, Gamz. I'm scared, but I'll stay close to you!"
+GPT Usage: 538 Tokens (468 Prompt Tokens, 70 Completion Tokens)
+Lyra interacts with Carol: "I gently hold her hand to offer some comfort and said"
+Lyra says: "It's alright, Carol. We'll stay together and find somewhere safe soon."
+GPT Usage: 576 Tokens (491 Prompt Tokens, 85 Completion Tokens)
+Lodis says: "Everyone, listen to Gamz and stay close. We've been through worse and made it out. Let's stay alert and find a safe place to regroup."
+Lodis interacts with Carol: "I place a reassuring hand on Carol's shoulder."

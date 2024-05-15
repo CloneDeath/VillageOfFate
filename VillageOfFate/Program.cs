@@ -76,8 +76,6 @@ public class Program {
 				});
 			}
 		}
-
-		Console.ReadLine();
 	}
 
 	private static Villager[] GetInitialVillagers() {
