@@ -29,8 +29,12 @@ public class Program {
 				new() {
 					Role = Role.System,
 					Content = $"Respond as {villager.Name} would. {villager.GetDescription()}\n"
-					+ "# Relationships\n"
-					+ string.Join("\n", villager.GetRelationships().Select(r => $"- {r.Villager.Name}: {r.Relation}"))
+							  + "Keep your gender, age, role, history, and personality in mind."
+							  + "Act like a real person in a fantasy world. Don't declare your actions, just do them."
+							  + "# Relationships\n"
+							  + string.Join("\n",
+								  villager.GetRelationships().Select(r =>
+									  $"- {r.Villager.Name}: {r.Villager.GetDescription()} Relation: {r.Relation}"))
 				}
 			};
 			messages.AddRange(villager.GetMemory().Select(h => new Message {
@@ -40,8 +44,6 @@ public class Program {
 			messages.Add(new Message {
 				Role = Role.User,
 				Content = "Please choose an action befitting your character."
-					+ "Keep your gender, age, role, history, and personality in mind."
-					+ "Act like a real person in a fantasy world. Don't declare your actions, just do them."
 					+ "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
 			});
 			List<IVillagerAction> actions = [
@@ -60,15 +62,16 @@ public class Program {
 
             var calls = response.Choices.First().Message.ToolCalls;
             foreach (var call in calls ?? []) {
-            	var activity = $"{villager.Name}: {call.Function.Name} {call.Function.Arguments}";
-				if (call.Function.Name == "Speak") {
-					foreach (var v in villagers) {
-						v.AddMemory(activity);
-					}
-				} else {
-					villager.AddMemory(activity);
+				var action = actions.FirstOrDefault(a => a.Name == call.Function.Name);
+				if (action == null) {
+					Console.WriteLine($"Invalid Action: {call.Function.Name}");
+                    continue;
 				}
-				Console.WriteLine(activity);
+
+				action.Execute(call.Function.Arguments, new VillagerActionState {
+					Actor = villager,
+					Others = villagers.Where(v => v != villager).ToArray()
+				});
 			}
 		}
 
@@ -82,7 +85,7 @@ public class Program {
 		};
 		var chem = new Villager {
 			Name = "Chemm", Age = 19, Gender = Gender.Female,
-			Summary = "Gamz's little sister. A priest who believes in the god of fate."
+			Summary = "Gamz's little sister. A priestess who believes in the god of fate."
 		};
 		var carol = new Villager {
 			Name = "Carol", Age = 7, Gender = Gender.Female,

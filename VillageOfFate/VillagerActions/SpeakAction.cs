@@ -1,3 +1,8 @@
+using System;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace VillageOfFate.VillagerActions;
 
 public class SpeakAction : IVillagerAction {
@@ -12,4 +17,18 @@ public class SpeakAction : IVillagerAction {
 			}
 		}
 	};
+
+	public void Execute(string arguments, VillagerActionState state) {
+		var args = JsonSerializer.Deserialize<ISpeakArguments>(arguments) ?? throw new NullReferenceException();
+		var activity = $"{state.Actor.Name} says: \"{args.Content}\"";
+		Console.WriteLine(activity);
+		foreach (var v in state.Others.Append(state.Actor)) {
+			v.AddMemory(activity);
+		}
+	}
+}
+
+public interface ISpeakArguments {
+	[JsonPropertyName("content")]
+	public string Content { get; set; }
 }
