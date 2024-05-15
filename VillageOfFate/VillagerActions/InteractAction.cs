@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace VillageOfFate.VillagerActions;
 
-public class InteractAction : IVillagerAction {
+public class InteractAction(VillageLogger logger) : IVillagerAction {
 	public string Name => "Interact";
 	public string Description => "Interact with someone else";
 	public object Parameters => new {
@@ -33,6 +33,7 @@ public class InteractAction : IVillagerAction {
 
 		var targetNames = joinNames(args.Targets);
 		var activity = $"{state.Actor.Name} interacts with {targetNames}: \"{args.Action}\"";
+		logger.LogActivity(activity);
 		foreach (var villager in targets.Append(state.Actor)) {
 			villager.AddMemory(activity);
 		}

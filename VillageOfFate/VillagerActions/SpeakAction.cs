@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace VillageOfFate.VillagerActions;
 
-public class SpeakAction : IVillagerAction {
+public class SpeakAction(VillageLogger logger) : IVillagerAction {
 	public string Name => "Speak";
 	public string Description => "Say something";
 	public object Parameters => new {
@@ -21,7 +21,7 @@ public class SpeakAction : IVillagerAction {
 	public void Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<ISpeakArguments>(arguments) ?? throw new NullReferenceException();
 		var activity = $"{state.Actor.Name} says: \"{args.Content}\"";
-		Console.WriteLine(activity);
+		logger.LogActivity(activity);
 		foreach (var v in state.Others.Append(state.Actor)) {
 			v.AddMemory(activity);
 		}

@@ -16,6 +16,8 @@ public class Program {
 			Model = GptModel.Gpt_4_Omni
 		};
 
+		var logger = new VillageLogger();
+
 		var villagers = GetInitialVillagers();
 
 		foreach (var villager in villagers) {
@@ -47,9 +49,9 @@ public class Program {
 					+ "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
 			});
 			List<IVillagerAction> actions = [
-				new SpeakAction(),
+				new SpeakAction(logger),
 				new DoNothingAction(),
-				new InteractAction()
+				new InteractAction(logger)
 			];
 			var response = await chatGptApi.GetChatGptResponseAsync(messages.ToArray(),
 			   actions.Select(a => new GptFunction {
@@ -58,13 +60,13 @@ public class Program {
 				   Parameters = a.Parameters
 			   }), ToolChoice.Required);
 
-			Console.WriteLine($"GPT Cost: {response.Usage.TotalTokens} Tokens ({response.Usage.PromptTokens} Prompt Tokens, {response.Usage.CompletionTokens} Completion Tokens)");
+			logger.LogGptUsage(response.Usage);
 
             var calls = response.Choices.First().Message.ToolCalls;
             foreach (var call in calls ?? []) {
 				var action = actions.FirstOrDefault(a => a.Name == call.Function.Name);
 				if (action == null) {
-					Console.WriteLine($"Invalid Action: {call.Function.Name}");
+					logger.LogInvalidAction(villager, call.Function);
                     continue;
 				}
 
