@@ -1,0 +1,11 @@
+GPT Usage: 591 Tokens (556 Prompt Tokens, 35 Completion Tokens)
+Gamz says: "We need to stay calm and find our bearings. Let's head to higher ground and see if we can spot any landmarks."
+GPT Usage: 625 Tokens (586 Prompt Tokens, 39 Completion Tokens)
+Chemm says: "You're right, Gamz. The god of fate will guide us, but we must be vigilant. Let's help each other and stay close."
+GPT Usage: 656 Tokens (622 Prompt Tokens, 34 Completion Tokens)
+Carol says: "I think we should stick together and not wander off. Maybe we can find some berries to eat on the way?"
+GPT Usage: 761 Tokens (653 Prompt Tokens, 108 Completion Tokens)
+Lyra interacts with Carol: "I place a comforting hand on her shoulder, acknowledging her caution"
+Lyra says: "Carol's right, we need to stay together and keep our spirits up. Let's head towards higher ground like Gamz suggested. We can keep an eye out for anything edible on the way. Keeping a lookout for safety is just as important as finding food."
+GPT Usage: 771 Tokens (713 Prompt Tokens, 58 Completion Tokens)
+Lodis says: "Lyra, you're absolutely right. Safety comes first, and we need to stay together. Let's follow Gamz's lead and head to higher ground. Keep an eye out for anything we can use, and we'll get through this together."

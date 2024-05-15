@@ -15,7 +15,8 @@ public class SpeakAction(VillageLogger logger) : IVillagerAction {
 				type = "string",
 				description = "what to say"
 			}
-		}
+		},
+		required = new[]{"content"}
 	};
 
 	public void Execute(string arguments, VillagerActionState state) {

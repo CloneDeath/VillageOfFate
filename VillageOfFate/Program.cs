@@ -10,7 +10,7 @@ namespace VillageOfFate;
 public class Program {
 	public static async Task Main() {
 		var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
-			?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
+					 ?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
 
 		var chatGptApi = new ChatGptApi(apiKey) {
 			Model = GptModel.Gpt_4_Omni
@@ -23,8 +23,14 @@ public class Program {
 		foreach (var villager in villagers) {
 			villager.AddMemory($"You and {villagers.Length - 1} other villagers are lost in the woods, "
 							   + "having just escaped a goblin attack that destroyed your home and entire village.");
-
 		}
+
+		List<IVillagerAction> actions = [
+			new SpeakAction(logger),
+			new DoNothingAction(),
+			new InteractAction(logger),
+			new AdjustEmotionalStateAction(logger)
+		];
 
 		foreach (var villager in villagers) {
 			var messages = new List<Message> {
@@ -37,6 +43,9 @@ public class Program {
 							  + string.Join("\n",
 								  villager.GetRelationships().Select(r =>
 									  $"- {r.Villager.Name}: {r.Villager.GetDescription()} Relation: {r.Relation}"))
+							  + "# Emotions (0% = neutral, 100% = maximum intensity)\n"
+							  + string.Join("\n",
+								  villager.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%"))
 				}
 			};
 			messages.AddRange(villager.GetMemory().Select(h => new Message {
@@ -46,28 +55,23 @@ public class Program {
 			messages.Add(new Message {
 				Role = Role.User,
 				Content = "Please choose an action befitting your character."
-					+ "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
+						  + "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
 			});
-			List<IVillagerAction> actions = [
-				new SpeakAction(logger),
-				new DoNothingAction(),
-				new InteractAction(logger)
-			];
 			var response = await chatGptApi.GetChatGptResponseAsync(messages.ToArray(),
-			   actions.Select(a => new GptFunction {
-				   Name = a.Name,
-				   Description = a.Description,
-				   Parameters = a.Parameters
-			   }), ToolChoice.Required);
+							   actions.Select(a => new GptFunction {
+								   Name = a.Name,
+								   Description = a.Description,
+								   Parameters = a.Parameters
+							   }), ToolChoice.Required);
 
 			logger.LogGptUsage(response.Usage);
 
-            var calls = response.Choices.First().Message.ToolCalls;
-            foreach (var call in calls ?? []) {
+			var calls = response.Choices.First().Message.ToolCalls;
+			foreach (var call in calls ?? []) {
 				var action = actions.FirstOrDefault(a => a.Name == call.Function.Name);
 				if (action == null) {
 					logger.LogInvalidAction(villager, call.Function);
-                    continue;
+					continue;
 				}
 
 				action.Execute(call.Function.Arguments, new VillagerActionState {

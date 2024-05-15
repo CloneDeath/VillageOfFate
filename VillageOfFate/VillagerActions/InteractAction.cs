@@ -24,7 +24,8 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 				description = "A description of the interaction you are performing." +
 							  " Should usually start with \"I <verb>\" like \"I hold the apply\" or \"I reach out to the frog\""
 			}
-		}
+		},
+		required = new[]{"targets", "action"}
 	};
 
 	public void Execute(string arguments, VillagerActionState state) {
