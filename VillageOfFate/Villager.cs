@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace VillageOfFate;
 
@@ -11,6 +12,7 @@ public class Villager {
 	public string Summary { get; set; } = string.Empty;
 	public Gender Gender { get; set; } = Gender.Male;
 	public VillagerEmotions Emotions { get; set; } = new();
+	public Point SectorLocation { get; set; }
 
 	public void AddMemory(string message) {
 		_memory.Add(message);

@@ -1,0 +1,13 @@
+GPT Usage: 618 Tokens (610 Prompt Tokens, 8 Completion Tokens)
+GPT Usage: 688 Tokens (607 Prompt Tokens, 81 Completion Tokens)
+Chemm interacts with Gamz: "I grasp his hand, glad he's safe."
+Chemm says: "The god of fate has spared us. We must find our path through this forest and trust in the destiny laid out for us."
+GPT Usage: 726 Tokens (641 Prompt Tokens, 85 Completion Tokens)
+Carol says: "I'm glad we're safe now. Let's stick together and find our way out of this forest."
+Carol [Happiness +10% (10%)]: I feel relieved we're all together and safe after the goblin attack.
+GPT Usage: 758 Tokens (667 Prompt Tokens, 91 Completion Tokens)
+Lyra says: "Carol's right, everyone. We need to stay close and move carefully. It's easy to get lost in this forest."
+Lyra [Fear -20% (0%)]: I feel a sense of relief knowing my family and friends are safe.
+GPT Usage: 787 Tokens (700 Prompt Tokens, 87 Completion Tokens)
+Lodis says: "Lyra's right. We stick together, like we always have. We'll get through this forest and find somewhere safe."
+Lodis [Fear -20% (0%)]: I find comfort in the determination of my family.

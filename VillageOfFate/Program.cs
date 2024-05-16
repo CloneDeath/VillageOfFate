@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using GptApi;
@@ -16,15 +17,10 @@ public class Program {
 			Model = GptModel.Gpt_4_Omni
 		};
 
+		var world = GetInitialWorld();
+		var villagers = GetInitialVillagers(world);
+
 		var logger = new VillageLogger();
-
-		var villagers = GetInitialVillagers();
-
-		foreach (var villager in villagers) {
-			villager.AddMemory($"You and {villagers.Length - 1} other villagers are lost in the woods, "
-							   + "having just escaped a goblin attack that destroyed your home and entire village.");
-		}
-
 		List<IVillagerAction> actions = [
 			new SpeakAction(logger),
 			new DoNothingAction(),
@@ -36,16 +32,20 @@ public class Program {
 			var messages = new List<Message> {
 				new() {
 					Role = Role.System,
-					Content = $"Respond as {villager.Name} would. {villager.GetDescription()}\n"
-							  + "Keep your gender, age, role, history, and personality in mind."
-							  + "Act like a real person in a fantasy world. Don't declare your actions, just do them."
-							  + "# Relationships\n"
-							  + string.Join("\n",
-								  villager.GetRelationships().Select(r =>
-									  $"- {r.Villager.Name}: {r.Villager.GetDescription()} Relation: {r.Relation}"))
-							  + "# Emotions (0% = neutral, 100% = maximum intensity)\n"
-							  + string.Join("\n",
-								  villager.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%"))
+					Content = string.Join("\n", [
+						$"Respond as {villager.Name} would. {villager.GetDescription()}",
+						"Keep your gender, age, role, history, and personality in mind.",
+						"Act like a real person in a fantasy world. Don't declare your actions, just do them.",
+						"# Relationships",
+						string.Join("\n",
+							villager.GetRelationships().Select(r =>
+								$"- {r.Villager.Name}: {r.Villager.GetDescription()} Relation: {r.Relation}")),
+						"# Emotions (0% = neutral, 100% = maximum intensity)",
+						string.Join("\n", villager.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%")),
+						"# Location",
+						$"You are located at Sector Coordinate {villager.SectorLocation}.",
+						$"Description: {world.GetSector(villager.SectorLocation).Description}"
+					])
 				}
 			};
 			messages.AddRange(villager.GetMemory().Select(h => new Message {
@@ -82,26 +82,40 @@ public class Program {
 		}
 	}
 
-	private static Villager[] GetInitialVillagers() {
+	private static World GetInitialWorld() {
+		var world = new World();
+		var sector = world.CreateSector(new Point(0, 0));
+		sector.Description =
+			"A dense, lush forest filled with towering trees, diverse wildlife, and the sounds of nature. " +
+			"It's easy to lose one's way in this vast sea of green.";
+		return world;
+	}
+
+	private static Villager[] GetInitialVillagers(World world) {
 		var gamz = new Villager {
 			Name = "Gamz", Age = 26, Gender = Gender.Male,
-			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body."
+			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
+			SectorLocation = new Point(0, 0)
 		};
 		var chem = new Villager {
 			Name = "Chemm", Age = 19, Gender = Gender.Female,
-			Summary = "Gamz's little sister. A priestess who believes in the god of fate."
+			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
+			SectorLocation = new Point(0, 0)
 		};
 		var carol = new Villager {
 			Name = "Carol", Age = 7, Gender = Gender.Female,
-			Summary = "A cheerful child, although quite mature for her age."
+			Summary = "A cheerful child, although quite mature for her age.",
+			SectorLocation = new Point(0, 0)
 		};
 		var lyra = new Villager {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
-			Summary = "A younger wife than his husband, but capable of keeping him in check."
+			Summary = "A younger wife than his husband, but capable of keeping him in check.",
+			SectorLocation = new Point(0, 0)
 		};
 		var lodis = new Villager {
 			Name = "Lodis", Age = 33, Gender = Gender.Male,
-			Summary = "The father of a family of three that ran a general store in the village."
+			Summary = "The father of a family of three that ran a general store in the village.",
+			SectorLocation = new Point(0, 0)
 		};
 
 		gamz.AddRelationship(chem, "Younger Sister");
@@ -129,6 +143,13 @@ public class Program {
 		lodis.AddRelationship(carol, "Daughter");
 		lodis.AddRelationship(lyra, "Wife");
 
-		return [gamz, chem, carol, lyra, lodis];
+		var villagers = new[] { gamz, chem, carol, lyra, lodis };
+		foreach (var villager in villagers) {
+			villager.AddMemory($"You and {villagers.Length - 1} other villagers are lost in the woods, "
+							   + "having just escaped a goblin attack that destroyed your home and entire village.");
+			world.AddVillager(villager);
+		}
+
+		return villagers;
 	}
 }
