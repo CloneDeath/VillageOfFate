@@ -1,0 +1,12 @@
+GPT Usage: 798 Tokens (750 Prompt Tokens, 48 Completion Tokens)
+[5/16/2024 6:31:22 AM] Gamz says: "Everyone, stay close together. We'll need to find food and water soon, but right now, our main goal is to keep moving and find a safe place to rest. Stay vigilant."
+GPT Usage: 897 Tokens (808 Prompt Tokens, 89 Completion Tokens)
+[5/16/2024 6:31:22 AM] Chemm interacts with Gamz: "I place my hand gently on his arm to offer some comfort."
+[5/16/2024 6:31:22 AM] Chemm says: "Gamz is right. Fate has led us here, and it will guide us to safety. Let's stick together and trust that we'll find a way."
+GPT Usage: 891 Tokens (861 Prompt Tokens, 30 Completion Tokens)
+[5/16/2024 6:31:22 AM] Carol says: "I have some berries and an apple. Maybe we can share it if anyone is really hungry?"
+GPT Usage: 968 Tokens (903 Prompt Tokens, 65 Completion Tokens)
+[5/16/2024 6:31:22 AM] Lyra says: "Thank you, Carol. We should definitely hold onto those for now. Everyone, I have some dried fruit and nuts that we can share if anyone needs a little energy. Let's just make sure to ration carefully. Gamz, Chemm, do you have any provisions?"
+GPT Usage: 1094 Tokens (981 Prompt Tokens, 113 Completion Tokens)
+[5/16/2024 6:31:22 AM] Lodis interacts with Carol: "I nod at her suggestion. "That's a good idea, Carol. We'll make sure to share and ration our food wisely.""
+[5/16/2024 6:31:22 AM] Lodis says: "Everyone, let's make sure we stay positive and keep moving. We're a resilient lot, and together we'll find our way out of this. It’s good to see how we’re all thinking ahead and supporting each other."

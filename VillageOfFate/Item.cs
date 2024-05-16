@@ -8,6 +8,11 @@ public class Item {
 	public string Name { get; set; } = string.Empty;
 	public string Description { get; set; } = string.Empty;
 	public int Quantity { get; set; } = 1;
-	public bool Edible { get; set; } = false;
-	public int HungerRestored { get; set; } = 0;
+	public bool Edible { get; set; }
+	public int HungerRestored { get; set; }
+
+	public string GetSummary() {
+		var edibleString = Edible ? $"Edible (-{HungerRestored} hunger)" : "";
+		return $"{Name}: {Description} Quantity: {Quantity} {edibleString}";
+	}
 }

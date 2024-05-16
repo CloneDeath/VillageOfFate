@@ -51,6 +51,9 @@ public class Program {
 						"# Location",
 						$"You are located at Sector Coordinate {villager.SectorLocation}.",
 						$"Description: {world.GetSector(villager.SectorLocation).Description}",
+						"Items:",
+						string.Join("\n",
+							world.GetSector(villager.SectorLocation).Items.Select(i => $"- {i.GetSummary()}")),
 						"# Status",
 						$"- Hunger: {villager.Hunger} (+1 per hour)"
 					])
@@ -141,7 +144,7 @@ public class Program {
 		};
 		var lyra = new Villager {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
-			Summary = "A younger wife than his husband, but capable of keeping him in check.",
+			Summary = "A younger wife than her husband, but capable of keeping him in check.",
 			SectorLocation = new Point(0, 0)
 		};
 		var lodis = new Villager {
@@ -156,25 +159,25 @@ public class Program {
 		gamz.AddRelationship(lyra, "Neighbor");
 		gamz.AddRelationship(lodis, "Neighbor");
 
-		gamz.IncreaseHunger(5);
+		chem.IncreaseHunger(5);
 		chem.AddRelationship(gamz, "Older Brother");
 		chem.AddRelationship(carol, "Friend");
 		chem.AddRelationship(lyra, "Neighbor");
 		chem.AddRelationship(lodis, "Neighbor");
 
-		gamz.IncreaseHunger(8);
+		carol.IncreaseHunger(8);
 		carol.AddRelationship(gamz, "Neighbor");
 		carol.AddRelationship(chem, "Friend");
 		carol.AddRelationship(lyra, "Mom");
 		carol.AddRelationship(lodis, "Dad");
 
-		gamz.IncreaseHunger(4);
+		lyra.IncreaseHunger(4);
 		lyra.AddRelationship(gamz, "Neighbor");
 		lyra.AddRelationship(chem, "Neighbor");
 		lyra.AddRelationship(carol, "Daughter");
 		lyra.AddRelationship(lodis, "Husband");
 
-		gamz.IncreaseHunger(5);
+		lodis.IncreaseHunger(5);
 		lodis.AddRelationship(gamz, "Neighbor");
 		lodis.AddRelationship(chem, "Neighbor");
 		lodis.AddRelationship(carol, "Daughter");
