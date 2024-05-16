@@ -13,6 +13,6 @@ public class Item {
 
 	public string GetSummary() {
 		var edibleString = Edible ? $"Edible (-{HungerRestored} hunger)" : "";
-		return $"{Name}: {Description} Quantity: {Quantity} {edibleString}";
+		return $"{Name} (Id: {Id}): {Description} Quantity: {Quantity} {edibleString}";
 	}
 }
