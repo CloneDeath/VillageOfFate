@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CommandLine;
 using GptApi;
 using VillageOfFate.VillagerActions;
 
 namespace VillageOfFate;
 
 public class Program {
-	public static async Task Main() {
+	public static async Task Main(string[] args) {
+		var parser = new Parser(with => with.HelpWriter = Console.Error);
+		var result = parser.ParseArguments<ProgramOptions>(args);
+
 		var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
 					 ?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
 
@@ -20,7 +25,7 @@ public class Program {
 		var world = GetInitialWorld();
 		var villagers = GetInitialVillagers(world);
 
-		var logger = new VillageLogger();
+		var logger = new VillageLogger(result.Value.LogDirectory ?? Directory.GetCurrentDirectory());
 		List<IVillagerAction> actions = [
 			new SpeakAction(logger),
 			new DoNothingAction(),

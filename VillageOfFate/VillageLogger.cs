@@ -6,9 +6,9 @@ namespace VillageOfFate;
 
 public class VillageLogger {
 	private readonly string _logFile;
-	public VillageLogger() {
+	public VillageLogger(string logDirectory) {
 		var now = DateTime.Now;
-		_logFile = $"{now.Year}-{now.Month:00}-{now.Day:00}_{now.Hour:00}-{now.Minute:00}-{now.Second:00}.txt";
+		_logFile = Path.Combine(logDirectory, $"{now.Year}-{now.Month:00}-{now.Day:00}_{now.Hour:00}-{now.Minute:00}-{now.Second:00}.txt");
 	}
 
 	public virtual void LogActivity(string activity) {
