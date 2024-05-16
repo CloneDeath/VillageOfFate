@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -13,6 +14,11 @@ public class Villager {
 	public Gender Gender { get; set; } = Gender.Male;
 	public VillagerEmotions Emotions { get; set; } = new();
 	public Point SectorLocation { get; set; }
+	public int Hunger { get; private set; }
+	public Activity? CurrentActivity { get; set; }
+
+	public void IncreaseHunger(int amount) => Hunger += amount;
+	public void DecreaseHunger(int amount) => Hunger = Math.Max(0, Hunger - amount);
 
 	public void AddMemory(string message) {
 		_memory.Add(message);

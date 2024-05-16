@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -7,6 +8,7 @@ namespace VillageOfFate;
 public class World {
 	private readonly List<Sector> _sectors = [];
 	private readonly List<Villager> _villagers = [];
+	public DateTime CurrenTime { get; set; } = DateTime.Now;
 
 	public Sector CreateSector(Point position) {
 		var sector = new Sector(position);
@@ -20,5 +22,9 @@ public class World {
 
 	public void AddVillager(Villager villager) {
 		_villagers.Add(villager);
+	}
+
+	public IEnumerable<Villager> GetVillagersInSector(Point point) {
+		return _villagers.Where(v => v.SectorLocation == point);
 	}
 }

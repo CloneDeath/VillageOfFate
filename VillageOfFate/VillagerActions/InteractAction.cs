@@ -33,7 +33,7 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 		var targets = state.Others.Where(o => args.Targets.Contains(o.Name));
 
 		var targetNames = joinNames(args.Targets);
-		var activity = $"{state.Actor.Name} interacts with {targetNames}: \"{args.Action}\"";
+		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} interacts with {targetNames}: \"{args.Action}\"";
 		logger.LogActivity(activity);
 		foreach (var villager in targets.Append(state.Actor)) {
 			villager.AddMemory(activity);

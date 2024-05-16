@@ -37,7 +37,7 @@ public class AdjustEmotionalStateAction(VillageLogger logger) : IVillagerAction 
 
 		var adjustmentString = args.Adjustment > 0 ? $"+{args.Adjustment}" : $"{args.Adjustment}";
 		var activity =
-			$"{state.Actor.Name} [{args.Emotion} {adjustmentString}% ({state.Actor.Emotions[args.Emotion]}%)]: {args.Reason}";
+			$"[{state.World.CurrenTime}] {state.Actor.Name} [{args.Emotion} {adjustmentString}% ({state.Actor.Emotions[args.Emotion]}%)]: {args.Reason}";
 		logger.LogActivity(activity);
 		state.Actor.AddMemory(activity);
 	}

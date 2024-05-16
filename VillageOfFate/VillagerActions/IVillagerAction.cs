@@ -11,6 +11,7 @@ public interface IVillagerAction {
 }
 
 public record VillagerActionState {
+	public required World World { get; init; }
 	public required Villager Actor { get; init; }
 	public required IEnumerable<Villager> Others { get; init; }
 }

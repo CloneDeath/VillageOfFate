@@ -25,7 +25,8 @@ public class Program {
 			new SpeakAction(logger),
 			new DoNothingAction(),
 			new InteractAction(logger),
-			new AdjustEmotionalStateAction(logger)
+			new AdjustEmotionalStateAction(logger),
+			new EatAction(logger)
 		];
 
 		foreach (var villager in villagers) {
@@ -44,7 +45,9 @@ public class Program {
 						string.Join("\n", villager.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%")),
 						"# Location",
 						$"You are located at Sector Coordinate {villager.SectorLocation}.",
-						$"Description: {world.GetSector(villager.SectorLocation).Description}"
+						$"Description: {world.GetSector(villager.SectorLocation).Description}",
+						"# Status",
+						$"- Hunger: {villager.Hunger} (+1 per hour)"
 					])
 				}
 			};
@@ -75,6 +78,7 @@ public class Program {
 				}
 
 				action.Execute(call.Function.Arguments, new VillagerActionState {
+					World = world,
 					Actor = villager,
 					Others = villagers.Where(v => v != villager).ToArray()
 				});
@@ -88,6 +92,29 @@ public class Program {
 		sector.Description =
 			"A dense, lush forest filled with towering trees, diverse wildlife, and the sounds of nature. " +
 			"It's easy to lose one's way in this vast sea of green.";
+
+		sector.Items.Add(new Item {
+			Name = "Rations",
+			Description = "A small bag of dried fruit and nuts.",
+			Quantity = 3, Edible = true, HungerRestored = 2
+		});
+		sector.Items.AddRange(new List<Item> {
+			new() {
+				Name = "Apple",
+				Description = "A juicy, red apple. Perfect for a quick snack.",
+				Quantity = 1, Edible = true, HungerRestored = 5
+			},
+			new() {
+				Name = "Mushroom",
+				Description = "A common forest mushroom. Make sure it's not poisonous before eating!",
+				Quantity = 1, Edible = true, HungerRestored = 3
+			},
+			new() {
+				Name = "Berries",
+				Description = "A handful of wild berries. Sweet and nutritious.",
+				Quantity = 1, Edible = true, HungerRestored = 4
+			}
+		});
 		return world;
 	}
 
@@ -118,26 +145,31 @@ public class Program {
 			SectorLocation = new Point(0, 0)
 		};
 
+		gamz.IncreaseHunger(6);
 		gamz.AddRelationship(chem, "Younger Sister");
 		gamz.AddRelationship(carol, "Child of Neighbors");
 		gamz.AddRelationship(lyra, "Neighbor");
 		gamz.AddRelationship(lodis, "Neighbor");
 
+		gamz.IncreaseHunger(5);
 		chem.AddRelationship(gamz, "Older Brother");
 		chem.AddRelationship(carol, "Friend");
 		chem.AddRelationship(lyra, "Neighbor");
 		chem.AddRelationship(lodis, "Neighbor");
 
+		gamz.IncreaseHunger(8);
 		carol.AddRelationship(gamz, "Neighbor");
 		carol.AddRelationship(chem, "Friend");
 		carol.AddRelationship(lyra, "Mom");
 		carol.AddRelationship(lodis, "Dad");
 
+		gamz.IncreaseHunger(4);
 		lyra.AddRelationship(gamz, "Neighbor");
 		lyra.AddRelationship(chem, "Neighbor");
 		lyra.AddRelationship(carol, "Daughter");
 		lyra.AddRelationship(lodis, "Husband");
 
+		gamz.IncreaseHunger(5);
 		lodis.AddRelationship(gamz, "Neighbor");
 		lodis.AddRelationship(chem, "Neighbor");
 		lodis.AddRelationship(carol, "Daughter");

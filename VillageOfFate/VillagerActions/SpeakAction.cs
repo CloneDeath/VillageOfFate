@@ -21,7 +21,7 @@ public class SpeakAction(VillageLogger logger) : IVillagerAction {
 
 	public void Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<SpeakArguments>(arguments) ?? throw new NullReferenceException();
-		var activity = $"{state.Actor.Name} says: \"{args.Content}\"";
+		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} says: \"{args.Content}\"";
 		logger.LogActivity(activity);
 		foreach (var v in state.Others.Append(state.Actor)) {
 			v.AddMemory(activity);
