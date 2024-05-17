@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using VillageOfFate.Activities;
 
 namespace VillageOfFate.VillagerActions;
 
@@ -19,7 +20,7 @@ public class EatAction(VillageLogger logger) : IVillagerAction {
 		required = new[] { "targetItemId" }
 	};
 
-	public void Execute(string arguments, VillagerActionState state) {
+	public IActivityDetails Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<EatArguments>(arguments) ?? throw new NullReferenceException();
 		var sector = state.World.GetSector(state.Actor.SectorLocation);
 		var target = sector.Items.First(i => i.Id == args.TargetItemId);
@@ -33,27 +34,26 @@ public class EatAction(VillageLogger logger) : IVillagerAction {
 			sector.Items.Remove(target);
 		}
 
-		state.Actor.CurrentActivity = new Activity {
-			Description = "Eating",
-			Duration = TimeSpan.FromMinutes(7) * target.HungerRestored,
-			StartTime = state.World.CurrenTime,
-			OnCompletion = () => {
-				state.Actor.DecreaseHunger(target.HungerRestored);
-
-				var activity =
-					$"[{state.World.CurrenTime}] {state.Actor.Name} finishes eating {GetNameWithArticle(target.Name)} (Hunger -{target.HungerRestored})";
-				logger.LogActivity(activity);
-				foreach (var v in state.World.GetVillagersInSector(state.Actor.SectorLocation)) {
-					v.AddMemory(activity);
-				}
-			}
-		};
-
 		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} starts to eat {GetNameWithArticle(target.Name)}";
 		logger.LogActivity(activity);
 		foreach (var v in state.World.GetVillagersInSector(state.Actor.SectorLocation)) {
 			v.AddMemory(activity);
 		}
+
+		return new ActivityDetails {
+			Description = "Eating",
+			Duration = TimeSpan.FromMinutes(7) * target.HungerRestored,
+			OnCompletion = () => {
+				state.Actor.DecreaseHunger(target.HungerRestored);
+
+				var completionActivity =
+					$"[{state.World.CurrenTime}] {state.Actor.Name} finishes eating {GetNameWithArticle(target.Name)} (Hunger -{target.HungerRestored})";
+				logger.LogActivity(completionActivity);
+				foreach (var v in state.World.GetVillagersInSector(state.Actor.SectorLocation)) {
+					v.AddMemory(completionActivity);
+				}
+			}
+		};
 	}
 
 	public static string GetNameWithArticle(string itemName) {

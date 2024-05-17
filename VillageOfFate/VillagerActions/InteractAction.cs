@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using VillageOfFate.Activities;
 
 namespace VillageOfFate.VillagerActions;
 
@@ -19,16 +20,20 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 				},
 				description = "who the action is directed at"
 			},
+			durationInSeconds = new {
+				type = "number",
+				description = "The number of seconds the interaction takes"
+			},
 			action = new {
 				type = "string",
 				description = "A description of the interaction you are performing." +
 							  " Should usually start with \"I <verb>\" like \"I hold the apply\" or \"I reach out to the frog\""
 			}
 		},
-		required = new[]{"targets", "action"}
+		required = new[] { "targets", "action" }
 	};
 
-	public void Execute(string arguments, VillagerActionState state) {
+	public IActivityDetails Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<InteractArguments>(arguments) ?? throw new NullReferenceException();
 		var targets = state.Others.Where(o => args.Targets.Contains(o.Name));
 
@@ -38,6 +43,11 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 		foreach (var villager in targets.Append(state.Actor)) {
 			villager.AddMemory(activity);
 		}
+
+		return new ActivityDetails {
+			Description = "Interacting",
+			Duration = TimeSpan.FromSeconds(args.DurationInSeconds)
+		};
 	}
 
 	private static string joinNames(IReadOnlyList<string> names) {
@@ -54,5 +64,7 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 
 public class InteractArguments {
 	[JsonPropertyName("targets")] public string[] Targets { get; set; } = [];
+	[JsonPropertyName("durationInSeconds")]
+	public double DurationInSeconds { get; set; }
 	[JsonPropertyName("action")] public string Action { get; set; } = string.Empty;
 }

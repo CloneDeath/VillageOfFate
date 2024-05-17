@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 using GptApi;
+using VillageOfFate.Activities;
 using VillageOfFate.VillagerActions;
 
 namespace VillageOfFate;
@@ -33,6 +34,9 @@ public class Program {
 			new AdjustEmotionalStateAction(logger),
 			new EatAction(logger)
 		];
+
+		var endTime = world.CurrenTime + TimeSpan.FromMinutes(2);
+		while (world.CurrenTime < endTime) { }
 
 		foreach (var villager in villagers) {
 			var messages = new List<Message> {
@@ -130,27 +134,32 @@ public class Program {
 		var gamz = new Villager {
 			Name = "Gamz", Age = 26, Gender = Gender.Male,
 			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
-			SectorLocation = new Point(0, 0)
+			SectorLocation = new Point(0, 0),
+			CurrentActivity = new Activity(new IdleActivity(), world)
 		};
 		var chem = new Villager {
 			Name = "Chemm", Age = 19, Gender = Gender.Female,
 			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
-			SectorLocation = new Point(0, 0)
+			SectorLocation = new Point(0, 0),
+			CurrentActivity = new Activity(new IdleActivity(), world)
 		};
 		var carol = new Villager {
 			Name = "Carol", Age = 7, Gender = Gender.Female,
 			Summary = "A cheerful child, although quite mature for her age.",
-			SectorLocation = new Point(0, 0)
+			SectorLocation = new Point(0, 0),
+			CurrentActivity = new Activity(new IdleActivity(), world)
 		};
 		var lyra = new Villager {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
 			Summary = "A younger wife than her husband, but capable of keeping him in check.",
-			SectorLocation = new Point(0, 0)
+			SectorLocation = new Point(0, 0),
+			CurrentActivity = new Activity(new IdleActivity(), world)
 		};
 		var lodis = new Villager {
 			Name = "Lodis", Age = 33, Gender = Gender.Male,
 			Summary = "The father of a family of three that ran a general store in the village.",
-			SectorLocation = new Point(0, 0)
+			SectorLocation = new Point(0, 0),
+			CurrentActivity = new Activity(new IdleActivity(), world)
 		};
 
 		gamz.IncreaseHunger(6);

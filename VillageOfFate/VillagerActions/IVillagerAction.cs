@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using VillageOfFate.Activities;
 
 namespace VillageOfFate.VillagerActions;
 
@@ -7,7 +8,7 @@ public interface IVillagerAction {
 	public string Description { get; }
 	public object? Parameters { get; }
 
-	public void Execute(string arguments, VillagerActionState state);
+	public IActivityDetails Execute(string arguments, VillagerActionState state);
 }
 
 public record VillagerActionState {

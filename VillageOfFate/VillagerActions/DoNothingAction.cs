@@ -1,3 +1,6 @@
+using System;
+using VillageOfFate.Activities;
+
 namespace VillageOfFate.VillagerActions;
 
 public class DoNothingAction : IVillagerAction {
@@ -5,5 +8,9 @@ public class DoNothingAction : IVillagerAction {
 	public string Description => "Do nothing, and observe";
 	public object? Parameters => null;
 
-	public void Execute(string arguments, VillagerActionState state) {}
+	public IActivityDetails Execute(string arguments, VillagerActionState state) =>
+		new ActivityDetails {
+			Description = "Doing Nothing",
+			Duration = TimeSpan.FromSeconds(10)
+		};
 }

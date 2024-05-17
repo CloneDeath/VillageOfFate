@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using VillageOfFate.Activities;
 
 namespace VillageOfFate.VillagerActions;
 
@@ -29,7 +30,7 @@ public class AdjustEmotionalStateAction(VillageLogger logger) : IVillagerAction 
 		required = new[] { "emotion", "adjustment", "reason" }
 	};
 
-	public void Execute(string arguments, VillagerActionState state) {
+	public IActivityDetails Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<AdjustEmotionalStateArguments>(arguments) ??
 				   throw new NullReferenceException();
 
@@ -40,6 +41,10 @@ public class AdjustEmotionalStateAction(VillageLogger logger) : IVillagerAction 
 			$"[{state.World.CurrenTime}] {state.Actor.Name} [{args.Emotion} {adjustmentString}% ({state.Actor.Emotions[args.Emotion]}%)]: {args.Reason}";
 		logger.LogActivity(activity);
 		state.Actor.AddMemory(activity);
+		return new ActivityDetails {
+			Description = "Adjusting Emotional State",
+			Duration = TimeSpan.FromSeconds(2)
+		};
 	}
 }
 

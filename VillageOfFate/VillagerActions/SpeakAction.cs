@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using VillageOfFate.Activities;
 
 namespace VillageOfFate.VillagerActions;
 
@@ -16,16 +17,27 @@ public class SpeakAction(VillageLogger logger) : IVillagerAction {
 				description = "what to say"
 			}
 		},
-		required = new[]{"content"}
+		required = new[] { "content" }
 	};
 
-	public void Execute(string arguments, VillagerActionState state) {
+	public IActivityDetails Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<SpeakArguments>(arguments) ?? throw new NullReferenceException();
 		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} says: \"{args.Content}\"";
 		logger.LogActivity(activity);
 		foreach (var v in state.Others.Append(state.Actor)) {
 			v.AddMemory(activity);
 		}
+
+		return new ActivityDetails {
+			Description = "Speaking",
+			Duration = CalculateSpeakDuration(args.Content)
+		};
+	}
+
+	public static TimeSpan CalculateSpeakDuration(string sentence) {
+		const double averageSecondsPerWord = 0.45;
+		var wordCount = sentence.Split(' ').Length;
+		return TimeSpan.FromSeconds(wordCount * averageSecondsPerWord);
 	}
 }
 

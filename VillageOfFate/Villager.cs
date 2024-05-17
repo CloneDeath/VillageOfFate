@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using VillageOfFate.Activities;
 
 namespace VillageOfFate;
 
@@ -8,6 +9,7 @@ public class Villager {
 	private readonly Memory _memory = [];
 
 	private readonly RelationshipMemory _relationship = new();
+
 	public string Name { get; set; } = "Villager";
 	public int Age { get; set; } = 18;
 	public string Summary { get; set; } = string.Empty;
@@ -15,7 +17,7 @@ public class Villager {
 	public VillagerEmotions Emotions { get; set; } = new();
 	public Point SectorLocation { get; set; }
 	public int Hunger { get; private set; }
-	public Activity? CurrentActivity { get; set; }
+	public required Activity CurrentActivity { get; init; }
 
 	public void IncreaseHunger(int amount) => Hunger += amount;
 	public void DecreaseHunger(int amount) => Hunger = Math.Max(0, Hunger - amount);
