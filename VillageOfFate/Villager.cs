@@ -17,7 +17,8 @@ public class Villager {
 	public VillagerEmotions Emotions { get; set; } = new();
 	public Point SectorLocation { get; set; }
 	public int Hunger { get; private set; }
-	public required Activity CurrentActivity { get; init; }
+	public required Activity CurrentActivity { get; set; }
+	public Stack<Activity> ActivityQueue { get; } = new();
 
 	public void IncreaseHunger(int amount) => Hunger += amount;
 	public void DecreaseHunger(int amount) => Hunger = Math.Max(0, Hunger - amount);

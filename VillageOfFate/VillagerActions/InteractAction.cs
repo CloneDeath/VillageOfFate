@@ -35,7 +35,7 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 
 	public IActivityDetails Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<InteractArguments>(arguments) ?? throw new NullReferenceException();
-		var targets = state.Others.Where(o => args.Targets.Contains(o.Name));
+		var targets = state.Others.Where(o => args.Targets.Contains(o.Name)).ToList();
 
 		var targetNames = joinNames(args.Targets);
 		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} interacts with {targetNames}: \"{args.Action}\"";
@@ -46,7 +46,11 @@ public class InteractAction(VillageLogger logger) : IVillagerAction {
 
 		return new ActivityDetails {
 			Description = "Interacting",
-			Duration = TimeSpan.FromSeconds(args.DurationInSeconds)
+			Duration = TimeSpan.FromSeconds(args.DurationInSeconds),
+			Interruptible = true,
+			OnCompletion = () => new ActivityResult {
+				TriggerReactions = targets
+			}
 		};
 	}
 

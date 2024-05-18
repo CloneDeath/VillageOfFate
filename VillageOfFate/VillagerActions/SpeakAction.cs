@@ -30,7 +30,9 @@ public class SpeakAction(VillageLogger logger) : IVillagerAction {
 
 		return new ActivityDetails {
 			Description = "Speaking",
-			Duration = CalculateSpeakDuration(args.Content)
+			Duration = CalculateSpeakDuration(args.Content),
+			Interruptible = false,
+			OnCompletion = () => new ActivityResult { TriggerReactions = state.Others }
 		};
 	}
 

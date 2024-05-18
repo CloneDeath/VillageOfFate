@@ -1,0 +1,68 @@
+GPT Usage: 954 Tokens (866 Prompt Tokens, 88 Completion Tokens)
+[5/18/2024 6:38:32 AM] Carol interacts with Gamz: "I tug at Gamz's sleeve to get his attention"
+[5/18/2024 6:38:32 AM] Carol says: "Gamz, do you think we'll be able to find our way out of here? I'm starting to feel a bit hungry."
+GPT Usage: 990 Tokens (956 Prompt Tokens, 34 Completion Tokens)
+[5/18/2024 6:38:32 AM] Gamz interacts with Carol: "I crouch down to her height and look into her eyes, trying to reassure her."
+GPT Usage: 1007 Tokens (914 Prompt Tokens, 93 Completion Tokens)
+[5/18/2024 6:38:34 AM] Lyra says: "Don't worry, Carol. We'll find our way, it's just a matter of time. Let's conserve our strength and share what food we have for now."
+[5/18/2024 6:38:34 AM] Lyra starts to eat an Apple
+GPT Usage: 1060 Tokens (944 Prompt Tokens, 116 Completion Tokens)
+[5/18/2024 6:38:35 AM] Lodis says: "Lyra's right, Carol. We've been through worse. Let's see what we have for food and share it around. I've got some dried fruit and nuts, some berries, and a mushroom. Let's make sure no one's too hungry for the journey ahead."
+[5/18/2024 6:38:35 AM] Lodis starts to eat a Rations
+GPT Usage: 1135 Tokens (1047 Prompt Tokens, 88 Completion Tokens)
+[5/18/2024 6:38:35 AM] Chemm interacts with Carol: "I hand Carol one of our rations, making sure she gets something to eat"
+[5/18/2024 6:38:35 AM] Chemm says: "Here you go, Carol. Eat this and keep your strength up. We'll find a way out together."
+GPT Usage: 1259 Tokens (1177 Prompt Tokens, 82 Completion Tokens)
+[5/18/2024 6:38:43 AM] Gamz says: "Carol, we'll be alright. Keep your head up, and let me know if you need anything."
+[5/18/2024 6:38:43 AM] Gamz starts to eat a Berries
+GPT Usage: 1202 Tokens (1114 Prompt Tokens, 88 Completion Tokens)
+[5/18/2024 6:38:50 AM] Lodis starts to eat a Rations
+[5/18/2024 6:38:50 AM] Lodis says: "Here, Chemm, Gamz. Let's split the rest of this. We need to keep our strength up."
+GPT Usage: 1284 Tokens (1188 Prompt Tokens, 96 Completion Tokens)
+[5/18/2024 6:38:52 AM] Lodis says: "Thanks, Chemm, for looking out for Carol. Let's all keep our spirits high. If we stick together, we'll get through this sooner or later."
+[5/18/2024 6:38:52 AM] Lodis starts to eat a Rations
+GPT Usage: 1382 Tokens (1345 Prompt Tokens, 37 Completion Tokens)
+[5/18/2024 6:38:57 AM] Carol starts to eat a Mushroom
+GPT Usage: 1285 Tokens (1277 Prompt Tokens, 8 Completion Tokens)
+GPT Usage: 1274 Tokens (1191 Prompt Tokens, 83 Completion Tokens)
+[5/18/2024 6:39:03 AM] Lyra interacts with Carol: "I give Carol a reassuring smile and nod."
+[5/18/2024 6:39:05 AM] Lyra [Happiness +5% (0%)]: I see everyone coming together and sharing what they have. It lifts my spirits.
+GPT Usage: 1389 Tokens (1351 Prompt Tokens, 38 Completion Tokens)
+[5/18/2024 6:39:05 AM] Carol interacts with Lyra: "I give Lyra a tight hug, feeling a bit more reassured."
+GPT Usage: 1404 Tokens (1314 Prompt Tokens, 90 Completion Tokens)
+[5/18/2024 6:39:07 AM] Lyra interacts with Carol: "I hug Carol back, holding her close and letting her feel my warmth"
+[5/18/2024 6:39:07 AM] Lyra says: "Alright everyone, let's start moving. We need to find a clearing or a recognizable path. Stay close and keep an eye out for any signs or landmarks."
+GPT Usage: 1509 Tokens (1488 Prompt Tokens, 21 Completion Tokens)
+[5/18/2024 6:39:07 AM] Carol says: "Okay, Mom. I'll stay close to everyone."
+GPT Usage: 1368 Tokens (1279 Prompt Tokens, 89 Completion Tokens)
+[5/18/2024 6:39:10 AM] Lodis says: "Alright, everyone, let's get moving. It's good to see us all working together. We'll find our way out soon."
+[5/18/2024 6:39:12 AM] Lodis [Happiness +5% (0%)]: Our family and friends are sticking together in this tough situation.
+GPT Usage: 1467 Tokens (1413 Prompt Tokens, 54 Completion Tokens)
+[5/18/2024 6:39:13 AM] Gamz says: "Stay alert and stay together. We’ll find a way out of here."
+GPT Usage: 1613 Tokens (1530 Prompt Tokens, 83 Completion Tokens)
+[5/18/2024 6:39:15 AM] Lyra says: "Everyone, be careful and watch where you step. The forest can be tricky, and we don't want anyone getting hurt."
+[5/18/2024 6:39:15 AM] Lyra interacts with Carol: "I hold Carol's hand as we walk, making sure she stays close"
+GPT Usage: 1701 Tokens (1619 Prompt Tokens, 82 Completion Tokens)
+[5/18/2024 6:39:19 AM] Lyra interacts with Carol: "I hold Carol's hand to keep her close and comforted"
+[5/18/2024 6:39:21 AM] Lyra [Happiness +5% (5%)]: The group's cooperation lifts my spirits
+GPT Usage: 1555 Tokens (1458 Prompt Tokens, 97 Completion Tokens)
+[5/18/2024 6:39:21 AM] Chemm says: "Everyone, let's keep an eye out for any signs or markers that might guide us. Our path is in the hands of fate, and we will find a way."
+[5/18/2024 6:39:23 AM] Lodis [Happiness +5% (5%)]: Our family and friends are sticking together in this tough situation.
+GPT Usage: 1853 Tokens (1793 Prompt Tokens, 60 Completion Tokens)
+[5/18/2024 6:39:28 AM] Carol [Happiness +10% (0%)]: I feel comforted by everyone's support.
+[5/18/2024 6:39:28 AM] Lyra [Happiness +5% (10%)]: The group's cooperation lifts my spirits
+GPT Usage: 1597 Tokens (1515 Prompt Tokens, 82 Completion Tokens)
+[5/18/2024 6:39:33 AM] Chemm interacts with Carol: "I give Carol a reassuring pat on the shoulder, trying to boost her spirits"
+GPT Usage: 1982 Tokens (1873 Prompt Tokens, 109 Completion Tokens)
+[5/18/2024 6:39:33 AM] Carol interacts with Chemm: "I smile up at Chemm, feeling reassured by her pat on my shoulder"
+[5/18/2024 6:39:33 AM] Carol interacts with Lyra: "I grip my mom's hand tightly as we start to walk, staying close to her"
+[5/18/2024 6:39:33 AM] Carol says: "Thanks, everyone. I feel a bit better now."
+GPT Usage: 1756 Tokens (1634 Prompt Tokens, 122 Completion Tokens)
+[5/18/2024 6:39:33 AM] Chemm says: "Alright, let's start moving. I have faith that we'll find our way. We'll follow the signs that fate provides."
+GPT Usage: 2077 Tokens (2041 Prompt Tokens, 36 Completion Tokens)
+[5/18/2024 6:39:33 AM] Carol says: "I'll keep my eyes open for anything that looks like a path or a sign, Chemm. Fate will surely guide us!"
+GPT Usage: 1786 Tokens (1686 Prompt Tokens, 100 Completion Tokens)
+[5/18/2024 6:39:34 AM] Lodis says: "That's the spirit, Carol! Let's keep moving and look out for anything familiar. If anyone sees something that looks like a landmark, let the group know immediately."
+[5/18/2024 6:39:35 AM] Chemm [Happiness +5% (0%)]: I find comfort in the solidarity of my companions
+GPT Usage: 2187 Tokens (2145 Prompt Tokens, 42 Completion Tokens)
+Carol tried to execute an Invalid Action 'Say' with args '{"content":"I'll make sure to stay close to Mom, Dad, and everyone. I think I saw some berries earlier, should I pick them if we see more?"}'

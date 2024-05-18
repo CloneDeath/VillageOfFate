@@ -36,22 +36,26 @@ public class EatAction(VillageLogger logger) : IVillagerAction {
 
 		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} starts to eat {GetNameWithArticle(target.Name)}";
 		logger.LogActivity(activity);
-		foreach (var v in state.World.GetVillagersInSector(state.Actor.SectorLocation)) {
+		var villagersInSector = state.World.GetVillagersInSector(state.Actor.SectorLocation).ToList();
+		foreach (var v in villagersInSector) {
 			v.AddMemory(activity);
 		}
 
 		return new ActivityDetails {
 			Description = "Eating",
 			Duration = TimeSpan.FromMinutes(7) * target.HungerRestored,
+			Interruptible = true,
 			OnCompletion = () => {
 				state.Actor.DecreaseHunger(target.HungerRestored);
 
 				var completionActivity =
 					$"[{state.World.CurrenTime}] {state.Actor.Name} finishes eating {GetNameWithArticle(target.Name)} (Hunger -{target.HungerRestored})";
 				logger.LogActivity(completionActivity);
-				foreach (var v in state.World.GetVillagersInSector(state.Actor.SectorLocation)) {
+				foreach (var v in villagersInSector) {
 					v.AddMemory(completionActivity);
 				}
+
+				return new ActivityResult { TriggerReactions = state.Others };
 			}
 		};
 	}

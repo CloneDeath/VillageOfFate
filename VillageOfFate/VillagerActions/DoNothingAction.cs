@@ -11,6 +11,7 @@ public class DoNothingAction : IVillagerAction {
 	public IActivityDetails Execute(string arguments, VillagerActionState state) =>
 		new ActivityDetails {
 			Description = "Doing Nothing",
+			Interruptible = true,
 			Duration = TimeSpan.FromSeconds(10)
 		};
 }

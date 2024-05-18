@@ -34,16 +34,20 @@ public class AdjustEmotionalStateAction(VillageLogger logger) : IVillagerAction 
 		var args = JsonSerializer.Deserialize<AdjustEmotionalStateArguments>(arguments) ??
 				   throw new NullReferenceException();
 
-		state.Actor.AdjustEmotion(args.Emotion, args.Adjustment);
-
-		var adjustmentString = args.Adjustment > 0 ? $"+{args.Adjustment}" : $"{args.Adjustment}";
-		var activity =
-			$"[{state.World.CurrenTime}] {state.Actor.Name} [{args.Emotion} {adjustmentString}% ({state.Actor.Emotions[args.Emotion]}%)]: {args.Reason}";
-		logger.LogActivity(activity);
-		state.Actor.AddMemory(activity);
 		return new ActivityDetails {
 			Description = "Adjusting Emotional State",
-			Duration = TimeSpan.FromSeconds(2)
+			Duration = TimeSpan.FromSeconds(2),
+			Interruptible = true,
+			OnCompletion = () => {
+				var adjustmentString = args.Adjustment > 0 ? $"+{args.Adjustment}" : $"{args.Adjustment}";
+				var activity =
+					$"[{state.World.CurrenTime}] {state.Actor.Name} [{args.Emotion} {adjustmentString}% ({state.Actor.Emotions[args.Emotion]}%)]: {args.Reason}";
+				logger.LogActivity(activity);
+				state.Actor.AddMemory(activity);
+
+				state.Actor.AdjustEmotion(args.Emotion, args.Adjustment);
+				return new ActivityResult { TriggerReactions = [] };
+			}
 		};
 	}
 }
