@@ -35,7 +35,8 @@ public class Program {
 			new InteractAction(logger),
 			new AdjustEmotionalStateAction(logger),
 			new EatAction(logger),
-			new SleepAction(logger)
+			new SleepAction(logger),
+			new LookoutAction(logger)
 		];
 
 		var endTime = world.CurrenTime + TimeSpan.FromMinutes(2);
