@@ -34,7 +34,8 @@ public class Program {
 			new DoNothingAction(),
 			new InteractAction(logger),
 			new AdjustEmotionalStateAction(logger),
-			new EatAction(logger)
+			new EatAction(logger),
+			new SleepAction(logger)
 		];
 
 		var endTime = world.CurrenTime + TimeSpan.FromMinutes(2);
@@ -151,7 +152,7 @@ public class Program {
 			"It's easy to lose one's way in this vast sea of green.";
 
 		sector.Items.Add(new Item {
-			Name = "Rations",
+			Name = "Ration",
 			Description = "A small bag of dried fruit and nuts.",
 			Quantity = 3, Edible = true, HungerRestored = 2
 		});
