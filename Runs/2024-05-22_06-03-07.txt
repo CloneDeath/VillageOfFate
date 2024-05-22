@@ -1,0 +1,11 @@
+GPT Usage: 969 Tokens (922 Prompt Tokens, 47 Completion Tokens)
+[5/22/2024 6:03:07 AM] Lyra says: "Alright everyone, let's not panic. We've been through worse. First things first, we need to find some shelter and food. Let's stick together and keep our eyes and ears open."
+GPT Usage: 1046 Tokens (982 Prompt Tokens, 64 Completion Tokens)
+[5/22/2024 6:03:09 AM] Lodis says: "Lyra's right. Let's stay close and keep moving. I've got some rations, an apple, some mushrooms and wild berries. It won't last forever, but it's a start. Let's find a safe spot to gather our thoughts and figure out our next steps."
+GPT Usage: 1160 Tokens (1107 Prompt Tokens, 53 Completion Tokens)
+[5/22/2024 6:03:09 AM] Gamz says: "We need to find water too. If we follow the sound of the birds and the direction they’re flying, they might lead us to a stream or river. Let's keep our heads clear and move with purpose."
+GPT Usage: 1264 Tokens (1126 Prompt Tokens, 138 Completion Tokens)
+[5/22/2024 6:03:10 AM] Chemm interacts with Lyra, Lodis, and Gamz: "I nod in agreement with everyone and reach out to comfort a worried Lyra by placing a hand on her shoulder."
+[5/22/2024 6:03:10 AM] Chemm says: "Lyra, Lodis, Gamz, you're all right. Let's stay calm and stick together. Fate has brought us here for a reason. We'll find our way if we stay united. Let's also keep an eye out for a safe place to rest soon. I have some rations too if we need them."
+GPT Usage: 1257 Tokens (1212 Prompt Tokens, 45 Completion Tokens)
+[5/22/2024 6:03:11 AM] Carol says: "I'm a little scared, but I trust all of you. We'll find water and a safe place, and then we can share what we have. Let's stay close together."

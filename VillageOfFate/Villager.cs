@@ -19,6 +19,7 @@ public class Villager {
 	public int Hunger { get; private set; }
 	public required Activity CurrentActivity { get; set; }
 	public Stack<Activity> ActivityQueue { get; } = new();
+	public List<Item> Inventory { get; } = [];
 
 	public void IncreaseHunger(int amount) => Hunger += amount;
 	public void DecreaseHunger(int amount) => Hunger = Math.Max(0, Hunger - amount);
@@ -40,6 +41,10 @@ public class Villager {
 	public void AdjustEmotion(VillagerEmotion emotion, int adjustment) => Emotions.AdjustEmotion(emotion, adjustment);
 
 	public IEnumerable<EmotionalState> GetEmotions() => Emotions.GetEmotions();
+
+	public void GiveItem(Item item) {
+		Inventory.Add(item);
+	}
 }
 
 public enum Gender {

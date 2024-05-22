@@ -97,7 +97,9 @@ public class Program {
 					string.Join("\n",
 						world.GetSector(villager.SectorLocation).Items.Select(i => $"- {i.GetSummary()}")),
 					"# Status",
-					$"- Hunger: {villager.Hunger} (+1 per hour)"
+					$"- Hunger: {villager.Hunger} (+1 per hour)",
+					"# Inventory",
+					string.Join("\n", villager.Inventory.Select(i => $"- {i.GetSummary()}"))
 				])
 			}
 		};
@@ -210,6 +212,11 @@ public class Program {
 			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
 		};
 
+		gamz.GiveItem(new Item {
+			Name = "Sword",
+			Description = "A well-crafted sword with a leather-wrapped hilt.",
+			Quantity = 1
+		});
 		gamz.IncreaseHunger(6);
 		gamz.AddRelationship(chem, "Younger Sister");
 		gamz.AddRelationship(carol, "Child of Neighbors");
