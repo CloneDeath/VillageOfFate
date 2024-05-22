@@ -1,0 +1,6 @@
+@VillageOfFate.Server_HostAddress = http://localhost:5200
+
+GET {{VillageOfFate.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
