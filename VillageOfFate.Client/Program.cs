@@ -1,10 +1,10 @@
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VillageOfFate.Client.Services.Api;
 
 namespace VillageOfFate.Client;
 
@@ -14,7 +14,9 @@ public class Program {
 		builder.RootComponents.Add<App>("#app");
 		builder.RootComponents.Add<HeadOutlet>("head::after");
 
-		builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+		var apiBaseUri = builder.Configuration.GetValue<string>("ApiBaseUri") ??
+						 throw new Exception("ApiBaseUri is not set in appsettings.json");
+		builder.Services.AddSingleton(() => new TimeApi(apiBaseUri));
 
 		builder.Services.AddOidcAuthentication(options => {
 			// Configure your authentication provider options here.

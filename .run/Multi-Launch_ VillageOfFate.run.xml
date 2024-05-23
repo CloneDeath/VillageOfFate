@@ -16,7 +16,10 @@
       <ExecutableRowSnapshot>
         <option name="condition">
           <ConditionSnapshot>
-            <option name="type" value="afterPreviousStarted" />
+            <attributes>
+              <entry key="port" value="7200" />
+            </attributes>
+            <option name="type" value="waitPortOpened" />
           </ConditionSnapshot>
         </option>
         <option name="executable">
