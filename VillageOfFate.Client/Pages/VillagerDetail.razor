@@ -2,6 +2,7 @@
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Villager Detail</PageTitle>
 
@@ -10,19 +11,26 @@
         <em>Loading...</em>
     </p>
 } else {
-    <h1>@villager.Name</h1>
+    <h1>
+        <button class="btn btn-primary" @onclick="GoBack">&lt;</button>
+        @villager.Name
+    </h1>
     <p>Gender: @villager.Gender</p>
     <p>Age: @villager.Age</p>
     <p>Summary: @villager.Summary</p>
 }
 
 @code {
-    [Parameter]
-    public Guid Id { get; set; }
+    [Parameter] public Guid Id { get; set; }
 
     private WebVillager? villager;
 
     protected override async Task OnParametersSetAsync() {
         villager = await VillagersService.GetVillager(Id);
     }
+
+    private void GoBack() {
+        NavigationManager.NavigateTo("/villagers");
+    }
+
 }

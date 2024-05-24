@@ -24,7 +24,9 @@
         <tbody>
         @foreach (var villager in villagers) {
             <tr>
-                <td>@villager.Name</td>
+                <td>
+                    <a href="villagers/@villager.Id">@villager.Name</a>
+                </td>
                 <td>@villager.Age</td>
                 <td>@villager.Gender</td>
                 <td>@villager.Summary</td>
@@ -40,4 +42,5 @@
     protected override async Task OnInitializedAsync() {
         villagers = await VillagersService.GetVillagers();
     }
+
 }
