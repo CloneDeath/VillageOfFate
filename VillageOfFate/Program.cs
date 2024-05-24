@@ -12,7 +12,7 @@ using VillageOfFate.VillagerActions;
 
 namespace VillageOfFate;
 
-public class Program {
+public static class Program {
 	public static async Task Main(string[] args) {
 		var parser = new Parser(with => with.HelpWriter = Console.Error);
 		var result = parser.ParseArguments<ProgramOptions>(args);
@@ -147,7 +147,7 @@ public class Program {
 		return villagers.OrderBy(v => v.CurrentActivity.StartTime + v.CurrentActivity.Duration).First();
 	}
 
-	private static World GetInitialWorld() {
+	public static World GetInitialWorld() {
 		var world = new World();
 		var sector = world.CreateSector(new Point(0, 0));
 		sector.Description =
@@ -179,7 +179,7 @@ public class Program {
 		return world;
 	}
 
-	private static Villager[] GetInitialVillagers(World world, RandomProvider random) {
+	public static Villager[] GetInitialVillagers(World world, RandomProvider random) {
 		var maxIdle = TimeSpan.FromSeconds(5);
 		var gamz = new Villager {
 			Name = "Gamz", Age = 26, Gender = Gender.Male,

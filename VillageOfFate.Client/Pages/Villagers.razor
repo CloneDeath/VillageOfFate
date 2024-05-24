@@ -1,0 +1,43 @@
+﻿@page "/villagers"
+@using VillageOfFate.Client.Services.Api
+@using VillageOfFate.WebModels
+@inject VillagersApi VillagersService
+
+<PageTitle>Villagers</PageTitle>
+
+<h1>Villagers</h1>
+
+@if (villagers == null) {
+    <p>
+        <em>Loading...</em>
+    </p>
+} else {
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Summary</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var villager in villagers) {
+            <tr>
+                <td>@villager.Name</td>
+                <td>@villager.Age</td>
+                <td>@villager.Gender</td>
+                <td>@villager.Summary</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WebVillager[]? villagers;
+
+    protected override async Task OnInitializedAsync() {
+        villagers = await VillagersService.GetVillagers();
+    }
+}
