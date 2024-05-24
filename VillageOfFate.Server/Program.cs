@@ -19,6 +19,9 @@ public class Program {
 					 .AllowAnyMethod());
 		});
 
+		var world = GenerateWorld();
+		builder.Services.AddSingleton(world);
+
 		var app = builder.Build();
 
 		if (app.Environment.IsDevelopment()) {
@@ -30,5 +33,12 @@ public class Program {
 		app.UseCors("AllowMyOrigin");
 		app.MapDefaultControllerRoute();
 		app.Run();
+	}
+
+	private static World GenerateWorld() {
+		var random = new RandomProvider();
+		var world = VillageOfFate.Program.GetInitialWorld();
+		VillageOfFate.Program.GetInitialVillagers(world, random);
+		return world;
 	}
 }

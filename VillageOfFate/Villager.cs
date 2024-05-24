@@ -7,8 +7,9 @@ namespace VillageOfFate;
 
 public class Villager {
 	private readonly Memory _memory = [];
-
 	private readonly RelationshipMemory _relationship = new();
+
+	public Guid Id { get; } = Guid.NewGuid();
 
 	public string Name { get; set; } = "Villager";
 	public int Age { get; set; } = 18;

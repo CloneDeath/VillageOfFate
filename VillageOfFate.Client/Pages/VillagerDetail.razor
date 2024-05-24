@@ -1,0 +1,28 @@
+@page "/villagers/{Id:guid}"
+@using VillageOfFate.Client.Services.Api
+@using VillageOfFate.WebModels
+@inject VillagersApi VillagersService
+
+<PageTitle>Villager Detail</PageTitle>
+
+@if (villager == null) {
+    <p>
+        <em>Loading...</em>
+    </p>
+} else {
+    <h1>@villager.Name</h1>
+    <p>Gender: @villager.Gender</p>
+    <p>Age: @villager.Age</p>
+    <p>Summary: @villager.Summary</p>
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private WebVillager? villager;
+
+    protected override async Task OnParametersSetAsync() {
+        villager = await VillagersService.GetVillager(Id);
+    }
+}

@@ -8,17 +8,16 @@ namespace VillageOfFate.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class VillagersController : ControllerBase {
+public class VillagersController(World world) : ControllerBase {
 	[HttpGet]
-	public IEnumerable<WebVillager> ListVillagers() {
-		var random = new RandomProvider();
-		var world = VillageOfFate.Program.GetInitialWorld();
-		var villagers = VillageOfFate.Program.GetInitialVillagers(world, random);
-		return villagers.Select(AsWebVillager);
-	}
+	public IEnumerable<WebVillager> ListVillagers() => world.Villagers.Select(AsWebVillager);
+
+	[HttpGet("{id:guid}")]
+	public WebVillager GetVillager(Guid id) => AsWebVillager(world.Villagers.First(v => v.Id == id));
 
 	private static WebVillager AsWebVillager(Villager villager) {
 		return new WebVillager {
+			Id = villager.Id,
 			Name = villager.Name,
 			Gender = villager.Gender switch {
 				Gender.Male => WebGender.Male,

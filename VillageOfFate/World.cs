@@ -9,6 +9,7 @@ public class World {
 	private readonly List<Sector> _sectors = [];
 	private readonly List<Villager> _villagers = [];
 	public DateTime CurrenTime { get; set; } = DateTime.Now;
+	public IEnumerable<Villager> Villagers => _villagers;
 
 	public Sector CreateSector(Point position) {
 		var sector = new Sector(position);

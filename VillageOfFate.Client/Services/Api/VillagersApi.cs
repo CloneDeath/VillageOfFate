@@ -14,4 +14,9 @@ public class VillagersApi(string baseUri) {
 					 ?? throw new Exception("Failed to get Villagers from server.");
 		return result;
 	}
+
+	public async Task<WebVillager> GetVillager(Guid id) {
+		return await client.GetFromJsonAsync<WebVillager>($"/Villagers/{id}")
+			   ?? throw new Exception($"Failed to get Villager with Id {id} from server.");
+	}
 }
