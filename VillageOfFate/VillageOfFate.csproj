@@ -6,6 +6,7 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\GptApi\GptApi.csproj"/>
+        <ProjectReference Include="..\VillageOfFate.WebModels\VillageOfFate.WebModels.csproj"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="CommandLineParser" Version="2.9.1"/>

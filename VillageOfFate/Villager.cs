@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using VillageOfFate.Activities;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate;
 
@@ -16,7 +16,7 @@ public class Villager {
 	public string Summary { get; set; } = string.Empty;
 	public Gender Gender { get; set; } = Gender.Male;
 	public VillagerEmotions Emotions { get; set; } = new();
-	public Point SectorLocation { get; set; }
+	public Position SectorLocation { get; set; }
 	public int Hunger { get; private set; }
 	public required Activity CurrentActivity { get; set; }
 	public Stack<Activity> ActivityQueue { get; } = new();
@@ -46,9 +46,4 @@ public class Villager {
 	public void GiveItem(Item item) {
 		Inventory.Add(item);
 	}
-}
-
-public enum Gender {
-	Male,
-	Female
 }

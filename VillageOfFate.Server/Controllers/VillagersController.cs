@@ -10,22 +10,8 @@ namespace VillageOfFate.Server.Controllers;
 [Route("[controller]")]
 public class VillagersController(World world) : ControllerBase {
 	[HttpGet]
-	public IEnumerable<WebVillager> ListVillagers() => world.Villagers.Select(AsWebVillager);
+	public IEnumerable<WebVillager> ListVillagers() => world.Villagers.Select(v => v.AsWebVillager());
 
 	[HttpGet("{id:guid}")]
-	public WebVillager GetVillager(Guid id) => AsWebVillager(world.Villagers.First(v => v.Id == id));
-
-	private static WebVillager AsWebVillager(Villager villager) {
-		return new WebVillager {
-			Id = villager.Id,
-			Name = villager.Name,
-			Gender = villager.Gender switch {
-				Gender.Male => WebGender.Male,
-				Gender.Female => WebGender.Female,
-				_ => throw new Exception($"No matching value found for Gender.{villager.Gender}")
-			},
-			Summary = villager.Summary,
-			Age = villager.Age
-		};
-	}
+	public WebVillager GetVillager(Guid id) => world.Villagers.First(v => v.Id == id).AsWebVillager();
 }

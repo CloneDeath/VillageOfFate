@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -9,6 +8,7 @@ using CommandLine;
 using GptApi;
 using VillageOfFate.Activities;
 using VillageOfFate.VillagerActions;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate;
 
@@ -149,7 +149,7 @@ public static class Program {
 
 	public static World GetInitialWorld() {
 		var world = new World();
-		var sector = world.CreateSector(new Point(0, 0));
+		var sector = world.CreateSector(new Position(0, 0));
 		sector.Description =
 			"A dense, lush forest filled with towering trees, diverse wildlife, and the sounds of nature. " +
 			"It's easy to lose one's way in this vast sea of green.";
@@ -184,31 +184,31 @@ public static class Program {
 		var gamz = new Villager {
 			Name = "Gamz", Age = 26, Gender = Gender.Male,
 			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
-			SectorLocation = new Point(0, 0),
+			SectorLocation = new Position(0, 0),
 			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
 		};
 		var chem = new Villager {
 			Name = "Chemm", Age = 19, Gender = Gender.Female,
 			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
-			SectorLocation = new Point(0, 0),
+			SectorLocation = new Position(0, 0),
 			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
 		};
 		var carol = new Villager {
 			Name = "Carol", Age = 7, Gender = Gender.Female,
 			Summary = "A cheerful child, although quite mature for her age.",
-			SectorLocation = new Point(0, 0),
+			SectorLocation = new Position(0, 0),
 			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
 		};
 		var lyra = new Villager {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
 			Summary = "A younger wife than her husband, but capable of keeping him in check.",
-			SectorLocation = new Point(0, 0),
+			SectorLocation = new Position(0, 0),
 			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
 		};
 		var lodis = new Villager {
 			Name = "Lodis", Age = 33, Gender = Gender.Male,
 			Summary = "The father of a family of three that ran a general store in the village.",
-			SectorLocation = new Point(0, 0),
+			SectorLocation = new Position(0, 0),
 			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
 		};
 

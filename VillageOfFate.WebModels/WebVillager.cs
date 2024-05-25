@@ -7,5 +7,7 @@ public class WebVillager {
 	public string Name { get; set; } = "Villager";
 	public int Age { get; set; } = 18;
 	public string Summary { get; set; } = string.Empty;
-	public WebGender Gender { get; set; } = WebGender.Male;
+	public Gender Gender { get; set; } = Gender.Male;
+	public WebVillagerEmotions Emotions { get; set; } = new();
+	public Position SectorLocation { get; set; }
 }
