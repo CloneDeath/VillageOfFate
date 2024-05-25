@@ -18,15 +18,24 @@
     <p>Gender: @villager.Gender</p>
     <p>Age: @villager.Age</p>
     <p>Summary: @villager.Summary</p>
+    <p>Hunger: @villager.Hunger</p>
     <p>Position: @villager.SectorLocation</p>
-    <p>
-        <h3>Emotions</h3>
+    <h3>Emotions</h3>
+    <ul>
+        @foreach (var emotionalState in villager.Emotions.GetEmotions()) {
+            <li>@emotionalState.Emotion - @emotionalState.Intensity%</li>
+        }
+    </ul>
+    <h3>Inventory</h3>
+    @if (villager.Inventory.Any()) {
         <ul>
-            @foreach (var emotionalState in villager.Emotions.GetEmotions()) {
-                <li>@emotionalState.Emotion - @emotionalState.Intensity%</li>
+            @foreach (var item in villager.Inventory) {
+                <li>@item.Name (@item.Quantity)</li>
             }
         </ul>
-    </p>
+    } else {
+        <i>Empty</i>
+    }
 }
 
 @code {
@@ -43,4 +52,3 @@
     }
 
 }
-

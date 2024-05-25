@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VillageOfFate.WebModels;
 
 public class WebVillager {
-	public Guid Id { get; set; } = Guid.Empty;
-	public string Name { get; set; } = "Villager";
-	public int Age { get; set; } = 18;
-	public string Summary { get; set; } = string.Empty;
-	public Gender Gender { get; set; } = Gender.Male;
-	public WebVillagerEmotions Emotions { get; set; } = new();
-	public Position SectorLocation { get; set; }
+	public Guid Id { get; init; } = Guid.Empty;
+	public string Name { get; init; } = "Villager";
+	public int Age { get; init; } = 18;
+	public string Summary { get; init; } = string.Empty;
+	public Gender Gender { get; init; } = Gender.Male;
+	public WebVillagerEmotions Emotions { get; init; } = new();
+	public Position SectorLocation { get; init; }
+	public int Hunger { get; init; }
+	public List<Item> Inventory { get; init; } = [];
 }

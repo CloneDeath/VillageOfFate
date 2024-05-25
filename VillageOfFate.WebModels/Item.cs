@@ -1,6 +1,6 @@
 using System;
 
-namespace VillageOfFate;
+namespace VillageOfFate.WebModels;
 
 public class Item {
 	public Guid Id { get; } = Guid.NewGuid();
