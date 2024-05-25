@@ -18,6 +18,15 @@
     <p>Gender: @villager.Gender</p>
     <p>Age: @villager.Age</p>
     <p>Summary: @villager.Summary</p>
+    <p>Position: @villager.SectorLocation</p>
+    <p>
+        <h3>Emotions</h3>
+        <ul>
+            @foreach (var emotionalState in villager.Emotions.GetEmotions()) {
+                <li>@emotionalState.Emotion - @emotionalState.Intensity%</li>
+            }
+        </ul>
+    </p>
 }
 
 @code {
@@ -34,3 +43,4 @@
     }
 
 }
+

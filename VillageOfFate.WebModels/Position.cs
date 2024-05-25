@@ -10,6 +10,8 @@ public readonly struct Position(int x, int y) : IEquatable<Position> {
 
 	public static readonly Position Zero = new();
 
+	public override string ToString() => $"({X}, {Y})";
+
 	#region IEquatable<Position>
 	public bool Equals(Position other) => X == other.X && Y == other.Y;
 	public override bool Equals(object? obj) => obj is Position other && Equals(other);

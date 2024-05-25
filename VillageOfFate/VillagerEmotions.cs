@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate;
 
@@ -15,7 +16,7 @@ public class VillagerEmotions {
 				VillagerEmotion.Happiness => Happiness,
 				VillagerEmotion.Sadness => Sadness,
 				VillagerEmotion.Fear => Fear,
-				_ => throw new ArgumentOutOfRangeException()
+				_ => throw new ArgumentOutOfRangeException(nameof(emotion))
 			};
 		}
 		set {
@@ -30,7 +31,7 @@ public class VillagerEmotions {
 					Fear = value;
 					break;
 				default:
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentOutOfRangeException(nameof(emotion));
 			}
 		}
 	}
@@ -44,11 +45,3 @@ public class VillagerEmotions {
 	public IEnumerable<EmotionalState> GetEmotions() =>
 		Enum.GetValues<VillagerEmotion>().Select(e => new EmotionalState(e, this[e]));
 }
-
-public enum VillagerEmotion {
-	Happiness,
-	Sadness,
-	Fear
-}
-
-public record EmotionalState(VillagerEmotion Emotion, int Intensity);
