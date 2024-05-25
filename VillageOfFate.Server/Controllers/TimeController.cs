@@ -5,7 +5,7 @@ namespace VillageOfFate.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TimeController : ControllerBase {
+public class TimeController(World world) : ControllerBase {
 	[HttpGet]
-	public DateTime GetCurrentTime() => DateTime.Now;
+	public DateTime GetCurrentTime() => world.CurrenTime;
 }

@@ -1,0 +1,37 @@
+@page "/world"
+@using VillageOfFate.Client.Services.Api
+@using VillageOfFate.WebModels
+@inject WorldApi WorldService
+
+<PageTitle>World</PageTitle>
+
+<h1>World</h1>
+
+@if (world == null) {
+    <p>
+        <em>Loading...</em>
+    </p>
+} else {
+    <p>Time: @world.CurrenTime</p>
+    <h3>Villagers</h3>
+    <ul>
+        @foreach (var villager in world.Villagers) {
+            <li>@villager.Name</li>
+        }
+    </ul>
+    <h3>Sectors</h3>
+    <ul>
+        @foreach (var sector in world.Sectors) {
+            <li>@sector.Position: @sector.Description</li>
+        }
+    </ul>
+}
+
+@code {
+    public WebWorld? world { get; private set; }
+
+    protected override async Task OnInitializedAsync() {
+        world = await WorldService.GetWorld();
+    }
+
+}

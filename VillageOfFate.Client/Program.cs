@@ -18,6 +18,7 @@ public class Program {
 						 throw new Exception("ApiBaseUri is not set in appsettings.json");
 		builder.Services.AddSingleton(new TimeApi(apiBaseUri));
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
+		builder.Services.AddSingleton(new WorldApi(apiBaseUri));
 
 		builder.Services.AddOidcAuthentication(options => {
 			// Configure your authentication provider options here.

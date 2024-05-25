@@ -6,19 +6,19 @@ using VillageOfFate.WebModels;
 namespace VillageOfFate;
 
 public class World {
-	private readonly List<Sector> _sectors = [];
 	private readonly List<Villager> _villagers = [];
+	public readonly List<Sector> Sectors = [];
 	public DateTime CurrenTime { get; set; } = DateTime.Now;
 	public IEnumerable<Villager> Villagers => _villagers;
 
 	public Sector CreateSector(Position position) {
 		var sector = new Sector(position);
-		_sectors.Add(sector);
+		Sectors.Add(sector);
 		return sector;
 	}
 
 	public Sector GetSector(Position position) {
-		return _sectors.First(s => s.Position == position);
+		return Sectors.First(s => s.Position == position);
 	}
 
 	public void AddVillager(Villager villager) {

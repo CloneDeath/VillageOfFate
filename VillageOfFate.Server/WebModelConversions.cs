@@ -36,4 +36,11 @@ public static class WebModelConversions {
 			StartTime = activity.StartTime,
 			EndTime = activity.EndTime
 		};
+
+	public static WebWorld AsWebWorld(this World world) =>
+		new() {
+			Sectors = world.Sectors,
+			CurrenTime = world.CurrenTime,
+			Villagers = world.Villagers.Select(v => v.AsWebVillager())
+		};
 }

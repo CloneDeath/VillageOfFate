@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using VillageOfFate.WebModels;
 
-namespace VillageOfFate;
+namespace VillageOfFate.WebModels;
 
 public class Sector(Position position) {
 	public Position Position { get; } = position;
