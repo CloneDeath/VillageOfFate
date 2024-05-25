@@ -36,6 +36,14 @@
     } else {
         <i>Empty</i>
     }
+
+    <h3>Activities</h3>
+    <h4>@villager.CurrentActivity.Description (@villager.CurrentActivity.Duration)</h4>
+    <ul>
+        @foreach (var activity in villager.ActivityQueue) {
+            <li>@activity.Description (@villager.CurrentActivity.Duration)</li>
+        }
+    </ul>
 }
 
 @code {

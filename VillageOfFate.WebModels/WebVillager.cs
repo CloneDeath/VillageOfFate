@@ -12,5 +12,7 @@ public class WebVillager {
 	public WebVillagerEmotions Emotions { get; init; } = new();
 	public Position SectorLocation { get; init; }
 	public int Hunger { get; init; }
+	public required WebActivity CurrentActivity { get; init; }
+	public Stack<WebActivity> ActivityQueue { get; init; } = new();
 	public List<Item> Inventory { get; init; } = [];
 }

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using VillageOfFate.Activities;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server;
@@ -13,7 +16,9 @@ public static class WebModelConversions {
 			Emotions = AsWebVillagerEmotions(villager.Emotions),
 			SectorLocation = villager.SectorLocation,
 			Hunger = villager.Hunger,
-			Inventory = villager.Inventory
+			Inventory = villager.Inventory,
+			CurrentActivity = villager.CurrentActivity.AsWebActivity(),
+			ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity()))
 		};
 
 	public static WebVillagerEmotions AsWebVillagerEmotions(this VillagerEmotions emotions) =>
@@ -21,5 +26,14 @@ public static class WebModelConversions {
 			Happiness = emotions.Happiness,
 			Sadness = emotions.Sadness,
 			Fear = emotions.Fear
+		};
+
+	public static WebActivity AsWebActivity(this Activity activity) =>
+		new() {
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime
 		};
 }
