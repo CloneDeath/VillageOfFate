@@ -30,7 +30,7 @@
     @if (villager.Inventory.Any()) {
         <ul>
             @foreach (var item in villager.Inventory) {
-                <li>@item.Name (@item.Quantity)</li>
+                <li>@item.GetSummary()</li>
             }
         </ul>
     } else {
