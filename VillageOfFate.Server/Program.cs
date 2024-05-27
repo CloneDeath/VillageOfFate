@@ -1,6 +1,11 @@
+using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VillageOfFate.DAL;
+using VillageOfFate.Server.Databases;
+using VillageOfFate.Server.Settings;
 
 namespace VillageOfFate.Server;
 
@@ -18,6 +23,14 @@ public class Program {
 					 .AllowAnyHeader()
 					 .AllowAnyMethod());
 		});
+
+		var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+		builder.Services.Configure<AppSettings>(appSettingsSection);
+		var appSettings = appSettingsSection.Get<AppSettings>()
+						  ?? throw new NullReferenceException("AppSettings object is null");
+		var dbDetails = DatabaseFactory.GetHandlerFor(appSettings.Database);
+		dbDetails.RunMigration();
+		builder.Services.AddDbContext<DataContext>(dbDetails.BuildContext);
 
 		var world = GenerateWorld();
 		builder.Services.AddSingleton(world);

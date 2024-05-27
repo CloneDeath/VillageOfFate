@@ -11,8 +11,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\VillageOfFate.DAL\VillageOfFate.DAL.csproj"/>
         <ProjectReference Include="..\VillageOfFate.WebModels\VillageOfFate.WebModels.csproj"/>
         <ProjectReference Include="..\VillageOfFate\VillageOfFate.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Microsoft.EntityFrameworkCore">
+            <HintPath>..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\9.0.0-preview.4.24267.1\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>
