@@ -1,11 +1,17 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using VillageOfFate.Services;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WorldController(World world) : ControllerBase {
+public class WorldController(World world, TimeService time) : ControllerBase {
 	[HttpGet]
-	public WebWorld GetWorld() => world.AsWebWorld();
+	public async Task<WebWorld> GetWorld() {
+		var result = world.AsWebWorld();
+		result.CurrenTime = await time.GetTime();
+		return result;
+	}
 }

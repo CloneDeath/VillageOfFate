@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using VillageOfFate.DAL;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Settings;
+using VillageOfFate.Services;
 
 namespace VillageOfFate.Server;
 
@@ -34,6 +35,7 @@ public class Program {
 
 		var world = GenerateWorld();
 		builder.Services.AddSingleton(world);
+		builder.Services.AddScoped<TimeService>();
 
 		var app = builder.Build();
 

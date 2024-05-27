@@ -7,19 +7,16 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.4.24267.1"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\VillageOfFate.DAL\VillageOfFate.DAL.csproj"/>
+        <ProjectReference Include="..\VillageOfFate.Services\VillageOfFate.Services.csproj"/>
         <ProjectReference Include="..\VillageOfFate.WebModels\VillageOfFate.WebModels.csproj"/>
         <ProjectReference Include="..\VillageOfFate\VillageOfFate.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Reference Include="Microsoft.EntityFrameworkCore">
-            <HintPath>..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\9.0.0-preview.4.24267.1\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-        </Reference>
-    </ItemGroup>
 
 </Project>
