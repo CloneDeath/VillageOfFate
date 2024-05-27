@@ -8,11 +8,11 @@ namespace SouthernCrm.Dal.Migrations {
 	public class InitialCreate : Migration {
 		public override void Up() {
 			Create.Table("Time")
-				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey().Identity()
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Now").AsDateTime().NotNullable();
 
 			Create.Table("Villagers")
-				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey().Identity()
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString().NotNullable()
 				  .WithColumn("Age").AsInt32().NotNullable()
 				  .WithColumn("Summary").AsInt32().NotNullable()
@@ -20,14 +20,14 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Hunger").AsInt32().NotNullable();
 
 			Create.Table("Genders")
-				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
+				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString().NotNullable();
-			Insert.IntoTable("Gender")
+			Insert.IntoTable("Genders")
 				  .Row(new { Id = (int)Gender.Male, Name = "Male" })
 				  .Row(new { Id = (int)Gender.Female, Name = "Female" });
 
 			Create.Table("Items")
-				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey().Identity()
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString().NotNullable()
 				  .WithColumn("Description").AsString().NotNullable()
 				  .WithColumn("Quantity").AsInt32().NotNullable()
@@ -35,7 +35,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("HungerRestored").AsInt32().NotNullable();
 
 			Create.Table("VillagerItems")
-				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey().Identity()
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
 				  .WithColumn("ItemId").AsGuid().NotNullable().ForeignKey("Items", "Id");
 			Create.UniqueConstraint()
