@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentMigrator" Version="5.2.0"/>
+        <PackageReference Include="FluentMigrator.Runner" Version="5.2.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.4.24267.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0-preview.4.24267.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.4.24267.1"/>
+        <PackageReference Include="System.Data.SQLite" Version="1.0.118"/>
+    </ItemGroup>
+
+</Project>
