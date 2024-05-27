@@ -19,6 +19,10 @@ main {
     align-items: center;
 }
 
+.top-row .left {
+    flex-grow: 1;
+}
+
 .top-row ::deep a, .top-row ::deep .btn-link {
     white-space: nowrap;
     margin-left: 1.5rem;
