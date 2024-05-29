@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using GptApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +13,7 @@ using VillageOfFate.Services.DALServices;
 namespace VillageOfFate.Server;
 
 public class Program {
-	public static void Main(string[] args) {
+	public static async Task Main(string[] args) {
 		var builder = WebApplication.CreateBuilder(args);
 
 		builder.Services.AddControllers();
@@ -33,11 +35,19 @@ public class Program {
 		dbDetails.RunMigration();
 		builder.Services.AddDbContext<DataContext>(dbDetails.BuildContext);
 
-		var world = GenerateWorld();
-		builder.Services.AddSingleton(world);
+		builder.Services.AddSingleton(GenerateWorld());
 		builder.Services.AddScoped<TimeService>();
+		builder.Services.AddScoped<SectorService>();
+		builder.Services.AddScoped<VillagerService>();
+		builder.Services.AddScoped<ItemService>();
+		builder.Services.AddSingleton<RandomProvider>();
+		builder.Services.AddSingleton(CreateChatGptApiService());
+		builder.Services.AddSingleton<WorldInitializer>();
 
 		var app = builder.Build();
+		var initializer = app.Services.GetService<WorldInitializer>()
+						  ?? throw new NullReferenceException("Could not get the WorldInitializer");
+		await initializer.PopulateWorldAsync();
 
 		if (app.Environment.IsDevelopment()) {
 			app.UseSwagger();
@@ -47,7 +57,15 @@ public class Program {
 		app.UseHttpsRedirection();
 		app.UseCors("AllowMyOrigin");
 		app.MapDefaultControllerRoute();
-		app.Run();
+		await app.RunAsync();
+	}
+
+	private static ChatGptApi CreateChatGptApiService() {
+		var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
+					 ?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
+		return new ChatGptApi(apiKey) {
+			Model = GptModel.Gpt_4_Omni
+		};
 	}
 
 	private static World GenerateWorld() {

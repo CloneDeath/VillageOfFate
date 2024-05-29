@@ -8,7 +8,6 @@ using CommandLine;
 using GptApi;
 using VillageOfFate.Activities;
 using VillageOfFate.VillagerActions;
-using VillageOfFate.WebModels;
 
 namespace VillageOfFate;
 
@@ -17,16 +16,7 @@ public static class Program {
 		var parser = new Parser(with => with.HelpWriter = Console.Error);
 		var result = parser.ParseArguments<ProgramOptions>(args);
 
-		var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
-					 ?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
-
-		var chatGptApi = new ChatGptApi(apiKey) {
-			Model = GptModel.Gpt_4_Omni
-		};
-
-		var random = new RandomProvider();
-		var world = GetInitialWorld();
-		var villagers = GetInitialVillagers(world, random);
+		// Moving to Server...
 
 		var logger = new VillageLogger(result.Value.LogDirectory ?? Directory.GetCurrentDirectory());
 		List<IVillagerAction> actions = [
@@ -145,115 +135,5 @@ public static class Program {
 
 	private static Villager GetVillagerWithTheShortestCompleteTime(Villager[] villagers) {
 		return villagers.OrderBy(v => v.CurrentActivity.StartTime + v.CurrentActivity.Duration).First();
-	}
-
-	public static World GetInitialWorld() {
-		var world = new World();
-		var sector = world.CreateSector(new Position(0, 0));
-		sector.Description =
-			"A dense, lush forest filled with towering trees, diverse wildlife, and the sounds of nature. " +
-			"It's easy to lose one's way in this vast sea of green.";
-
-		sector.Items.Add(new Item {
-			Name = "Ration",
-			Description = "A small bag of dried fruit and nuts.",
-			Quantity = 3, Edible = true, HungerRestored = 2
-		});
-		sector.Items.AddRange(new List<Item> {
-			new() {
-				Name = "Apple",
-				Description = "A juicy, red apple. Perfect for a quick snack.",
-				Quantity = 1, Edible = true, HungerRestored = 5
-			},
-			new() {
-				Name = "Mushroom",
-				Description = "A common forest mushroom. Make sure it's not poisonous before eating!",
-				Quantity = 1, Edible = true, HungerRestored = 3
-			},
-			new() {
-				Name = "Berries",
-				Description = "A handful of wild berries. Sweet and nutritious.",
-				Quantity = 1, Edible = true, HungerRestored = 4
-			}
-		});
-		return world;
-	}
-
-	public static Villager[] GetInitialVillagers(World world, RandomProvider random) {
-		var maxIdle = TimeSpan.FromSeconds(5);
-		var gamz = new Villager {
-			Name = "Gamz", Age = 26, Gender = Gender.Male,
-			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
-			SectorLocation = new Position(0, 0),
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
-		};
-		var chem = new Villager {
-			Name = "Chemm", Age = 19, Gender = Gender.Female,
-			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
-			SectorLocation = new Position(0, 0),
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
-		};
-		var carol = new Villager {
-			Name = "Carol", Age = 7, Gender = Gender.Female,
-			Summary = "A cheerful child, although quite mature for her age.",
-			SectorLocation = new Position(0, 0),
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
-		};
-		var lyra = new Villager {
-			Name = "Lyra", Age = 30, Gender = Gender.Female,
-			Summary = "A younger wife than her husband, but capable of keeping him in check.",
-			SectorLocation = new Position(0, 0),
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
-		};
-		var lodis = new Villager {
-			Name = "Lodis", Age = 33, Gender = Gender.Male,
-			Summary = "The father of a family of three that ran a general store in the village.",
-			SectorLocation = new Position(0, 0),
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
-		};
-
-		gamz.GiveItem(new Item {
-			Name = "Sword",
-			Description = "A well-crafted sword with a leather-wrapped hilt.",
-			Quantity = 1
-		});
-		gamz.IncreaseHunger(6);
-		gamz.AddRelationship(chem, "Younger Sister");
-		gamz.AddRelationship(carol, "Child of Neighbors");
-		gamz.AddRelationship(lyra, "Neighbor");
-		gamz.AddRelationship(lodis, "Neighbor");
-
-		chem.IncreaseHunger(5);
-		chem.AddRelationship(gamz, "Older Brother");
-		chem.AddRelationship(carol, "Friend");
-		chem.AddRelationship(lyra, "Neighbor");
-		chem.AddRelationship(lodis, "Neighbor");
-
-		carol.IncreaseHunger(8);
-		carol.AddRelationship(gamz, "Neighbor");
-		carol.AddRelationship(chem, "Friend");
-		carol.AddRelationship(lyra, "Mom");
-		carol.AddRelationship(lodis, "Dad");
-
-		lyra.IncreaseHunger(4);
-		lyra.AddRelationship(gamz, "Neighbor");
-		lyra.AddRelationship(chem, "Neighbor");
-		lyra.AddRelationship(carol, "Daughter");
-		lyra.AddRelationship(lodis, "Husband");
-
-		lodis.IncreaseHunger(5);
-		lodis.AddRelationship(gamz, "Neighbor");
-		lodis.AddRelationship(chem, "Neighbor");
-		lodis.AddRelationship(carol, "Daughter");
-		lodis.AddRelationship(lyra, "Wife");
-
-		var villagers = new[] { gamz, chem, carol, lyra, lodis };
-		foreach (var villager in villagers) {
-			villager.AddMemory($"You and {villagers.Length - 1} other villagers are lost in the woods, "
-							   + "having just escaped a goblin attack that destroyed your home and entire village.");
-			world.AddVillager(villager);
-		}
-
-		return villagers;
 	}
 }

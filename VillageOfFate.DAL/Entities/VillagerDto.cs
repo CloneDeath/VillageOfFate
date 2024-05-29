@@ -1,4 +1,5 @@
 using System;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate.DAL.Entities;
 
@@ -9,4 +10,5 @@ public class VillagerDto {
 	public string Summary { get; set; } = string.Empty;
 	public Gender Gender { get; set; }
 	public int Hunger { get; set; }
+	public Guid SectorId { get; set; }
 }

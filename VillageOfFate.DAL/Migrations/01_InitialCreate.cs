@@ -2,6 +2,7 @@ using System;
 using FluentMigrator;
 using FluentMigrator.SqlServer;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.WebModels;
 
 namespace SouthernCrm.Dal.Migrations {
 	[Migration(2024_05_27_06_15_00)]
@@ -28,7 +29,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Age").AsInt32().NotNullable()
 				  .WithColumn("Summary").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Gender").AsInt32().NotNullable().ForeignKey("Genders", "Id")
-				  .WithColumn("Hunger").AsInt32().NotNullable();
+				  .WithColumn("Hunger").AsInt32().NotNullable()
+				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id");
 
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()

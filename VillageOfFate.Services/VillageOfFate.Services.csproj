@@ -10,4 +10,8 @@
         <ProjectReference Include="..\VillageOfFate.DAL\VillageOfFate.DAL.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="AsyncUtilities" Version="1.1.1"/>
+    </ItemGroup>
+
 </Project>

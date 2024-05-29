@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-
-namespace VillageOfFate;
+namespace VillageOfFate.Services.DALServices;
 
 public class RandomProvider {
 	private readonly Random _random = new();
