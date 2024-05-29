@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
-namespace VillageOfFate.Services;
+namespace VillageOfFate.Services.DALServices;
 
 public class TimeService(DataContext dataContext) {
 	public async Task<DateTime> GetTime() {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using VillageOfFate.DAL;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Settings;
-using VillageOfFate.Services;
+using VillageOfFate.Services.DALServices;
 
 namespace VillageOfFate.Server;
 

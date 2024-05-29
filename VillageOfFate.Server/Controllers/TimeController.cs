@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using VillageOfFate.Services;
+using VillageOfFate.Services.DALServices;
 
 namespace VillageOfFate.Server.Controllers;
 
