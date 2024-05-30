@@ -69,6 +69,9 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
 				  .WithColumn("RelationId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
 				  .WithColumn("Summary").AsString(MaxDescriptionLength).NotNullable();
+			Create.UniqueConstraint()
+				  .OnTable("Relationships")
+				  .Columns("VillagerId", "RelationId");
 		}
 
 		public override void Down() {

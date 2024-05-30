@@ -118,13 +118,9 @@ public class WorldInitializer(SectorService sectors, VillagerService villagers, 
 		await relations.AddRelationAsync(lodis, carol, "Daughter");
 		await relations.AddRelationAsync(lodis, lyra, "Wife");
 
-		//var villagers = new[] { gamz, chem, carol, lyra, lodis };
-		foreach (var villager in villagers) {
+		foreach (var villager in new[] { gamz, chem, carol, lyra, lodis }) {
 			villager.AddMemory($"You and {villagers.Length - 1} other villagers are lost in the woods, "
 							   + "having just escaped a goblin attack that destroyed your home and entire village.");
-			world.AddVillager(villager);
 		}
-
-		return villagers;
 	}
 }
