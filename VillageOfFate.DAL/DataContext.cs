@@ -25,5 +25,14 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 		// 			.WithOne(e => e.Blog)
 		// 			.HasForeignKey(e => e.BlogId)
 		// 			.HasPrincipalKey(e => e.Id);
+
+		// For Activities
+		// https://learn.microsoft.com/en-us/ef/core/modeling/inheritance
+		// modelBuilder.Entity<Blog>()
+		// 			.HasDiscriminator<string>("blog_type")
+		// 			.HasValue<Blog>("blog_base")
+		// 			.HasValue<RssBlog>("blog_rss");
+		// modelBuilder.Entity<Blog>()
+		// .HasDiscriminator(b => b.BlogType);
 	}
 }
