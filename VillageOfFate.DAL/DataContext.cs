@@ -11,6 +11,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
 	public DbSet<VillagerDto> Villagers { get; set; } = null!;
 	public DbSet<VillagerItemDto> VillagerItems { get; set; } = null!;
+	public DbSet<RelationshipDto> Relationships { get; set; } = null!;
 
 	public DbSet<SectorDto> Sectors { get; set; } = null!;
 	public DbSet<SectorItemDto> SectorItems { get; set; } = null!;
@@ -25,6 +26,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
 		modelBuilder.Entity<VillagerDto>().Property(e => e.Name).HasMaxLength(InitialCreate.MaxNameLength);
 		modelBuilder.Entity<VillagerDto>().Property(e => e.Summary).HasMaxLength(InitialCreate.MaxDescriptionLength);
+		modelBuilder.Entity<RelationshipDto>().Property(e => e.Summary).HasMaxLength(InitialCreate.MaxDescriptionLength);
 
 		modelBuilder.Entity<SectorDto>().Property(e => e.Description).HasMaxLength(InitialCreate.MaxDescriptionLength);
 	}

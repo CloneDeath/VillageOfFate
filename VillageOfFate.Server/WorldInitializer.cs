@@ -8,7 +8,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server;
 
-public class WorldInitializer(SectorService sectors, VillagerService villagers) {
+public class WorldInitializer(SectorService sectors, VillagerService villagers, RelationshipService relations) {
 	public async Task PopulateWorldAsync() {
 		if (await sectors.SectorExistsAsync(Position.Zero)) {
 			return;
@@ -93,30 +93,30 @@ public class WorldInitializer(SectorService sectors, VillagerService villagers) 
 			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
 		});
 
-		gamz.AddRelationship(chem, "Younger Sister");
-		gamz.AddRelationship(carol, "Child of Neighbors");
-		gamz.AddRelationship(lyra, "Neighbor");
-		gamz.AddRelationship(lodis, "Neighbor");
+		await relations.AddRelationAsync(gamz, chem, "Younger Sister");
+		await relations.AddRelationAsync(gamz, carol, "Child of Neighbors");
+		await relations.AddRelationAsync(gamz, lyra, "Neighbor");
+		await relations.AddRelationAsync(gamz, lodis, "Neighbor");
 
-		chem.AddRelationship(gamz, "Older Brother");
-		chem.AddRelationship(carol, "Friend");
-		chem.AddRelationship(lyra, "Neighbor");
-		chem.AddRelationship(lodis, "Neighbor");
+		await relations.AddRelationAsync(chem, gamz, "Older Brother");
+		await relations.AddRelationAsync(chem, carol, "Friend");
+		await relations.AddRelationAsync(chem, lyra, "Neighbor");
+		await relations.AddRelationAsync(chem, lodis, "Neighbor");
 
-		carol.AddRelationship(gamz, "Neighbor");
-		carol.AddRelationship(chem, "Friend");
-		carol.AddRelationship(lyra, "Mom");
-		carol.AddRelationship(lodis, "Dad");
+		await relations.AddRelationAsync(carol, gamz, "Neighbor");
+		await relations.AddRelationAsync(carol, chem, "Friend");
+		await relations.AddRelationAsync(carol, lyra, "Mom");
+		await relations.AddRelationAsync(carol, lodis, "Dad");
 
-		lyra.AddRelationship(gamz, "Neighbor");
-		lyra.AddRelationship(chem, "Neighbor");
-		lyra.AddRelationship(carol, "Daughter");
-		lyra.AddRelationship(lodis, "Husband");
+		await relations.AddRelationAsync(lyra, gamz, "Neighbor");
+		await relations.AddRelationAsync(lyra, chem, "Neighbor");
+		await relations.AddRelationAsync(lyra, carol, "Daughter");
+		await relations.AddRelationAsync(lyra, lodis, "Husband");
 
-		lodis.AddRelationship(gamz, "Neighbor");
-		lodis.AddRelationship(chem, "Neighbor");
-		lodis.AddRelationship(carol, "Daughter");
-		lodis.AddRelationship(lyra, "Wife");
+		await relations.AddRelationAsync(lodis, gamz, "Neighbor");
+		await relations.AddRelationAsync(lodis, chem, "Neighbor");
+		await relations.AddRelationAsync(lodis, carol, "Daughter");
+		await relations.AddRelationAsync(lodis, lyra, "Wife");
 
 		//var villagers = new[] { gamz, chem, carol, lyra, lodis };
 		foreach (var villager in villagers) {

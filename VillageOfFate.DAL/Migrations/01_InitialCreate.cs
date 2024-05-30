@@ -63,6 +63,12 @@ namespace SouthernCrm.Dal.Migrations {
 			Create.UniqueConstraint()
 				  .OnTable("SectorItems")
 				  .Columns("SectorId", "ItemId");
+
+			Create.Table("Relationships")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("RelationId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("Summary").AsString(MaxDescriptionLength).NotNullable();
 		}
 
 		public override void Down() {
