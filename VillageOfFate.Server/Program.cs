@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using GptApi;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +36,6 @@ public class Program {
 		dbDetails.RunMigration();
 		builder.Services.AddDbContext<DataContext>(dbDetails.BuildContext);
 
-		builder.Services.AddSingleton(GenerateWorld());
 		builder.Services.AddScoped<TimeService>();
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
@@ -43,6 +43,7 @@ public class Program {
 		builder.Services.AddSingleton<RandomProvider>();
 		builder.Services.AddSingleton(CreateChatGptApiService());
 		builder.Services.AddSingleton<WorldInitializer>();
+		builder.Services.AddSingleton<WorldRunner>();
 
 		var app = builder.Build();
 		var initializer = app.Services.GetService<WorldInitializer>()
@@ -57,7 +58,16 @@ public class Program {
 		app.UseHttpsRedirection();
 		app.UseCors("AllowMyOrigin");
 		app.MapDefaultControllerRoute();
-		await app.RunAsync();
+
+		var runner = app.Services.GetService<WorldRunner>()
+					 ?? throw new NullReferenceException("Could not get the WorldRunner");
+
+		var cancellationTokenSource = new CancellationTokenSource();
+		var appTask = app.RunAsync(cancellationTokenSource.Token);
+		var runnerTask = runner.RunAsync(cancellationTokenSource.Token);
+
+		await Task.WhenAny(appTask, runnerTask);
+		await cancellationTokenSource.CancelAsync();
 	}
 
 	private static ChatGptApi CreateChatGptApiService() {
@@ -66,12 +76,5 @@ public class Program {
 		return new ChatGptApi(apiKey) {
 			Model = GptModel.Gpt_4_Omni
 		};
-	}
-
-	private static World GenerateWorld() {
-		var random = new RandomProvider();
-		var world = VillageOfFate.Program.GetInitialWorld();
-		VillageOfFate.Program.GetInitialVillagers(world, random);
-		return world;
 	}
 }

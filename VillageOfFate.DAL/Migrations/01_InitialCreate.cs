@@ -55,6 +55,11 @@ namespace SouthernCrm.Dal.Migrations {
 				  .OnTable("VillagerItems")
 				  .Columns("VillagerId", "ItemId");
 
+			Create.Table("VillagerMemories")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("Memory").AsString(MaxDescriptionLength).NotNullable();
+
 			Create.Table("Sectors")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.WebModels;
@@ -23,4 +24,6 @@ public class VillagerDto {
 
 	public Guid ActivityId { get; set; }
 	public ActivityDto Activity { get; set; } = null!;
+
+	public List<VillagerMemoryDto> Memories { get; set; } = [];
 }

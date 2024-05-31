@@ -11,7 +11,7 @@ public class WorldController(World world, TimeService time) : ControllerBase {
 	[HttpGet]
 	public async Task<WebWorld> GetWorld() {
 		var result = world.AsWebWorld();
-		result.CurrenTime = await time.GetTime();
+		result.CurrenTime = await time.GetTimeAsync();
 		return result;
 	}
 }

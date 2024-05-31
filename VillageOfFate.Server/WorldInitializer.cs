@@ -9,10 +9,12 @@ using VillageOfFate.WebModels;
 namespace VillageOfFate.Server;
 
 public class WorldInitializer(
+	TimeService time,
 	SectorService sectors,
 	VillagerService villagers,
 	RelationshipService relations,
 	VillagerItemService villagerItems,
+	VillagerMemoryService villagerMemories,
 	RandomProvider random
 ) {
 	public async Task PopulateWorldAsync() {
@@ -20,6 +22,7 @@ public class WorldInitializer(
 			return;
 		}
 
+		await time.GetTimeAsync();
 		var sector = await PopulateSector();
 		await PopulateVillagers(sector);
 	}
@@ -127,8 +130,9 @@ public class WorldInitializer(
 
 		var villagerDTOs = new[] { gamz, chem, carol, lyra, lodis };
 		foreach (var villager in villagerDTOs) {
-			villager.AddMemory($"You and {villagerDTOs.Length - 1} other villagers are lost in the woods, "
-							   + "having just escaped a goblin attack that destroyed your home and entire village.");
+			await villagerMemories.AddAsync(villager,
+				$"You and {villagerDTOs.Length - 1} other villagers are lost in the woods, "
+				+ "having just escaped a goblin attack that destroyed your home and entire village.");
 		}
 	}
 }

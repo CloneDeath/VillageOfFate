@@ -29,32 +29,6 @@ public static class Program {
 			new LookoutAction(logger)
 		];
 
-		var endTime = world.CurrenTime + TimeSpan.FromMinutes(2);
-		while (world.CurrenTime < endTime) {
-			var villager = GetVillagerWithTheShortestCompleteTime(villagers);
-			var waitTime = villager.CurrentActivity.EndTime - world.CurrenTime;
-			if (villager.CurrentActivity.EndTime > world.CurrenTime) {
-				// If the villager's current activity is not yet complete, wait until it is
-				Thread.Sleep(waitTime);
-				world.CurrenTime += waitTime;
-			}
-
-			var activityResult = villager.CurrentActivity.OnCompletion();
-			if (villager.ActivityQueue.TryPop(out var activity)) {
-				activity.StartTime = world.CurrenTime;
-				villager.CurrentActivity = activity;
-			} else {
-				await QueueActionsForVillager(villager, world, chatGptApi, actions, logger, villagers);
-				PushCurrentActivityIntoQueue(villager, world);
-				villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
-			}
-
-			if (activityResult.TriggerReactions.Any()) {
-				var selected = random.SelectOne(activityResult.TriggerReactions);
-				PushCurrentActivityIntoQueue(selected, world);
-				await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
-			}
-		}
 	}
 
 	private static void PushCurrentActivityIntoQueue(Villager villager, World world) {

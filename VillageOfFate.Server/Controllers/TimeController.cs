@@ -9,5 +9,5 @@ namespace VillageOfFate.Server.Controllers;
 [Route("[controller]")]
 public class TimeController(TimeService time) : ControllerBase {
 	[HttpGet]
-	public async Task<DateTime> GetCurrentTime() => await time.GetTime();
+	public async Task<DateTime> GetCurrentTime() => await time.GetTimeAsync();
 }
