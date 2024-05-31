@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using VillageOfFate.DAL.Entities;
 using VillageOfFate.Services.DALServices;
 
 namespace VillageOfFate.Server;
@@ -8,15 +9,15 @@ namespace VillageOfFate.Server;
 public class WorldRunner(TimeService time) {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
-	public async Task<DateTime> GetLastUpdateAsync() => await time.GetTimeAsync();
-	public async Task SetLastUpdateAsync(DateTime value) => await time.SetTimeAsync(value);
+	public async Task<DateTime> GetWorldTimeAsync() => await time.GetAsync(TimeLabel.World);
+	public async Task SetWorldTimeAsync(DateTime value) => await time.SetAsync(TimeLabel.World,  value);
 
 	public async Task RunAsync(CancellationToken cancellationToken) {
-		var endTime = await GetLastUpdateAsync() + TimeSpan.FromMinutes(2);
+		var endTime = await GetWorldTimeAsync() + TimeSpan.FromMinutes(2);
 
 		while (!cancellationToken.IsCancellationRequested) {
 			var now = DateTime.UtcNow;
-			var timeSinceLastUpdate = now - await GetLastUpdateAsync();
+			var timeSinceLastUpdate = now - await GetWorldTimeAsync();
 
 			if (now > endTime) {
 				await Task.Delay(Interval, cancellationToken);
@@ -24,7 +25,7 @@ public class WorldRunner(TimeService time) {
 
 			if (timeSinceLastUpdate >= Interval) {
 				SimulateWorld();
-				await SetLastUpdateAsync(now);
+				await SetWorldTimeAsync(now);
 			} else {
 				// Sleep until it's time for the next update
 				var sleepDuration = Interval - timeSinceLastUpdate;
