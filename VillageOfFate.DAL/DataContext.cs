@@ -18,7 +18,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
 		modelBuilder.Entity<Time>().Property(e => e.Now)
-					.HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+					.HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 
 		// modelBuilder.Entity<Blog>()
 		// 			.HasMany(e => e.Posts)
