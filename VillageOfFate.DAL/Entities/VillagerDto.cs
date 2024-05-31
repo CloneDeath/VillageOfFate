@@ -20,4 +20,7 @@ public class VillagerDto {
 
 	public Guid SectorId { get; set; }
 	public required SectorDto Sector { get; set; }
+
+	public Guid ActivityId { get; set; }
+	public ActivityDto Activity { get; set; } = null!;
 }

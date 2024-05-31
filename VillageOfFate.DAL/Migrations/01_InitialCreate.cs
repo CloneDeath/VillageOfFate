@@ -23,6 +23,13 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Edible").AsBoolean().NotNullable()
 				  .WithColumn("HungerRestored").AsInt32().NotNullable();
 
+			Create.Table("Activities")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
+				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
+				  .WithColumn("DurationTicks").AsInt64().NotNullable()
+				  .WithColumn("Interruptible").AsBoolean().NotNullable();
+
 			Create.Table("Villagers")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
@@ -30,7 +37,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Summary").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Gender").AsInt32().NotNullable().ForeignKey("Genders", "Id")
 				  .WithColumn("Hunger").AsInt32().NotNullable()
-				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id");
+				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
+				  .WithColumn("ActivityId").AsGuid().NotNullable().Unique().ForeignKey("Activities", "Id");
 
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()

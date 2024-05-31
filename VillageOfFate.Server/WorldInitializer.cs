@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using VillageOfFate.Activities;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
@@ -12,7 +12,9 @@ public class WorldInitializer(
 	SectorService sectors,
 	VillagerService villagers,
 	RelationshipService relations,
-	VillagerItemService villagerItems) {
+	VillagerItemService villagerItems,
+	RandomProvider random
+) {
 	public async Task PopulateWorldAsync() {
 		if (await sectors.SectorExistsAsync(Position.Zero)) {
 			return;
@@ -60,7 +62,7 @@ public class WorldInitializer(
 			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
 			Sector = sector,
 			Hunger = 6,
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
 		});
 		await villagerItems.AddAsync(gamz, new ItemDto {
 			Name = "Sword",
@@ -74,28 +76,28 @@ public class WorldInitializer(
 			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
 			Sector = sector,
 			Hunger = 5,
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
 		});
 		var carol = await villagers.CreateAsync(new VillagerDto {
 			Name = "Carol", Age = 7, Gender = Gender.Female,
 			Summary = "A cheerful child, although quite mature for her age.",
 			Sector = sector,
 			Hunger = 8,
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
 		});
 		var lyra = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
 			Summary = "A younger wife than her husband, but capable of keeping him in check.",
 			Sector = sector,
 			Hunger = 4,
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
 		});
 		var lodis = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lodis", Age = 33, Gender = Gender.Male,
 			Summary = "The father of a family of three that ran a general store in the village.",
 			Sector = sector,
 			Hunger = 5,
-			CurrentActivity = new IdleActivity(random.NextTimeSpan(maxIdle), world)
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
 		});
 
 		await relations.AddRelationAsync(gamz, chem, "Younger Sister");
@@ -123,8 +125,9 @@ public class WorldInitializer(
 		await relations.AddRelationAsync(lodis, carol, "Daughter");
 		await relations.AddRelationAsync(lodis, lyra, "Wife");
 
-		foreach (var villager in new[] { gamz, chem, carol, lyra, lodis }) {
-			villager.AddMemory($"You and {villagers.Length - 1} other villagers are lost in the woods, "
+		var villagerDTOs = new[] { gamz, chem, carol, lyra, lodis };
+		foreach (var villager in villagerDTOs) {
+			villager.AddMemory($"You and {villagerDTOs.Length - 1} other villagers are lost in the woods, "
 							   + "having just escaped a goblin attack that destroyed your home and entire village.");
 		}
 	}
