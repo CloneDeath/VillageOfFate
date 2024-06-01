@@ -41,14 +41,18 @@ public class Program {
 		dbDetails.RunMigration();
 		builder.Services.AddDbContext<DataContext>(dbDetails.BuildContext);
 
-		var logger = new VillageLogger(result.Value.LogDirectory ?? Directory.GetCurrentDirectory());
-		builder.Services.AddSingleton(logger);
+		var openApiKey = builder.Configuration["OPENAI_API_KEY"]
+						 ?? throw new NullReferenceException("The Secret Configuration 'OPENAI_API_KEY' is not set.");
+		builder.Services.AddSingleton(new ChatGptApi(openApiKey) {
+			Model = GptModel.Gpt_4_Omni
+		});
+
+		builder.Services.AddSingleton(new VillageLogger(result.Value.LogDirectory ?? Directory.GetCurrentDirectory()));
 		builder.Services.AddScoped<TimeService>();
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
 		builder.Services.AddScoped<ItemService>();
 		builder.Services.AddSingleton<RandomProvider>();
-		builder.Services.AddSingleton(CreateChatGptApiService());
 		builder.Services.AddSingleton<WorldInitializer>();
 		builder.Services.AddSingleton<WorldRunner>();
 		builder.Services.AddSingleton<ActivityFactory>();
@@ -76,13 +80,5 @@ public class Program {
 
 		await Task.WhenAny(appTask, runnerTask);
 		await cancellationTokenSource.CancelAsync();
-	}
-
-	private static ChatGptApi CreateChatGptApiService() {
-		var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
-					 ?? throw new InvalidOperationException("The environment variable 'OPENAI_API_KEY' is not set.");
-		return new ChatGptApi(apiKey) {
-			Model = GptModel.Gpt_4_Omni
-		};
 	}
 }

@@ -9,6 +9,18 @@
         </option>
         <option name="executable">
           <ExecutableSnapshot>
+            <option name="id" value="buildSolution:c8ebf2" />
+          </ExecutableSnapshot>
+        </option>
+      </ExecutableRowSnapshot>
+      <ExecutableRowSnapshot>
+        <option name="condition">
+          <ConditionSnapshot>
+            <option name="type" value="afterPreviousFinished" />
+          </ConditionSnapshot>
+        </option>
+        <option name="executable">
+          <ExecutableSnapshot>
             <option name="id" value="runConfig:.NET Launch Settings Profile.VillageOfFate.Server: https" />
           </ExecutableSnapshot>
         </option>
