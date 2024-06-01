@@ -14,5 +14,5 @@ public class WebVillager {
 	public int Hunger { get; init; }
 	public required WebActivity CurrentActivity { get; init; }
 	public Stack<WebActivity> ActivityQueue { get; init; } = new();
-	public List<Item> Inventory { get; init; } = [];
+	public List<WebItem> Inventory { get; init; } = [];
 }

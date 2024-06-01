@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.WebModels;
@@ -13,4 +14,6 @@ public class SectorDto {
 
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Description { get; set; } = string.Empty;
+
+	public List<ItemDto> Items { get; set; } = [];
 }

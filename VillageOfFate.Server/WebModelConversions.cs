@@ -1,26 +1,34 @@
-using System.Collections.Generic;
 using System.Linq;
+using VillageOfFate.DAL.Entities;
 using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server;
 
 public static class WebModelConversions {
-	public static WebVillager AsWebVillager(this Villager villager) =>
+	public static WebVillager AsWebVillager(this VillagerDto villager) =>
 		new() {
 			Id = villager.Id,
 			Name = villager.Name,
 			Gender = villager.Gender,
 			Summary = villager.Summary,
 			Age = villager.Age,
-			Emotions = AsWebVillagerEmotions(villager.Emotions),
-			SectorLocation = villager.SectorLocation,
+			//Emotions = AsWebVillagerEmotions(villager.Emotions),
+			SectorLocation = new Position(villager.Sector.X, villager.Sector.Y),
 			Hunger = villager.Hunger,
-			Inventory = villager.Inventory,
-			CurrentActivity = villager.CurrentActivity.AsWebActivity(),
-			ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity()))
+			Inventory = villager.Items.Select(AsWebItem).ToList(),
+			CurrentActivity = villager.Activity.AsWebActivity()
+			//ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity()))
 		};
+
+	public static WebItem AsWebItem(this ItemDto item) => new() {
+		Id = item.Id,
+		Name = item.Name,
+		Description = item.Description,
+		Edible = item.Edible,
+		HungerRestored = item.HungerRestored,
+		Quantity = item.Quantity
+	};
 
 	public static WebVillagerEmotions AsWebVillagerEmotions(this VillagerEmotions emotions) =>
 		new() {
@@ -29,7 +37,7 @@ public static class WebModelConversions {
 			Fear = emotions.Fear
 		};
 
-	public static WebActivity AsWebActivity(this Activity activity) =>
+	public static WebActivity AsWebActivity(this ActivityDto activity) =>
 		new() {
 			Description = activity.Description,
 			Interruptible = activity.Interruptible,
@@ -38,10 +46,9 @@ public static class WebModelConversions {
 			EndTime = activity.EndTime
 		};
 
-	public static WebWorld AsWebWorld(this World world) =>
-		new() {
-			Sectors = world.Sectors,
-			CurrenTime = world.CurrenTime,
-			Villagers = world.Villagers.Select(v => v.AsWebVillager())
+	public static WebSector AsWebSector(this SectorDto sector) =>
+		new(sector.Position) {
+			Description = sector.Description,
+			Items = sector.Items.Select(AsWebItem).ToList()
 		};
 }

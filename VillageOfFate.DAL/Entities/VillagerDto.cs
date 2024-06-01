@@ -26,4 +26,5 @@ public class VillagerDto {
 	public ActivityDto Activity { get; set; } = null!;
 
 	public List<VillagerMemoryDto> Memories { get; set; } = [];
+	public List<ItemDto> Items { get; } = [];
 }

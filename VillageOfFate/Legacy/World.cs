@@ -7,22 +7,12 @@ namespace VillageOfFate.Legacy;
 
 public class World {
 	private readonly List<Villager> _villagers = [];
-	public readonly List<Sector> Sectors = [];
+	public readonly List<WebSector> Sectors = [];
 	public DateTime CurrenTime { get; set; } = DateTime.Now;
 	public IEnumerable<Villager> Villagers => _villagers;
 
-	public Sector CreateSector(Position position) {
-		var sector = new Sector(position);
-		Sectors.Add(sector);
-		return sector;
-	}
-
-	public Sector GetSector(Position position) {
+	public WebSector GetSector(Position position) {
 		return Sectors.First(s => s.Position == position);
-	}
-
-	public void AddVillager(Villager villager) {
-		_villagers.Add(villager);
 	}
 
 	public IEnumerable<Villager> GetVillagersInSector(Position point) {

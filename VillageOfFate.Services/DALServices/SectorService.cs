@@ -39,4 +39,6 @@ public class SectorService(DataContext context, ItemService items) {
 		}));
 		await context.SaveChangesAsync();
 	}
+
+	public async Task<IEnumerable<SectorDto>> GetAll() => await context.Sectors.ToListAsync();
 }

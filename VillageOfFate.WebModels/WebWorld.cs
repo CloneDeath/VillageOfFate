@@ -5,11 +5,11 @@ using System.Linq;
 namespace VillageOfFate.WebModels;
 
 public class WebWorld {
-	public List<Sector> Sectors { get; init; } = [];
+	public List<WebSector> Sectors { get; init; } = [];
 	public DateTime CurrenTime { get; set; } = DateTime.Now;
 	public IEnumerable<WebVillager> Villagers { get; init; } = [];
 
-	public Sector GetSector(Position position) {
+	public WebSector GetSector(Position position) {
 		return Sectors.First(s => s.Position == position);
 	}
 }

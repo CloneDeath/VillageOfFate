@@ -2,8 +2,8 @@ using System;
 
 namespace VillageOfFate.WebModels;
 
-public class Item {
-	public Guid Id { get; } = Guid.NewGuid();
+public class WebItem {
+	public Guid Id { get; init; } = Guid.NewGuid();
 
 	public string Name { get; set; } = string.Empty;
 	public string Description { get; set; } = string.Empty;

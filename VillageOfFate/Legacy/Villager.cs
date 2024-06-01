@@ -20,7 +20,7 @@ public class Villager {
 	public int Hunger { get; private set; }
 	public required Activity CurrentActivity { get; set; }
 	public Stack<Activity> ActivityQueue { get; } = new();
-	public List<Item> Inventory { get; } = [];
+	public List<WebItem> Inventory { get; } = [];
 
 	public void IncreaseHunger(int amount) => Hunger += amount;
 	public void DecreaseHunger(int amount) => Hunger = Math.Max(0, Hunger - amount);
@@ -43,7 +43,7 @@ public class Villager {
 
 	public IEnumerable<EmotionalState> GetEmotions() => Emotions.GetEmotions();
 
-	public void GiveItem(Item item) {
-		Inventory.Add(item);
+	public void GiveItem(WebItem webItem) {
+		Inventory.Add(webItem);
 	}
 }
