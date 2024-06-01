@@ -22,6 +22,7 @@ public class ActivityDto {
 
 	public VillagerDto Villager { get; set; } = null!;
 	public required DateTime StartTime { get; set; }
+	public DateTime EndTime => StartTime + Duration;
 }
 
 public enum ActivityName {

@@ -38,15 +38,13 @@ public class WorldRunner(TimeService time, VillagerService villagers) {
 	}
 
 	private async Task SimulateWorld() {
+		var currentTime = await time.GetAsync(TimeLabel.World);
 		var villager = await villagers.GetVillagerWithTheShortestCompleteTime();
-		var waitTime = villager.Activity.EndTime - world.CurrenTime;
-		if (villager.CurrentActivity.EndTime > world.CurrenTime) {
-			// If the villager's current activity is not yet complete, wait until it is
-			Thread.Sleep(waitTime);
-			world.CurrenTime += waitTime;
+		if (villager.Activity.EndTime > currentTime) {
+			return;
 		}
 
-		var activityResult = villager.CurrentActivity.OnCompletion();
+		var activityResult = villager.Activity.OnCompletion();
 		if (villager.ActivityQueue.TryPop(out var activity)) {
 			activity.StartTime = world.CurrenTime;
 			villager.CurrentActivity = activity;
