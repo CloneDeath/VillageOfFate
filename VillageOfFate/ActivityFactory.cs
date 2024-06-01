@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using VillageOfFate.Activities;
 using VillageOfFate.DAL.Entities;
-using VillageOfFate.VillagerActions;
+using VillageOfFate.Legacy;
+using VillageOfFate.Legacy.Activities;
+using VillageOfFate.Legacy.VillagerActions;
 
-namespace VillageOfFate.Server;
+namespace VillageOfFate;
 
 public class ActivityFactory(VillageLogger logger) {
 	private readonly IReadOnlyList<IVillagerAction> actions = [

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using VillageOfFate.Activities;
+using VillageOfFate.Legacy.Activities;
 using VillageOfFate.WebModels;
 
-namespace VillageOfFate;
+namespace VillageOfFate.Legacy;
 
 public class Villager {
 	private readonly Memory _memory = [];

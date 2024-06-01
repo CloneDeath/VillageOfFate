@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using VillageOfFate.Activities;
+using VillageOfFate.Legacy.Activities;
 
-namespace VillageOfFate.VillagerActions;
+namespace VillageOfFate.Legacy.VillagerActions;
 
 public class SleepAction(VillageLogger logger) : IVillagerAction {
 	public string Name => "Sleep";
@@ -33,7 +33,8 @@ public class SleepAction(VillageLogger logger) : IVillagerAction {
 			Duration = TimeSpan.FromHours(args.DurationInHours),
 			Interruptible = false,
 			OnCompletion = () => {
-				var completionActivity = $"[{state.World.CurrenTime}] {state.Actor.Name} wakes up from an {args.DurationInHours}-hour rest";
+				var completionActivity =
+					$"[{state.World.CurrenTime}] {state.Actor.Name} wakes up from an {args.DurationInHours}-hour rest";
 				logger.LogActivity(completionActivity);
 				foreach (var v in state.Others.Append(state.Actor)) {
 					v.AddMemory(completionActivity);

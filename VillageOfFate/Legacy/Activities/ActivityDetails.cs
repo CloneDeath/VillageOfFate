@@ -1,6 +1,6 @@
 using System;
 
-namespace VillageOfFate.Activities;
+namespace VillageOfFate.Legacy.Activities;
 
 public interface IActivityDetails {
 	public string Description { get; }

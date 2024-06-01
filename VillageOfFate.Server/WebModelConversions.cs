@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using VillageOfFate.Activities;
+using VillageOfFate.Legacy;
+using VillageOfFate.Legacy.Activities;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server;

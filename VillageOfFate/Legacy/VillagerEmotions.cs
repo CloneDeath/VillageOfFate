@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.WebModels;
 
-namespace VillageOfFate;
+namespace VillageOfFate.Legacy;
 
 public class VillagerEmotions {
 	public int Happiness { get; set; }

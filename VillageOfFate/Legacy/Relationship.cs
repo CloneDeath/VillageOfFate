@@ -1,4 +1,4 @@
-namespace VillageOfFate;
+namespace VillageOfFate.Legacy;
 
 public class Relationship(Villager villager, string relation) {
 	public Villager Villager { get; } = villager;

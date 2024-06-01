@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using VillageOfFate.Activities;
+using VillageOfFate.Legacy.Activities;
 
-namespace VillageOfFate.VillagerActions;
+namespace VillageOfFate.Legacy.VillagerActions;
 
 public class InteractAction(VillageLogger logger) : IVillagerAction {
 	public string Name => "Interact";

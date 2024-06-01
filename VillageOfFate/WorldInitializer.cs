@@ -6,7 +6,7 @@ using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
-namespace VillageOfFate.Server;
+namespace VillageOfFate;
 
 public class WorldInitializer(
 	TimeService time,

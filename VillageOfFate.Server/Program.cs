@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VillageOfFate.DAL;
+using VillageOfFate.Legacy;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Settings;
 using VillageOfFate.Services.DALServices;

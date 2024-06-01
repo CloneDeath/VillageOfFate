@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using GptApi;
-using VillageOfFate.Activities;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.Legacy;
+using VillageOfFate.Legacy.Activities;
+using VillageOfFate.Legacy.VillagerActions;
 using VillageOfFate.Services.DALServices;
-using VillageOfFate.VillagerActions;
 
-namespace VillageOfFate.Server;
+namespace VillageOfFate;
 
 public class WorldRunner(TimeService time, VillagerService villagers, ActivityFactory activityFactory) {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
@@ -56,14 +57,12 @@ public class WorldRunner(TimeService time, VillagerService villagers, ActivityFa
 	private async Task SimulateWorld() {
 		var currentTime = await time.GetAsync(TimeLabel.World);
 		var villager = villagers.GetVillagerWithTheShortestCompleteTime();
-		if (villager.Activity.EndTime > currentTime) {
-			return;
-		}
+		if (villager.Activity.EndTime > currentTime) { }
 
-		var currentActivity = activityFactory.Get(villager.Activity);
-		var activityResult = currentActivity.OnCompletion();
+		// var currentActivity = activityFactory.Get(villager.Activity);
+		// var activityResult = currentActivity.OnCompletion();
 
-		throw new NotImplementedException();
+		// throw new NotImplementedException();
 		// if (villager.ActivityQueue.TryPop(out var activity)) {
 		// 	activity.StartTime = world.CurrenTime;
 		// 	villager.CurrentActivity = activity;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using VillageOfFate.Activities;
+using VillageOfFate.Legacy.Activities;
 
-namespace VillageOfFate.VillagerActions;
+namespace VillageOfFate.Legacy.VillagerActions;
 
 public interface IVillagerAction {
 	public string Name { get; }

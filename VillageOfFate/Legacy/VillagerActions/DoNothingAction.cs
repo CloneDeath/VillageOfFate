@@ -1,7 +1,7 @@
 using System;
-using VillageOfFate.Activities;
+using VillageOfFate.Legacy.Activities;
 
-namespace VillageOfFate.VillagerActions;
+namespace VillageOfFate.Legacy.VillagerActions;
 
 public class DoNothingAction : IVillagerAction {
 	public string Name => "DoNothing";

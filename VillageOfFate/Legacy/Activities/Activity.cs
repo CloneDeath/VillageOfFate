@@ -1,6 +1,6 @@
 using System;
 
-namespace VillageOfFate.Activities;
+namespace VillageOfFate.Legacy.Activities;
 
 public class Activity(IActivityDetails details, World world) : IActivityDetails {
 	public DateTime StartTime { get; set; } = world.CurrenTime;

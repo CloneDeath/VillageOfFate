@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using VillageOfFate.Legacy;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server.Controllers;

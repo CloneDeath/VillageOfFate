@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.Legacy;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
