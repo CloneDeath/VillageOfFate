@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
@@ -8,5 +9,9 @@ public class VillagerService(DataContext context) {
 		var result = await context.Villagers.AddAsync(villager);
 		await context.SaveChangesAsync();
 		return result.Entity;
+	}
+
+	public async Task<VillagerDto> GetVillagerWithTheShortestCompleteTime() {
+		return await context.Villagers.OrderBy(v => v.Activity.StartTime + v.Activity.Duration).FirstAsync();
 	}
 }

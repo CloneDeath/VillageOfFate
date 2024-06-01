@@ -4,11 +4,11 @@ using VillageOfFate.DAL.Entities;
 namespace VillageOfFate.Services.DALServices;
 
 public class TimeService(DataContext dataContext) {
-	public async Task<DateTime> GetAsync(TimeLabel label) {
+	public async Task<DateTime> GetAsync(TimeLabel label, DateTime? defaultValue = null) {
 		var entry = await dataContext.Time.FindAsync(label);
 		if (entry != null) return entry.Now;
 
-		var now = DateTime.UtcNow;
+		var now = defaultValue ?? DateTime.UtcNow;
 		await dataContext.Time.AddAsync(new TimeDto {
 			Label = label,
 			Now = now

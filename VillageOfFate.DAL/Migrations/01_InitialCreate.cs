@@ -26,6 +26,7 @@ namespace SouthernCrm.Dal.Migrations {
 			Create.Table("Activities")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
+				  .WithColumn("StartTime").AsDateTime().NotNullable()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("DurationTicks").AsInt64().NotNullable()
 				  .WithColumn("Interruptible").AsBoolean().NotNullable();

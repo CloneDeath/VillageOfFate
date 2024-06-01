@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using VillageOfFate.DAL.Entities;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
@@ -11,7 +12,7 @@ public class WorldController(World world, TimeService time) : ControllerBase {
 	[HttpGet]
 	public async Task<WebWorld> GetWorld() {
 		var result = world.AsWebWorld();
-		result.CurrenTime = await time.GetTimeAsync();
+		result.CurrenTime = await time.GetAsync(TimeLabel.World);
 		return result;
 	}
 }

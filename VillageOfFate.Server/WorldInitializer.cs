@@ -22,7 +22,7 @@ public class WorldInitializer(
 			return;
 		}
 
-		await time.GetTimeAsync();
+		await time.GetAsync(TimeLabel.World);
 		var sector = await PopulateSector();
 		await PopulateVillagers(sector);
 	}
@@ -59,13 +59,16 @@ public class WorldInitializer(
 	}
 
 	private async Task PopulateVillagers(SectorDto sector) {
+		var startTime = await time.GetAsync(TimeLabel.World);
 		var maxIdle = TimeSpan.FromSeconds(5);
 		var gamz = await villagers.CreateAsync(new VillagerDto {
 			Name = "Gamz", Age = 26, Gender = Gender.Male,
 			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
 			Sector = sector,
 			Hunger = 6,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+				StartTime = startTime
+			}
 		});
 		await villagerItems.AddAsync(gamz, new ItemDto {
 			Name = "Sword",
@@ -79,28 +82,36 @@ public class WorldInitializer(
 			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
 			Sector = sector,
 			Hunger = 5,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+				StartTime = startTime
+			}
 		});
 		var carol = await villagers.CreateAsync(new VillagerDto {
 			Name = "Carol", Age = 7, Gender = Gender.Female,
 			Summary = "A cheerful child, although quite mature for her age.",
 			Sector = sector,
 			Hunger = 8,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+				StartTime = startTime
+			}
 		});
 		var lyra = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
 			Summary = "A younger wife than her husband, but capable of keeping him in check.",
 			Sector = sector,
 			Hunger = 4,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+				StartTime = startTime
+			}
 		});
 		var lodis = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lodis", Age = 33, Gender = Gender.Male,
 			Summary = "The father of a family of three that ran a general store in the village.",
 			Sector = sector,
 			Hunger = 5,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle))
+			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+				StartTime = startTime
+			}
 		});
 
 		await relations.AddRelationAsync(gamz, chem, "Younger Sister");
