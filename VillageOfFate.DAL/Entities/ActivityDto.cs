@@ -1,18 +1,21 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using SouthernCrm.Dal.Migrations;
 
 namespace VillageOfFate.DAL.Entities;
 
-public class ActivityDto {
+public abstract class ActivityDto {
 	public Guid Id { get; set; } = Guid.NewGuid();
 
-	public ActivityName Name { get; set; } = ActivityName.Idle;
+	public ActivityName Name { get; protected set; }
+
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Description { get; set; } = string.Empty;
 
 	public long DurationTicks { get; set; }
 
+	[NotMapped]
 	public TimeSpan Duration {
 		get => new(DurationTicks);
 		set => DurationTicks = value.Ticks;

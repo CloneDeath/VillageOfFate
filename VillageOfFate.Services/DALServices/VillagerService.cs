@@ -11,7 +11,8 @@ public class VillagerService(DataContext context) {
 		return result.Entity;
 	}
 
-	public async Task<VillagerDto> GetVillagerWithTheShortestCompleteTime() {
-		return await context.Villagers.OrderBy(v => v.Activity.StartTime + v.Activity.Duration).FirstAsync();
+	public VillagerDto GetVillagerWithTheShortestCompleteTime() {
+		return context.Villagers.Include(villagerDto => villagerDto.Activity).ToList()
+							.OrderBy(v => v.Activity.StartTime + v.Activity.Duration).First();
 	}
 }

@@ -51,17 +51,16 @@ public class Program {
 		builder.Services.AddScoped<TimeService>();
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
+		builder.Services.AddScoped<VillagerMemoryService>();
+		builder.Services.AddScoped<VillagerItemService>();
+		builder.Services.AddScoped<RelationshipService>();
 		builder.Services.AddScoped<ItemService>();
 		builder.Services.AddSingleton<RandomProvider>();
-		builder.Services.AddSingleton<WorldInitializer>();
-		builder.Services.AddSingleton<WorldRunner>();
+		builder.Services.AddScoped<WorldInitializer>();
+		builder.Services.AddScoped<WorldRunner>();
 		builder.Services.AddSingleton<ActivityFactory>();
 
 		var app = builder.Build();
-		var initializer = app.Services.GetService<WorldInitializer>()
-						  ?? throw new NullReferenceException("Could not get the WorldInitializer");
-		await initializer.PopulateWorldAsync();
-
 		if (app.Environment.IsDevelopment()) {
 			app.UseSwagger();
 			app.UseSwaggerUI();
@@ -71,7 +70,12 @@ public class Program {
 		app.UseCors("AllowMyOrigin");
 		app.MapDefaultControllerRoute();
 
-		var runner = app.Services.GetService<WorldRunner>()
+		await using var scope = app.Services.CreateAsyncScope();
+		var initializer = scope.ServiceProvider.GetService<WorldInitializer>()
+						  ?? throw new NullReferenceException("Could not get the WorldInitializer");
+		await initializer.PopulateWorldAsync();
+
+		var runner = scope.ServiceProvider.GetService<WorldRunner>()
 					 ?? throw new NullReferenceException("Could not get the WorldRunner");
 
 		var cancellationTokenSource = new CancellationTokenSource();

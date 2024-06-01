@@ -21,30 +21,41 @@ public class WorldRunner(TimeService time, VillagerService villagers, ActivityFa
 		await time.GetAsync(TimeLabel.End, await GetWorldTimeAsync() + TimeSpan.FromMinutes(2));
 
 	public async Task RunAsync(CancellationToken cancellationToken) {
-		while (!cancellationToken.IsCancellationRequested) {
-			var worldTime = await GetWorldTimeAsync();
-			if (worldTime > await GetEndTimeAsync()) {
-				await Task.Delay(Interval, cancellationToken);
-				continue;
-			}
+		try {
+			while (!cancellationToken.IsCancellationRequested) {
+				var worldTime = await GetWorldTimeAsync();
+				if (worldTime > await GetEndTimeAsync()) {
+					await Task.Delay(Interval, cancellationToken);
+					continue;
+				}
 
-			var now = DateTime.UtcNow;
-			var timeSinceLastUpdate = now - worldTime;
+				var now = DateTime.UtcNow;
+				var timeSinceLastUpdate = now - worldTime;
 
-			if (timeSinceLastUpdate >= Interval) {
-				await SimulateWorld();
-				await SetWorldTimeAsync(worldTime + Interval);
-			} else {
-				// Sleep until it's time for the next update
-				var sleepDuration = Interval - timeSinceLastUpdate;
-				await Task.Delay(sleepDuration, cancellationToken);
+				if (timeSinceLastUpdate >= Interval) {
+					await SimulateWorld();
+					await SetWorldTimeAsync(worldTime + Interval);
+				} else {
+					// Sleep until it's time for the next update
+					var sleepDuration = Interval - timeSinceLastUpdate;
+					await Task.Delay(sleepDuration, cancellationToken);
+				}
 			}
+		}
+		catch (OperationCanceledException) {
+			Console.WriteLine("WorldRunner was cancelled");
+		}
+		catch (Exception e) {
+			await Console.Error.WriteLineAsync($"WorldRunner threw an exception: {e}");
+		}
+		finally {
+			Console.WriteLine("Exiting WorldRunner");
 		}
 	}
 
 	private async Task SimulateWorld() {
 		var currentTime = await time.GetAsync(TimeLabel.World);
-		var villager = await villagers.GetVillagerWithTheShortestCompleteTime();
+		var villager = villagers.GetVillagerWithTheShortestCompleteTime();
 		if (villager.Activity.EndTime > currentTime) {
 			return;
 		}
