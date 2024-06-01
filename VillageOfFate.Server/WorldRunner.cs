@@ -1,12 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using GptApi;
+using VillageOfFate.Activities;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.Services.DALServices;
+using VillageOfFate.VillagerActions;
 
 namespace VillageOfFate.Server;
 
-public class WorldRunner(TimeService time, VillagerService villagers) {
+public class WorldRunner(TimeService time, VillagerService villagers, ActivityFactory activityFactory) {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
 	public async Task<DateTime> GetWorldTimeAsync() => await time.GetAsync(TimeLabel.World);
@@ -44,21 +49,24 @@ public class WorldRunner(TimeService time, VillagerService villagers) {
 			return;
 		}
 
-		var activityResult = villager.Activity.OnCompletion();
-		if (villager.ActivityQueue.TryPop(out var activity)) {
-			activity.StartTime = world.CurrenTime;
-			villager.CurrentActivity = activity;
-		} else {
-			await QueueActionsForVillager(villager, world, chatGptApi, actions, logger, villagers);
-			PushCurrentActivityIntoQueue(villager, world);
-			villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
-		}
+		var currentActivity = activityFactory.Get(villager.Activity);
+		var activityResult = currentActivity.OnCompletion();
 
-		if (activityResult.TriggerReactions.Any()) {
-			var selected = random.SelectOne(activityResult.TriggerReactions);
-			PushCurrentActivityIntoQueue(selected, world);
-			await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
-		}
+		throw new NotImplementedException();
+		// if (villager.ActivityQueue.TryPop(out var activity)) {
+		// 	activity.StartTime = world.CurrenTime;
+		// 	villager.CurrentActivity = activity;
+		// } else {
+		// 	await QueueActionsForVillager(villager, world, chatGptApi, actions, logger, villagers);
+		// 	PushCurrentActivityIntoQueue(villager, world);
+		// 	villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
+		// }
+		//
+		// if (activityResult.TriggerReactions.Any()) {
+		// 	var selected = random.SelectOne(activityResult.TriggerReactions);
+		// 	PushCurrentActivityIntoQueue(selected, world);
+		// 	await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
+		// }
 	}
 
 	private static void PushCurrentActivityIntoQueue(Villager villager, World world) {

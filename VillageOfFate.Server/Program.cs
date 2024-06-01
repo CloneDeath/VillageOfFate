@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using CommandLine;
 using GptApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +17,9 @@ namespace VillageOfFate.Server;
 
 public class Program {
 	public static async Task Main(string[] args) {
+		var parser = new Parser(with => with.HelpWriter = Console.Error);
+		var result = parser.ParseArguments<ProgramOptions>(args);
+
 		var builder = WebApplication.CreateBuilder(args);
 
 		builder.Services.AddControllers();
@@ -36,6 +41,8 @@ public class Program {
 		dbDetails.RunMigration();
 		builder.Services.AddDbContext<DataContext>(dbDetails.BuildContext);
 
+		var logger = new VillageLogger(result.Value.LogDirectory ?? Directory.GetCurrentDirectory());
+		builder.Services.AddSingleton(logger);
 		builder.Services.AddScoped<TimeService>();
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
@@ -44,6 +51,7 @@ public class Program {
 		builder.Services.AddSingleton(CreateChatGptApiService());
 		builder.Services.AddSingleton<WorldInitializer>();
 		builder.Services.AddSingleton<WorldRunner>();
+		builder.Services.AddSingleton<ActivityFactory>();
 
 		var app = builder.Build();
 		var initializer = app.Services.GetService<WorldInitializer>()

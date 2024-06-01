@@ -1,6 +1,6 @@
 using CommandLine;
 
-namespace VillageOfFate;
+namespace VillageOfFate.Server;
 
 public class ProgramOptions {
 	[Option('l', "logDirectory", Required = false, HelpText = "Set the log directory.")]
