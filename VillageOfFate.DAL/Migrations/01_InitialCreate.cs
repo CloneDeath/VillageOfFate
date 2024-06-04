@@ -39,8 +39,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Summary").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Gender").AsInt32().NotNullable().ForeignKey("Genders", "Id")
 				  .WithColumn("Hunger").AsInt32().NotNullable()
-				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
-				  .WithColumn("CurrentActivityId").AsGuid().NotNullable().Unique().ForeignKey("Activities", "Id");
+				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id");
 
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()

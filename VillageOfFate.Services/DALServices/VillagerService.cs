@@ -12,13 +12,14 @@ public class VillagerService(DataContext context) {
 	}
 
 	public VillagerDto GetVillagerWithTheShortestCompleteTime() {
-		return context.Villagers.Include(villagerDto => villagerDto.CurrentActivity).ToList()
+		return context.Villagers.Include(villagerDto => villagerDto.Activities).ToList()
+					  .Where(v => v.CurrentActivity != null)
 					  .OrderBy(v => v.CurrentActivity.StartTime + v.CurrentActivity.Duration).First();
 	}
 
 	public async Task<IEnumerable<VillagerDto>> GetAll() => await context.Villagers
 																		 .Include(v => v.Items)
-																		 .Include(v => v.CurrentActivity)
+																		 .Include(v => v.Activities)
 																		 .Include(v => v.Sector)
 																		 .ToListAsync();
 

@@ -23,6 +23,8 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 		base.OnModelCreating(modelBuilder);
 		modelBuilder.Entity<TimeDto>().Property(e => e.Now)
 					.HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+		modelBuilder.Entity<TimeDto>().Property(e => e.Label)
+					.HasConversion<string>();
 
 		modelBuilder
 			.Entity<ActivityDto>()
@@ -36,5 +38,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 					.HasValue<IdleActivityDto>(ActivityName.Idle);
 
 		ItemDto.OnModelCreating(modelBuilder);
+		ActivityDto.OnModelCreating(modelBuilder);
 	}
 }

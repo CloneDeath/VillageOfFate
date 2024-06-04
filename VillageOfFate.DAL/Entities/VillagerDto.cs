@@ -24,10 +24,10 @@ public class VillagerDto {
 	public Guid SectorId { get; set; }
 	[ForeignKey("SectorId")] public required SectorDto Sector { get; set; }
 
-	public Guid CurrentActivityId { get; set; }
-	public ActivityDto CurrentActivity { get; set; } = null!;
+	[NotMapped] public ActivityDto? CurrentActivity => Activities.MinBy(a => a.StartTime);
 
-	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities.Where(a => a.Id != CurrentActivityId).OrderBy(a => a.StartTime).ToList();
+	[NotMapped]
+	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities.OrderBy(a => a.StartTime).Skip(1).ToList();
 
 	public List<VillagerMemoryDto> Memories { get; set; } = [];
 	public List<ItemDto> Items { get; } = [];

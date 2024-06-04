@@ -71,17 +71,18 @@ public class WorldRunner(
 
 		if (villager.ActivityQueue.Any()) {
 			await villagerActivities.PopAsync(villager);
-		} else {
-			await QueueActionsForVillager(villager, world, chatGptApi, actions, logger, villagers);
-			PushCurrentActivityIntoQueue(villager, world);
-			villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
 		}
+        // else {
+		// await QueueActionsForVillager(villager, world, chatGptApi, actions, logger, villagers);
+		// PushCurrentActivityIntoQueue(villager, world);
+		// villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
+		// }
 
-		if (activityResult.TriggerReactions.Any()) {
-			var selected = random.SelectOne(activityResult.TriggerReactions);
-			PushCurrentActivityIntoQueue(selected, world);
-			await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
-		}
+		// if (activityResult.TriggerReactions.Any()) {
+		// 	var selected = random.SelectOne(activityResult.TriggerReactions);
+		// 	PushCurrentActivityIntoQueue(selected, world);
+		// 	await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
+		// }
 	}
 
 	private static void PushCurrentActivityIntoQueue(Villager villager, World world) {

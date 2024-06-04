@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 
 namespace VillageOfFate.DAL.Entities;
@@ -27,7 +28,13 @@ public abstract class ActivityDto {
 	public DateTime EndTime => StartTime + Duration;
 
 	public Guid VillagerId { get; set; }
-	public VillagerDto Villager { get; set; } = null!;
+	[ForeignKey(nameof(VillagerId))] public VillagerDto Villager { get; set; } = null!;
+
+	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<ActivityDto>()
+					.HasOne(v => v.Villager)
+					.WithMany(v => v.Activities);
+	}
 }
 
 public enum ActivityName {
