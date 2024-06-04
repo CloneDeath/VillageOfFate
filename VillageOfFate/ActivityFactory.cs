@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.Legacy;
-																																																																																																																																																																																															`using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.Legacy.VillagerActions;
 
 namespace VillageOfFate;
 

@@ -1,7 +1,7 @@
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
-namespace VillageOfFate.Services.DALServices;
+namespace VillageOfFate.Services.DALServices.Core;
 
 public class TimeService(DataContext dataContext) {
 	public async Task<DateTime> GetAsync(TimeLabel label, DateTime? defaultValue = null) {

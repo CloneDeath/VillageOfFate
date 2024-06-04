@@ -1,4 +1,4 @@
-namespace VillageOfFate.Services.DALServices;
+namespace VillageOfFate.Services.DALServices.Core;
 
 public class RandomProvider {
 	private readonly Random _random = new();

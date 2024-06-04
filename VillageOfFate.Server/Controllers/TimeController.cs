@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VillageOfFate.DAL.Entities;
-using VillageOfFate.Services.DALServices;
+using VillageOfFate.Services.DALServices.Core;
 
 namespace VillageOfFate.Server.Controllers;
 

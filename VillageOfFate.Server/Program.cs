@@ -13,6 +13,7 @@ using VillageOfFate.Legacy;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Settings;
 using VillageOfFate.Services.DALServices;
+using VillageOfFate.Services.DALServices.Core;
 
 namespace VillageOfFate.Server;
 
@@ -52,6 +53,7 @@ public class Program {
 		builder.Services.AddScoped<TimeService>();
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
+		builder.Services.AddScoped<VillagerActivityService>();
 		builder.Services.AddScoped<VillagerMemoryService>();
 		builder.Services.AddScoped<VillagerItemService>();
 		builder.Services.AddScoped<RelationshipService>();

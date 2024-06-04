@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
-namespace VillageOfFate.Services.DALServices;
+namespace VillageOfFate.Services.DALServices.Core;
 
 public class ItemService(DataContext context) {
 	public async Task<ItemDto> EnsureExistsAsync(ItemDto item) {
