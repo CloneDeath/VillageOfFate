@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 
 namespace VillageOfFate.DAL.Entities;
@@ -16,4 +18,19 @@ public class ItemDto {
 	public int Quantity { get; set; } = 1;
 	public bool Edible { get; set; }
 	public int HungerRestored { get; set; }
+
+	public List<VillagerDto> Villagers { get; } = [];
+	public List<SectorDto> Sectors { get; } = [];
+
+	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<ItemDto>()
+					.HasMany(v => v.Villagers)
+					.WithMany(v => v.Items)
+					.UsingEntity<VillagerItemDto>();
+
+		modelBuilder.Entity<ItemDto>()
+					.HasMany(v => v.Sectors)
+					.WithMany(v => v.Items)
+					.UsingEntity<SectorItemDto>();
+	}
 }

@@ -35,6 +35,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 					.HasDiscriminator(p => p.Name)
 					.HasValue<IdleActivityDto>(ActivityName.Idle);
 
-		VillagerDto.OnModelCreating(modelBuilder);
+		ItemDto.OnModelCreating(modelBuilder);
 	}
 }
