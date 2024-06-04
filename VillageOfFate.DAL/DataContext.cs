@@ -35,10 +35,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 					.HasDiscriminator(p => p.Name)
 					.HasValue<IdleActivityDto>(ActivityName.Idle);
 
-		// modelBuilder.Entity<Blog>()
-		// 			.HasMany(e => e.Posts)
-		// 			.WithOne(e => e.Blog)
-		// 			.HasForeignKey(e => e.BlogId)
-		// 			.HasPrincipalKey(e => e.Id);
+		VillagerDto.OnModelCreating(modelBuilder);
 	}
 }

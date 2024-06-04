@@ -65,7 +65,7 @@ public class Program {
 		if (app.Environment.IsDevelopment()) {
 			app.UseSwagger();
 			app.UseSwaggerUI();
-			app.UseDeveloperExceptionPage();
+			app.UseDeveloperExceptionPage(new DeveloperExceptionPageOptions { SourceCodeLineCount = 100 });
 		}
 
 		app.UseHttpsRedirection();

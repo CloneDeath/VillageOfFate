@@ -16,4 +16,5 @@ public class SectorDto {
 	public string Description { get; set; } = string.Empty;
 
 	public List<ItemDto> Items { get; set; } = [];
+	public List<VillagerDto> Villagers { get; set; } = [];
 }

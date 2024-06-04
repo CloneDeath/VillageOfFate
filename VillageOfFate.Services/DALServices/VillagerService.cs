@@ -16,6 +16,15 @@ public class VillagerService(DataContext context) {
 					  .OrderBy(v => v.Activity.StartTime + v.Activity.Duration).First();
 	}
 
-	public async Task<IEnumerable<VillagerDto>> GetAll() => await context.Villagers.ToListAsync();
-	public async Task<VillagerDto> Get(Guid id) => await context.Villagers.FirstAsync(v => v.Id == id);
+	public async Task<IEnumerable<VillagerDto>> GetAll() => await context.Villagers
+																		 .Include(v => v.Items)
+																		 .Include(v => v.Activity)
+																		 .Include(v => v.Sector)
+																		 .ToListAsync();
+
+	public async Task<VillagerDto> Get(Guid id) => await context.Villagers
+																.Include(v => v.Items)
+																.Include(v => v.Activity)
+																.Include(v => v.Sector)
+																.FirstAsync(v => v.Id == id);
 }
