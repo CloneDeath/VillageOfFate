@@ -23,9 +23,11 @@ public abstract class ActivityDto {
 
 	public bool Interruptible { get; set; }
 
-	public VillagerDto Villager { get; set; } = null!;
 	public required DateTime StartTime { get; set; }
 	public DateTime EndTime => StartTime + Duration;
+
+	public Guid VillagerId { get; set; }
+	public VillagerDto Villager { get; set; } = null!;
 }
 
 public enum ActivityName {

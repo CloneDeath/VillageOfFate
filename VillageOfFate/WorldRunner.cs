@@ -57,10 +57,12 @@ public class WorldRunner(TimeService time, VillagerService villagers, ActivityFa
 	private async Task SimulateWorld() {
 		var currentTime = await time.GetAsync(TimeLabel.World);
 		var villager = villagers.GetVillagerWithTheShortestCompleteTime();
-		if (villager.Activity.EndTime > currentTime) { }
+		if (villager.CurrentActivity.EndTime > currentTime) {
+			return;
+		}
 
-		// var currentActivity = activityFactory.Get(villager.Activity);
-		// var activityResult = currentActivity.OnCompletion();
+		var currentActivity = activityFactory.Get(villager.CurrentActivity);
+		var activityResult = currentActivity.OnCompletion();
 
 		// throw new NotImplementedException();
 		// if (villager.ActivityQueue.TryPop(out var activity)) {

@@ -66,7 +66,7 @@ public class WorldInitializer(
 			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
 			Sector = sector,
 			Hunger = 6,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+			CurrentActivity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
 				StartTime = startTime
 			}
 		});
@@ -82,7 +82,7 @@ public class WorldInitializer(
 			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
 			Sector = sector,
 			Hunger = 5,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+			CurrentActivity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
 				StartTime = startTime
 			}
 		});
@@ -91,7 +91,7 @@ public class WorldInitializer(
 			Summary = "A cheerful child, although quite mature for her age.",
 			Sector = sector,
 			Hunger = 8,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+			CurrentActivity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
 				StartTime = startTime
 			}
 		});
@@ -100,7 +100,7 @@ public class WorldInitializer(
 			Summary = "A younger wife than her husband, but capable of keeping him in check.",
 			Sector = sector,
 			Hunger = 4,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+			CurrentActivity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
 				StartTime = startTime
 			}
 		});
@@ -109,7 +109,7 @@ public class WorldInitializer(
 			Summary = "The father of a family of three that ran a general store in the village.",
 			Sector = sector,
 			Hunger = 5,
-			Activity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
+			CurrentActivity = new IdleActivityDto(random.NextTimeSpan(maxIdle)) {
 				StartTime = startTime
 			}
 		});

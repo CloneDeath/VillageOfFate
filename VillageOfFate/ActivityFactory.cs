@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+																																																																																																																																																																																															`using VillageOfFate.Legacy.VillagerActions;
 
 namespace VillageOfFate;
 
@@ -18,5 +17,5 @@ public class ActivityFactory(VillageLogger logger) {
 		new LookoutAction(logger)
 	];
 
-	public Activity Get(ActivityDto villagerActivity) => throw new NotImplementedException();
+	public IActivity Get(ActivityDto activity) => throw new NotImplementedException();
 }

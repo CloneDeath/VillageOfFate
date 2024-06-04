@@ -29,7 +29,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("StartTime").AsDateTime().NotNullable()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("DurationTicks").AsInt64().NotNullable()
-				  .WithColumn("Interruptible").AsBoolean().NotNullable();
+				  .WithColumn("Interruptible").AsBoolean().NotNullable()
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id");
 
 			Create.Table("Villagers")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
@@ -39,7 +40,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Gender").AsInt32().NotNullable().ForeignKey("Genders", "Id")
 				  .WithColumn("Hunger").AsInt32().NotNullable()
 				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
-				  .WithColumn("ActivityId").AsGuid().NotNullable().Unique().ForeignKey("Activities", "Id");
+				  .WithColumn("CurrentActivityId").AsGuid().NotNullable().Unique().ForeignKey("Activities", "Id");
 
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()

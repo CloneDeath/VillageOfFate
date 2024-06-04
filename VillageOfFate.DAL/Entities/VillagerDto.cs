@@ -23,9 +23,11 @@ public class VillagerDto {
 	public Guid SectorId { get; set; }
 	[ForeignKey("SectorId")] public required SectorDto Sector { get; set; }
 
-	public Guid ActivityId { get; set; }
-	public ActivityDto Activity { get; set; } = null!;
+	public Guid CurrentActivityId { get; set; }
+	public ActivityDto CurrentActivity { get; set; } = null!;
 
 	public List<VillagerMemoryDto> Memories { get; set; } = [];
 	public List<ItemDto> Items { get; } = [];
+	public List<ActivityDto> Activities { get; set; } = null!;
+
 }

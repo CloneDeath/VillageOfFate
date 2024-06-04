@@ -17,7 +17,7 @@ public static class WebModelConversions {
 			SectorLocation = new Position(villager.Sector.X, villager.Sector.Y),
 			Hunger = villager.Hunger,
 			Inventory = villager.Items.Select(AsWebItem).ToList(),
-			CurrentActivity = villager.Activity.AsWebActivity()
+			CurrentActivity = villager.CurrentActivity.AsWebActivity()
 			//ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity()))
 		};
 
