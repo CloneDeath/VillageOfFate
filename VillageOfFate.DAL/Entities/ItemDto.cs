@@ -33,4 +33,9 @@ public class ItemDto {
 					.WithMany(v => v.Items)
 					.UsingEntity<SectorItemDto>();
 	}
+
+	public string GetSummary() {
+		var edibleString = Edible ? $"Edible (-{HungerRestored} hunger)" : "";
+		return $"{Name} (Id: {Id}): {Description} Quantity: {Quantity} {edibleString}";
+	}
 }

@@ -12,4 +12,8 @@ public class RelationshipService(DataContext context) {
 		});
 		await context.SaveChangesAsync();
 	}
+
+	public IEnumerable<RelationshipDto> Get(VillagerDto villager) {
+		return context.Relationships.Where(r => r.VillagerId == villager.Id);
+	}
 }

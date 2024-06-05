@@ -16,8 +16,11 @@ namespace VillageOfFate;
 public class WorldRunner(
 	TimeService time,
 	VillagerService villagers,
+	RelationshipService relationships,
 	VillagerActivityService villagerActivities,
-	ActivityFactory activityFactory) {
+	ActivityFactory activityFactory,
+	ChatGptApi chatGptApi,
+	RandomProvider random) {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
 	public async Task<DateTime> GetWorldTimeAsync() => await time.GetAsync(TimeLabel.World);
@@ -70,18 +73,17 @@ public class WorldRunner(
 
 		if (villager.ActivityQueue.Any()) {
 			await villagerActivities.PopAsync(villager);
+		} else {
+			await QueueActionsForVillager(villager);
+			PushCurrentActivityIntoQueue(villager);
+			villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
 		}
-		// else {
-		// await QueueActionsForVillager(villager, world, chatGptApi, actions, logger, villagers);
-		// PushCurrentActivityIntoQueue(villager, world);
-		// villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
-		// }
 
-		// if (activityResult.TriggerReactions.Any()) {
-		// 	var selected = random.SelectOne(activityResult.TriggerReactions);
-		// 	PushCurrentActivityIntoQueue(selected, world);
-		// 	await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
-		// }
+		if (activityResult.TriggerReactions.Any()) {
+			var selected = random.SelectOne(activityResult.TriggerReactions);
+			PushCurrentActivityIntoQueue(selected, world);
+			await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
+		}
 	}
 
 	private static void PushCurrentActivityIntoQueue(Villager villager, World world) {
@@ -91,9 +93,8 @@ public class WorldRunner(
 		villager.ActivityQueue.Push(current);
 	}
 
-	private static async Task QueueActionsForVillager(Villager villager, World world, ChatGptApi chatGptApi,
-													  List<IVillagerAction> actions,
-													  VillageLogger logger, Villager[] villagers) {
+	private async Task QueueActionsForVillager(VillagerDto villager) {
+		var relations = relationships.Get(villager);
 		var messages = new List<Message> {
 			new() {
 				Role = Role.System,
@@ -103,26 +104,26 @@ public class WorldRunner(
 					"Act like a real person in a fantasy world. Don't declare your actions, just do them.",
 					"# Relationships",
 					string.Join("\n",
-						villager.GetRelationships().Select(r =>
-							$"- {r.Villager.Name}: {r.Villager.GetDescription()} Relation: {r.Relation}")),
-					"# Emotions (0% = neutral, 100% = maximum intensity)",
-					string.Join("\n", villager.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%")),
+						relations.Select(r =>
+							$"- {r.Relation.Name}: {r.Relation.GetDescription()} Relation: {r.Relation}")),
+					// "# Emotions (0% = neutral, 100% = maximum intensity)",
+					// string.Join("\n", villager.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%")),
 					"# Location",
-					$"You are located at Sector Coordinate {villager.SectorLocation}.",
-					$"Description: {world.GetSector(villager.SectorLocation).Description}",
+					$"You are located at Sector Coordinate {villager.Sector.Position}.",
+					$"Description: {villager.Sector.Description}",
 					"Items:",
 					string.Join("\n",
-						world.GetSector(villager.SectorLocation).Items.Select(i => $"- {i.GetSummary()}")),
+						villager.Sector.Items.Select(i => $"- {i.GetSummary()}")),
 					"# Status",
 					$"- Hunger: {villager.Hunger} (+1 per hour)",
 					"# Inventory",
-					string.Join("\n", villager.Inventory.Select(i => $"- {i.GetSummary()}"))
+					string.Join("\n", villager.Items.Select(i => $"- {i.GetSummary()}"))
 				])
 			}
 		};
-		messages.AddRange(villager.GetMemory().Select(h => new Message {
+		messages.AddRange(villager.Memories.Select(m => new Message {
 			Role = Role.User,
-			Content = h
+			Content = m.Memory
 		}));
 		messages.Add(new Message {
 			Role = Role.User,

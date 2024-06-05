@@ -32,4 +32,6 @@ public class VillagerDto {
 	public List<VillagerMemoryDto> Memories { get; set; } = [];
 	public List<ItemDto> Items { get; } = [];
 	public List<ActivityDto> Activities { get; set; } = null!;
+
+	public string GetDescription() => $"{Name} is a {Age} year old {Gender}. Summary: {Summary}";
 }
