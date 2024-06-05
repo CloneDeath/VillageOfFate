@@ -100,6 +100,15 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("TotalTokens").AsInt32().NotNullable()
 				  .WithColumn("PromptTokens").AsInt32().NotNullable()
 				  .WithColumn("CompletionTokens").AsInt32().NotNullable();
+
+			Create.Table("VillagerActionErrors")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("WorldTime").AsDateTime().NotNullable()
+				  .WithColumn("EarthTime").AsDateTime().NotNullable()
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("ActionName").AsString(MaxNameLength).NotNullable()
+				  .WithColumn("Arguments").AsString(MaxDescriptionLength).NotNullable()
+				  .WithColumn("Error").AsString(MaxDescriptionLength).NotNullable();
 		}
 
 		public override void Down() {

@@ -18,6 +18,7 @@ public class WorldRunner(
 	VillagerService villagers,
 	RelationshipService relationships,
 	VillagerActivityService villagerActivities,
+	VillagerActionErrorService villagerActionErrors,
 	ActivityFactory activityFactory,
 	GptUsageService gptUsage,
 	ChatGptApi chatGptApi,
@@ -145,7 +146,7 @@ public class WorldRunner(
 		foreach (var call in calls ?? []) {
 			var action = activityFactory.Actions.FirstOrDefault(a => a.Name == call.Function.Name);
 			if (action == null) {
-				logger.LogInvalidAction(villager, call.Function);
+				await villagerActionErrors.LogInvalidAction(villager, call.Function.Name, call.Function.Arguments);
 				continue;
 			}
 

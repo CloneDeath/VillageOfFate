@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
+using VillageOfFate.DAL.Attributes;
 
 namespace VillageOfFate.DAL.Entities;
 
@@ -24,7 +25,7 @@ public abstract class ActivityDto {
 
 	public bool Interruptible { get; set; }
 
-	public required DateTime StartTime { get; set; }
+	[UtcDateTime] public required DateTime StartTime { get; set; }
 	public DateTime EndTime => StartTime + Duration;
 
 	public Guid VillagerId { get; set; }
