@@ -41,7 +41,12 @@ public class Program {
 						  ?? throw new NullReferenceException("AppSettings object is null");
 		var dbDetails = DatabaseFactory.GetHandlerFor(appSettings.Database);
 		dbDetails.RunMigration();
-		builder.Services.AddDbContext<DataContext>(dbDetails.BuildContext);
+		builder.Services.AddDbContext<DataContext>(b => {
+			dbDetails.BuildContext(b);
+			if (appSettings.Database.EnableSensitiveDataLogging) {
+				b.EnableSensitiveDataLogging();
+			}
+		});
 
 		var openApiKey = builder.Configuration["OPENAI_API_KEY"]
 						 ?? throw new NullReferenceException("The Secret Configuration 'OPENAI_API_KEY' is not set.");
