@@ -19,6 +19,7 @@ public class WorldRunner(
 	RelationshipService relationships,
 	VillagerActivityService villagerActivities,
 	ActivityFactory activityFactory,
+	GptUsageService gptUsage,
 	ChatGptApi chatGptApi,
 	RandomProvider random) {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
@@ -81,8 +82,8 @@ public class WorldRunner(
 
 		if (activityResult.TriggerReactions.Any()) {
 			var selected = random.SelectOne(activityResult.TriggerReactions);
-			PushCurrentActivityIntoQueue(selected, world);
-			await QueueActionsForVillager(selected, world, chatGptApi, actions, logger, villagers);
+			PushCurrentActivityIntoQueue(selected);
+			await QueueActionsForVillager(selected);
 		}
 	}
 
@@ -106,8 +107,8 @@ public class WorldRunner(
 					string.Join("\n",
 						relations.Select(r =>
 							$"- {r.Relation.Name}: {r.Relation.GetDescription()} Relation: {r.Relation}")),
-					// "# Emotions (0% = neutral, 100% = maximum intensity)",
-					// string.Join("\n", villager.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%")),
+					"# Emotions (0% = neutral, 100% = maximum intensity)",
+					string.Join("\n", villager.Emotions.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%")),
 					"# Location",
 					$"You are located at Sector Coordinate {villager.Sector.Position}.",
 					$"Description: {villager.Sector.Description}",
@@ -130,19 +131,19 @@ public class WorldRunner(
 			Content = "Please choose an action befitting your character."
 					  + "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
 		});
+
 		var response = await chatGptApi.GetChatGptResponseAsync(messages.ToArray(),
-						   actions.Select(a => new GptFunction {
+						   activityFactory.Actions.Select(a => new GptFunction {
 							   Name = a.Name,
 							   Description = a.Description,
 							   Parameters = a.Parameters
 						   }), ToolChoice.Required);
-
-		logger.LogGptUsage(response.Usage);
+		await gptUsage.AddUsageAsync(response);
 
 		var calls = response.Choices.First().Message.ToolCalls;
 		var details = new List<IActivityDetails>();
 		foreach (var call in calls ?? []) {
-			var action = actions.FirstOrDefault(a => a.Name == call.Function.Name);
+			var action = activityFactory.Actions.FirstOrDefault(a => a.Name == call.Function.Name);
 			if (action == null) {
 				logger.LogInvalidAction(villager, call.Function);
 				continue;

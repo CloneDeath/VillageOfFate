@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.WebModels;
 
-namespace VillageOfFate.Legacy;
+namespace VillageOfFate.DAL.Entities;
 
-public class VillagerEmotions {
+public class EmotionDto {
+	public Guid Id { get; set; } = Guid.NewGuid();
+
 	public int Happiness { get; set; }
 	public int Sadness { get; set; }
 	public int Fear { get; set; }
+
+	public VillagerDto Villager { get; set; } = null!;
 
 	public int this[VillagerEmotion emotion] {
 		get {

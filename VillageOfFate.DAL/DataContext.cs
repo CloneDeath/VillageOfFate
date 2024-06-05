@@ -15,9 +15,12 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 	public DbSet<VillagerItemDto> VillagerItems { get; set; } = null!;
 	public DbSet<RelationshipDto> Relationships { get; set; } = null!;
 	public DbSet<VillagerMemoryDto> VillagerMemories { get; set; } = null!;
+	public DbSet<EmotionDto> Emotions { get; set; } = null!;
 
 	public DbSet<SectorDto> Sectors { get; set; } = null!;
 	public DbSet<SectorItemDto> SectorItems { get; set; } = null!;
+
+	public DbSet<GptUsageDto> GptUsage { get; set; } = null!;
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
@@ -25,6 +28,11 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 					.HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 		modelBuilder.Entity<TimeDto>().Property(e => e.Label)
 					.HasConversion<string>();
+
+		modelBuilder.Entity<GptUsageDto>().Property(e => e.WorldTime)
+					.HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+		modelBuilder.Entity<GptUsageDto>().Property(e => e.EarthTime)
+					.HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 
 		modelBuilder
 			.Entity<ActivityDto>()

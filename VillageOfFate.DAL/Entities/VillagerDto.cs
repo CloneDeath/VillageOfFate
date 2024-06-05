@@ -24,6 +24,9 @@ public class VillagerDto {
 	public Guid SectorId { get; set; }
 	[ForeignKey("SectorId")] public required SectorDto Sector { get; set; }
 
+	public Guid EmotionsId { get; set; }
+	public EmotionDto Emotions { get; set; } = new();
+
 	[NotMapped] public ActivityDto? CurrentActivity => Activities.MinBy(a => a.StartTime);
 
 	[NotMapped]

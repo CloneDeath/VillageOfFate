@@ -39,7 +39,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Summary").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Gender").AsInt32().NotNullable().ForeignKey("Genders", "Id")
 				  .WithColumn("Hunger").AsInt32().NotNullable()
-				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id");
+				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
+				  .WithColumn("EmotionsId").AsGuid().NotNullable().ForeignKey("Emotions", "Id");
 
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()
@@ -47,6 +48,12 @@ namespace SouthernCrm.Dal.Migrations {
 			Insert.IntoTable("Genders")
 				  .Row(new { Id = (int)Gender.Male, Name = "Male" })
 				  .Row(new { Id = (int)Gender.Female, Name = "Female" });
+
+			Create.Table("Emotions")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("Happiness").AsInt32().NotNullable()
+				  .WithColumn("Sadness").AsInt32().NotNullable()
+				  .WithColumn("Fear").AsInt32().NotNullable();
 
 			Create.Table("VillagerItems")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
@@ -86,6 +93,13 @@ namespace SouthernCrm.Dal.Migrations {
 			Create.UniqueConstraint()
 				  .OnTable("Relationships")
 				  .Columns("VillagerId", "RelationId");
+
+			Create.Table("GptUsage")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("Timestamp").AsDateTime().NotNullable()
+				  .WithColumn("TotalTokens").AsInt32().NotNullable()
+				  .WithColumn("PromptTokens").AsInt32().NotNullable()
+				  .WithColumn("CompletionTokens").AsInt32().NotNullable();
 		}
 
 		public override void Down() {

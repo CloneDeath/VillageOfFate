@@ -31,7 +31,7 @@ public static class WebModelConversions {
 		Quantity = item.Quantity
 	};
 
-	public static WebVillagerEmotions AsWebVillagerEmotions(this VillagerEmotions emotions) =>
+	public static WebVillagerEmotions AsWebVillagerEmotions(this EmotionDto emotions) =>
 		new() {
 			Happiness = emotions.Happiness,
 			Sadness = emotions.Sadness,

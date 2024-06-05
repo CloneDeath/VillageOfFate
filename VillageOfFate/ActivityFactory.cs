@@ -17,5 +17,13 @@ public class ActivityFactory(VillageLogger logger) {
 		new LookoutAction(logger)
 	];
 
+	public IReadOnlyList<IAction> Actions => throw new NotImplementedException();
+
 	public IActivity Get(ActivityDto activity) => throw new NotImplementedException();
+}
+
+public interface IAction {
+	string Name { get; }
+	string Description { get; }
+	object? Parameters { get; }
 }

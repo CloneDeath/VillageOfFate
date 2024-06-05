@@ -9,7 +9,6 @@ public class Villager {
 	private readonly Memory _memory = [];
 
 	public string Name { get; set; } = "Villager";
-	public VillagerEmotions Emotions { get; set; } = new();
 	public Position SectorLocation { get; set; }
 	public int Hunger { get; private set; }
 	public required Activity CurrentActivity { get; set; }
@@ -19,6 +18,4 @@ public class Villager {
 	public void AddMemory(string message) {
 		_memory.Add(message);
 	}
-
-	public void AdjustEmotion(VillagerEmotion emotion, int adjustment) => Emotions.AdjustEmotion(emotion, adjustment);
 }
