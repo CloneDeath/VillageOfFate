@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.Legacy;
@@ -17,8 +18,8 @@ public static class WebModelConversions {
 			SectorLocation = new Position(villager.Sector.X, villager.Sector.Y),
 			Hunger = villager.Hunger,
 			Inventory = villager.Items.Select(AsWebItem).ToList(),
-			CurrentActivity = villager.CurrentActivity.AsWebActivity()
-			//ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity()))
+			CurrentActivity = villager.CurrentActivity?.AsWebActivity(),
+			ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity()))
 		};
 
 	public static WebItem AsWebItem(this ItemDto item) => new() {

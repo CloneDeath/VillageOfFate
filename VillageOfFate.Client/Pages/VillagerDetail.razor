@@ -38,10 +38,15 @@
     }
 
     <h3>Activities</h3>
-    <h4>@villager.CurrentActivity.Description (@villager.CurrentActivity.Duration)</h4>
+    @if (villager.CurrentActivity == null) {
+        <i>Idle</i>
+    } else {
+        <p>@villager.CurrentActivity.Description (@villager.CurrentActivity.Duration)</p>
+    }
+
     <ul>
         @foreach (var activity in villager.ActivityQueue) {
-            <li>@activity.Description (@villager.CurrentActivity.Duration)</li>
+            <li>@activity.Description (@activity.Duration)</li>
         }
     </ul>
 }

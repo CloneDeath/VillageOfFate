@@ -62,9 +62,8 @@ public class WorldRunner(
 	private async Task SimulateWorld() {
 		var currentTime = await time.GetAsync(TimeLabel.World);
 		var villager = villagers.GetVillagerWithTheShortestCompleteTime();
-		if (villager.CurrentActivity.EndTime > currentTime) {
-			return;
-		}
+		if (villager.CurrentActivity == null) return;
+		if (villager.CurrentActivity.EndTime > currentTime) return;
 
 		var currentActivity = activityFactory.Get(villager.CurrentActivity);
 		var activityResult = currentActivity.OnCompletion();
@@ -72,7 +71,7 @@ public class WorldRunner(
 		if (villager.ActivityQueue.Any()) {
 			await villagerActivities.PopAsync(villager);
 		}
-        // else {
+		// else {
 		// await QueueActionsForVillager(villager, world, chatGptApi, actions, logger, villagers);
 		// PushCurrentActivityIntoQueue(villager, world);
 		// villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
