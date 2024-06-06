@@ -19,7 +19,7 @@ public class WorldRunner(
 	RelationshipService relationships,
 	VillagerActivityService villagerActivities,
 	VillagerActionErrorService villagerActionErrors,
-	ActivityFactory activityFactory,
+	ActionFactory actionFactory,
 	GptUsageService gptUsage,
 	ChatGptApi chatGptApi,
 	RandomProvider random) {
@@ -70,7 +70,7 @@ public class WorldRunner(
 		if (villager.CurrentActivity == null) return;
 		if (villager.CurrentActivity.EndTime > currentTime) return;
 
-		var currentActivity = activityFactory.Get(villager.CurrentActivity);
+		var currentActivity = actionFactory.Get(villager.CurrentActivity);
 		var activityResult = currentActivity.OnCompletion();
 
 		if (villager.ActivityQueue.Any()) {
@@ -134,7 +134,7 @@ public class WorldRunner(
 		});
 
 		var response = await chatGptApi.GetChatGptResponseAsync(messages.ToArray(),
-						   activityFactory.Actions.Select(a => new GptFunction {
+						   actionFactory.Actions.Select(a => new GptFunction {
 							   Name = a.Name,
 							   Description = a.Description,
 							   Parameters = a.Parameters
@@ -144,7 +144,7 @@ public class WorldRunner(
 		var calls = response.Choices.First().Message.ToolCalls;
 		var details = new List<IActivityDetails>();
 		foreach (var call in calls ?? []) {
-			var action = activityFactory.Actions.FirstOrDefault(a => a.Name == call.Function.Name);
+			var action = actionFactory.Actions.FirstOrDefault(a => a.Name == call.Function.Name);
 			if (action == null) {
 				await villagerActionErrors.LogInvalidAction(villager, call.Function.Name, call.Function.Arguments);
 				continue;

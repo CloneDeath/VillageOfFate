@@ -66,7 +66,7 @@ public class Program {
 		builder.Services.AddSingleton<RandomProvider>();
 		builder.Services.AddScoped<WorldInitializer>();
 		builder.Services.AddScoped<WorldRunner>();
-		builder.Services.AddSingleton<ActivityFactory>();
+		builder.Services.AddSingleton<ActionFactory>();
 
 		var app = builder.Build();
 		if (app.Environment.IsDevelopment()) {
