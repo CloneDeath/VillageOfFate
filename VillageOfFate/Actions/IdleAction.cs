@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
@@ -22,9 +23,9 @@ public class IdleAction : IAction {
 		};
 	}
 
-	public IActionResults Begin(ActivityDto activityDto) => new ActionResults();
+	public Task<IActionResults> Begin(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
 
-	public IActionResults End(ActivityDto activityDto) => new ActionResults();
+	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
 }
 
 public class IdleArguments {

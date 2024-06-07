@@ -22,6 +22,7 @@ public static class ParameterBuilder {
 								  throw new Exception(
 									  $"{nameof(JsonDescriptionAttribute)} is required for string properties")
 				},
+				// Enum has Enum.GetNames<VillagerEmotion>()
 				_ => throw new NotSupportedException($"Unsupported property type: {propertyType.Name}")
 			};
 			jsonObject.Properties.Add(propertyName, jsonData);

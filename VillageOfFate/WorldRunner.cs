@@ -70,8 +70,8 @@ public class WorldRunner(
 		if (villager.CurrentActivity == null) return;
 		if (villager.CurrentActivity.EndTime > currentTime) return;
 
-		var currentActivity = actionFactory.Get(villager.CurrentActivity);
-		var activityResult = currentActivity.OnCompletion();
+		var currentActivity = actionFactory.Get(villager.CurrentActivity.Name);
+		var activityResult = currentActivity.End(villager.CurrentActivity);
 
 		if (villager.ActivityQueue.Any()) {
 			await villagerActivities.PopAsync(villager);

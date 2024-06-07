@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using VillageOfFate.DAL.Entities;
 
 namespace VillageOfFate;
@@ -8,6 +9,6 @@ public interface IAction {
 	object? Parameters { get; }
 
 	ActivityDto ParseArguments(string arguments);
-	IActionResults Begin(ActivityDto activityDto);
-	IActionResults End(ActivityDto activityDto);
+	Task<IActionResults> Begin(ActivityDto activityDto);
+	Task<IActionResults> End(ActivityDto activityDto);
 }

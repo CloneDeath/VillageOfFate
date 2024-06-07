@@ -10,7 +10,7 @@ namespace VillageOfFate.DAL.Entities;
 public abstract class ActivityDto {
 	public Guid Id { get; set; } = Guid.NewGuid();
 
-	public ActivityName Name { get; protected set; }
+	public ActivityName Name { get; protected init; }
 
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Description { get; set; } = string.Empty;
@@ -39,5 +39,6 @@ public abstract class ActivityDto {
 }
 
 public enum ActivityName {
-	Idle
+	Idle,
+	AdjustEmotionalState
 }

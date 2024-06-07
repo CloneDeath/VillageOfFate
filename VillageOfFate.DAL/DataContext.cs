@@ -52,9 +52,11 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 		// https://learn.microsoft.com/en-us/ef/core/modeling/inheritance
 		modelBuilder.Entity<ActivityDto>()
 					.HasDiscriminator(p => p.Name)
-					.HasValue<IdleActivityDto>(ActivityName.Idle);
+					.HasValue<IdleActivityDto>(ActivityName.Idle)
+					.HasValue<AdjustEmotionalStateActivityDto>(ActivityName.AdjustEmotionalState);
 
 		ItemDto.OnModelCreating(modelBuilder);
 		ActivityDto.OnModelCreating(modelBuilder);
+		AdjustEmotionalStateActivityDto.OnModelCreating(modelBuilder);
 	}
 }
