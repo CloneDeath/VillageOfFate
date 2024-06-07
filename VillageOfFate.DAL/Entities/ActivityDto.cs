@@ -25,7 +25,7 @@ public abstract class ActivityDto {
 
 	public bool Interruptible { get; set; }
 
-	[UtcDateTime] public required DateTime StartTime { get; set; }
+	[UtcDateTime] public DateTime StartTime { get; set; }
 	public DateTime EndTime => StartTime + Duration;
 
 	public Guid VillagerId { get; set; }

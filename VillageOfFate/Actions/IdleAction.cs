@@ -1,9 +1,9 @@
 using System;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.DAL.Entities.Activities;
 
 namespace VillageOfFate.Actions;
 
@@ -12,18 +12,19 @@ public class IdleAction : IAction {
 	public string Description => "You will do nothing, sit idle, and wait for something to happen.";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<IdleArguments>();
 
-	public ActivityDto ParseArguments(string arguments) => throw new NotImplementedException();
-
-	public IActionResults Begin(ActivityDto activityDto) => throw new NotImplementedException();
-
-	public IActionResults End(ActivityDto activityDto) => throw new NotImplementedException();
-
-	public IActivityDetails Execute(string arguments, VillagerActionState state) =>
-		new ActivityDetails {
+	public ActivityDto ParseArguments(string arguments) {
+		var args = JsonSerializer.Deserialize<IdleArguments>(arguments)
+				   ?? throw new NullReferenceException();
+		return new IdleActivityDto {
 			Description = "Doing Nothing",
 			Interruptible = true,
-			Duration = TimeSpan.FromSeconds(10)
+			Duration = TimeSpan.FromHours(args.DurationInHours)
 		};
+	}
+
+	public IActionResults Begin(ActivityDto activityDto) => new ActionResults();
+
+	public IActionResults End(ActivityDto activityDto) => new ActionResults();
 }
 
 public class IdleArguments {
