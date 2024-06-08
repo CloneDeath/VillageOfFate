@@ -1,4 +1,5 @@
 @page "/villagers/{Id:guid}"
+@using VillageOfFate.Client.Components
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
@@ -28,11 +29,9 @@
     </ul>
     <h3>Inventory</h3>
     @if (villager.Inventory.Any()) {
-        <ul>
-            @foreach (var item in villager.Inventory) {
-                <li>@item.GetSummary()</li>
-            }
-        </ul>
+        @foreach (var item in villager.Inventory) {
+            <ItemComponent Item="@item"/>
+        }
     } else {
         <i>Empty</i>
     }

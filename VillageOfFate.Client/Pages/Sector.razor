@@ -1,4 +1,5 @@
 @page "/world/sectors/{Id:guid}"
+@using VillageOfFate.Client.Components
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject SectorApi SectorApi
@@ -17,13 +18,9 @@
     </h1>
     <h3>Items:</h3>
     @if (sector.Items.Any()) {
-        <ul>
-            @foreach (var item in sector.Items) {
-                <li>
-                    <img src="data:image/png;base64,@item.Base64Image" alt="" width="50" height="50"/> @item.GetSummary()
-                </li>
-            }
-        </ul>
+        @foreach (var item in sector.Items) {
+            <ItemComponent Item="@item"/>
+        }
     } else {
         <i>Empty</i>
     }
