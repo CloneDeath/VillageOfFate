@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace OpenAi;
+namespace OpenAi.Gpt;
 
 public class Message {
 	[JsonPropertyName("role")] public Role Role { get; set; } = Role.User;
@@ -32,8 +32,7 @@ public class FunctionCall {
 }
 
 [JsonConverter(typeof(LowerCaseEnumConverter))]
-public enum Role
-{
+public enum Role {
 	[JsonPropertyName("user")] User,
 	[JsonPropertyName("system")] System,
 	[JsonPropertyName("assistant")] Assistant,

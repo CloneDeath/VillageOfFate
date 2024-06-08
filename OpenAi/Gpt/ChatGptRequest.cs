@@ -1,9 +1,10 @@
 using System.Text.Json.Serialization;
+using OpenAi.Models;
 
-namespace OpenAi;
+namespace OpenAi.Gpt;
 
 public class ChatGptRequest {
-	[JsonPropertyName("model")] public string Model { get; set; } = string.Empty;
+	[JsonPropertyName("model")] public GptModel Model { get; set; } = GptModel.Gpt_4_Omni;
 	[JsonPropertyName("messages")] public Message[] Messages { get; set; } = [];
 	[JsonPropertyName("max_tokens")] public int? MaxTokens { get; set; }
 	[JsonPropertyName("tools")] public GptTool[]? Tools { get; set; }
@@ -22,8 +23,7 @@ public class GptFunction {
 }
 
 [JsonConverter(typeof(LowerCaseEnumConverter))]
-public enum ToolChoice
-{
+public enum ToolChoice {
 	[JsonPropertyName("none")] None,
 	[JsonPropertyName("auto")] Auto,
 	[JsonPropertyName("required")] Required

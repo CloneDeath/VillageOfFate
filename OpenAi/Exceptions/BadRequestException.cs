@@ -3,8 +3,8 @@ using System.Text.Json;
 
 namespace OpenAi.Exceptions;
 
-public class BadRequestException(ErrorResponse response, ChatGptRequest request)
+public class BadRequestException(ErrorResponse response, object request)
 	: Exception($"BadRequest: {JsonSerializer.Serialize(response)}, Request: {JsonSerializer.Serialize(request)}") {
 	public ErrorResponse Response { get; } = response;
-	public ChatGptRequest Request { get; } = request;
+	public object Request { get; } = request;
 }

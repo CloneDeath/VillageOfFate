@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace OpenAi;
+namespace OpenAi.Gpt;
 
 public class ChatGptResponse {
 	[JsonPropertyName("id")] public string Id { get; set; } = string.Empty;
@@ -11,8 +11,7 @@ public class ChatGptResponse {
 	[JsonPropertyName("error")] public ErrorResponse? Error { get; set; }
 }
 
-public class Choice
-{
+public class Choice {
 	[JsonPropertyName("index")] public int Index { get; set; }
 	[JsonPropertyName("message")] public Message Message { get; set; } = new();
 	[JsonPropertyName("finish_reason")] public string FinishReason { get; set; } = string.Empty;
@@ -20,6 +19,7 @@ public class Choice
 
 public class Usage {
 	[JsonPropertyName("prompt_tokens")] public int PromptTokens { get; set; }
-	[JsonPropertyName("completion_tokens")] public int CompletionTokens { get; set; }
+	[JsonPropertyName("completion_tokens")]
+	public int CompletionTokens { get; set; }
 	[JsonPropertyName("total_tokens")] public int TotalTokens { get; set; }
 }
