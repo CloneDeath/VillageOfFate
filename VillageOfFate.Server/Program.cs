@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VillageOfFate.Actions;
 using VillageOfFate.DAL;
 using VillageOfFate.Legacy;
 using VillageOfFate.Server.Databases;
@@ -59,14 +60,19 @@ public class Program {
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
 		builder.Services.AddScoped<VillagerActivityService>();
+		builder.Services.AddScoped<VillagerEmotionService>();
 		builder.Services.AddScoped<VillagerMemoryService>();
 		builder.Services.AddScoped<VillagerItemService>();
+		builder.Services.AddScoped<VillagerActionErrorService>();
 		builder.Services.AddScoped<RelationshipService>();
 		builder.Services.AddScoped<ItemService>();
+		builder.Services.AddScoped<GptUsageService>();
 		builder.Services.AddSingleton<RandomProvider>();
 		builder.Services.AddScoped<WorldInitializer>();
 		builder.Services.AddScoped<WorldRunner>();
-		builder.Services.AddSingleton<ActionFactory>();
+		builder.Services.AddScoped<ActionFactory>();
+		builder.Services.AddScoped<IdleAction>();
+		builder.Services.AddScoped<AdjustEmotionalStateAction>();
 
 		var app = builder.Build();
 		if (app.Environment.IsDevelopment()) {

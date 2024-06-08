@@ -13,7 +13,7 @@ namespace SouthernCrm.Dal.Migrations {
 		public override void Up() {
 			Create.Table("Time")
 				  .WithColumn("Label").AsString(MaxNameLength).NotNullable().PrimaryKey()
-				  .WithColumn("Now").AsDateTime().NotNullable();
+				  .WithColumn("Time").AsDateTime().NotNullable();
 
 			Create.Table("Items")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
