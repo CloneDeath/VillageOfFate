@@ -95,6 +95,7 @@ public class Program {
 
 		var cancellationTokenSource = new CancellationTokenSource();
 		var appTask = app.RunAsync(cancellationTokenSource.Token);
+		//var runnerTask = Task.Delay(TimeSpan.FromMinutes(2), cancellationTokenSource.Token);
 		var runnerTask = runner.RunAsync(cancellationTokenSource.Token);
 
 		await Task.WhenAny(appTask, runnerTask);

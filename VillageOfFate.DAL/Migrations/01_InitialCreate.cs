@@ -30,7 +30,11 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("DurationTicks").AsInt64().NotNullable()
 				  .WithColumn("Interruptible").AsBoolean().NotNullable()
-				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id");
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
+				  // Adjust Emotional State
+				  .WithColumn("Emotion").AsString(MaxNameLength).Nullable()
+				  .WithColumn("Adjustment").AsInt32().Nullable()
+				  .WithColumn("Reason").AsString(MaxDescriptionLength).Nullable();
 
 			Create.Table("Villagers")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
