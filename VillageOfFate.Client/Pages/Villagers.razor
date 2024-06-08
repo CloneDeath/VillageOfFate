@@ -18,7 +18,7 @@
             <th>Name</th>
             <th>Gender</th>
             <th>Age</th>
-            <th>Summary</th>
+            <th>Activity</th>
         </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
                 </td>
                 <td>@villager.Age</td>
                 <td>@villager.Gender</td>
-                <td>@villager.Summary</td>
+                <td>@villager.CurrentActivity?.Description ?? "---"</td>
             </tr>
         }
         </tbody>

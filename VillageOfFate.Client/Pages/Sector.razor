@@ -1,0 +1,43 @@
+@page "/world/sectors/{Id:guid}"
+@using VillageOfFate.Client.Services.Api
+@using VillageOfFate.WebModels
+@inject SectorApi SectorApi
+@inject NavigationManager NavigationManager
+
+<PageTitle>Villager Detail</PageTitle>
+
+@if (sector == null) {
+    <p>
+        <em>Loading...</em>
+    </p>
+} else {
+    <h1>
+        <button class="btn btn-primary" @onclick="GoBack">&lt;</button>
+        @sector.Position
+    </h1>
+    <h3>Items:</h3>
+    @if (sector.Items.Any()) {
+        <ul>
+            @foreach (var item in sector.Items) {
+                <li>@item.GetSummary()</li>
+            }
+        </ul>
+    } else {
+        <i>Empty</i>
+    }
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private WebSector? sector;
+
+    protected override async Task OnParametersSetAsync() {
+        sector = await SectorApi.GetSectorAsync(Id);
+    }
+
+    private void GoBack() {
+        NavigationManager.NavigateTo("/world");
+    }
+
+}

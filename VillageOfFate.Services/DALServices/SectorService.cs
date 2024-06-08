@@ -42,4 +42,8 @@ public class SectorService(DataContext context, ItemService items) {
 	}
 
 	public async Task<IEnumerable<SectorDto>> GetAll() => await context.Sectors.ToListAsync();
+
+	public Task<SectorDto> Get(Guid id) {
+		return context.Sectors.Include(s => s.Items).FirstAsync(s => s.Id == id);
+	}
 }
