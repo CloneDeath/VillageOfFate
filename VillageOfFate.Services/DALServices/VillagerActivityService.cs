@@ -19,8 +19,8 @@ public class VillagerActivityService(DataContext context, TimeService time) {
 	}
 
 	public async Task AddAsync(VillagerDto villager, ActivityDto activityDetail) {
-		villager = context.Villagers.Entry(villager).Entity;
-		villager.Activities.Add(activityDetail);
+		activityDetail.Villager = villager;
+		await context.Activities.AddAsync(activityDetail);
 		await context.SaveChangesAsync();
 	}
 
