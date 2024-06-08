@@ -20,7 +20,7 @@
         <ul>
             @foreach (var item in sector.Items) {
                 <li>
-                    <img src="data:image/png;base64,@item.Base64Image" alt=""/> @item.GetSummary()
+                    <img src="data:image/png;base64,@item.Base64Image" alt="" width="50" height="50"/> @item.GetSummary()
                 </li>
             }
         </ul>

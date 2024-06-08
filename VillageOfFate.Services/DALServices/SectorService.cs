@@ -1,4 +1,3 @@
-using AsyncUtilities;
 using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
@@ -33,12 +32,14 @@ public class SectorService(DataContext context, ItemService items) {
 	}
 
 	public async Task AddItemRangeToSectorAsync(SectorDto sector, IEnumerable<ItemDto> itemsToAdd) {
-		var dbItems = await itemsToAdd.Select(items.EnsureExistsAsync);
-		await context.SectorItems.AddRangeAsync(dbItems.Select(item => new SectorItemDto {
-			Item = item,
-			Sector = sector
-		}));
-		await context.SaveChangesAsync();
+		foreach (var itemDto in itemsToAdd) {
+			var dbItem = await items.EnsureExistsAsync(itemDto);
+			await context.SectorItems.AddAsync(new SectorItemDto {
+				Item = dbItem,
+				Sector = sector
+			});
+			await context.SaveChangesAsync();
+		}
 	}
 
 	public async Task<IEnumerable<SectorDto>> GetAll() => await context.Sectors.ToListAsync();
