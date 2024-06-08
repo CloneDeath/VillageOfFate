@@ -19,13 +19,16 @@ public class ItemDto {
 	public bool Edible { get; set; }
 	public int HungerRestored { get; set; }
 
-	public Guid ImageId { get; set; }
-	public ImageDto Image { get; set; } = null!;
+	public Guid? ImageId { get; set; }
+	public ImageDto? Image { get; set; }
 
 	public List<VillagerDto> Villagers { get; } = [];
 	public List<SectorDto> Sectors { get; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<ItemDto>()
+					.Navigation(i => i.Image).AutoInclude();
+
 		modelBuilder.Entity<ItemDto>()
 					.HasMany(v => v.Villagers)
 					.WithMany(v => v.Items)

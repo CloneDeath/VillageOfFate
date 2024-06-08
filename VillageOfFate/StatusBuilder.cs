@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using VillageOfFate.DAL.Entities;
-using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 
 namespace VillageOfFate;

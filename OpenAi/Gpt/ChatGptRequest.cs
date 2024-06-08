@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using OpenAi.Conversion;
 using OpenAi.Models;
 
 namespace OpenAi.Gpt;
@@ -22,7 +23,7 @@ public class GptFunction {
 	[JsonPropertyName("parameters")] public object? Parameters { get; set; }
 }
 
-[JsonConverter(typeof(LowerCaseEnumConverter))]
+[JsonConverter(typeof(JsonPropertyNameEnumConverter<ToolChoice>))]
 public enum ToolChoice {
 	[JsonPropertyName("none")] None,
 	[JsonPropertyName("auto")] Auto,

@@ -68,6 +68,7 @@ public class Program {
 		builder.Services.AddScoped<VillagerActionErrorService>();
 		builder.Services.AddScoped<RelationshipService>();
 		builder.Services.AddScoped<ItemService>();
+		builder.Services.AddScoped<ImageService>();
 		builder.Services.AddScoped<GptUsageService>();
 		builder.Services.AddSingleton<RandomProvider>();
 		builder.Services.AddScoped<WorldInitializer>();

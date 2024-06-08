@@ -1,5 +1,5 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using OpenAi.Conversion;
 
 namespace OpenAi.Gpt;
 
@@ -31,16 +31,10 @@ public class FunctionCall {
 	[JsonPropertyName("arguments")] public string Arguments { get; set; } = string.Empty;
 }
 
-[JsonConverter(typeof(LowerCaseEnumConverter))]
+[JsonConverter(typeof(JsonPropertyNameEnumConverter<Role>))]
 public enum Role {
 	[JsonPropertyName("user")] User,
 	[JsonPropertyName("system")] System,
 	[JsonPropertyName("assistant")] Assistant,
 	[JsonPropertyName("tool")] Tool
-}
-
-public class LowerCaseEnumConverter() : JsonStringEnumConverter(new LowerCaseNamingPolicy());
-
-public class LowerCaseNamingPolicy : JsonNamingPolicy {
-	public override string ConvertName(string name) => name.ToLower();
 }
