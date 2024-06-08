@@ -9,7 +9,6 @@ public interface IJsonData {
 
 public class JsonObject : IJsonData {
 	[JsonPropertyName("properties")] public virtual Dictionary<string, IJsonData> Properties { get; init; } = new();
-
 	[JsonPropertyName("required")] public virtual List<string> Required { get; init; } = [];
 	[JsonPropertyName("type")] public string Type => "object";
 }
@@ -17,6 +16,11 @@ public class JsonObject : IJsonData {
 public class JsonString : IJsonData {
 	[JsonPropertyName("description")] public required string Description { get; init; }
 	[JsonPropertyName("type")] public string Type => "string";
+}
+
+public class JsonNumber : IJsonData {
+	[JsonPropertyName("description")] public required string Description { get; init; }
+	[JsonPropertyName("type")] public string Type => "number";
 }
 
 public class JsonEnum : IJsonData {

@@ -12,7 +12,11 @@ public class VillagerService(DataContext context) {
 	}
 
 	public VillagerDto GetVillagerWithTheShortestCompleteTime() {
-		return context.Villagers.Include(villagerDto => villagerDto.Activities).ToList()
+		return context.Villagers
+					  .Include(v => v.Items)
+					  .Include(v => v.Activities)
+					  .Include(v => v.Sector)
+					  .ToList()
 					  .OrderBy(v => v.CurrentActivity != null
 										? v.CurrentActivity.StartTime + v.CurrentActivity.Duration
 										: DateTime.MaxValue).First();
