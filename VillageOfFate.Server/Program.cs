@@ -70,6 +70,7 @@ public class Program {
 		builder.Services.AddSingleton<RandomProvider>();
 		builder.Services.AddScoped<WorldInitializer>();
 		builder.Services.AddScoped<WorldRunner>();
+		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
 		builder.Services.AddScoped<IdleAction>();
 		builder.Services.AddScoped<AdjustEmotionalStateAction>();

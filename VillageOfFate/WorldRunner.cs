@@ -20,7 +20,9 @@ public class WorldRunner(
 	ActionFactory actionFactory,
 	GptUsageService gptUsage,
 	ChatGptApi chatGptApi,
-	RandomProvider random) {
+	RandomProvider random,
+	StatusBuilder statusBuilder
+) {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
 	public async Task<DateTime> GetWorldTimeAsync() => await time.GetAsync(TimeLabel.World);
@@ -92,31 +94,10 @@ public class WorldRunner(
 	}
 
 	private async Task QueueActionsForVillager(VillagerDto villager) {
-		var relations = relationships.Get(villager);
 		var messages = new List<Message> {
 			new() {
 				Role = Role.System,
-				Content = string.Join("\n", [
-					$"Respond as {villager.Name} would. {villager.GetDescription()}",
-					"Keep your gender, age, role, history, and personality in mind.",
-					"Act like a real person in a fantasy world. Don't declare your actions, just do them.",
-					"# Relationships",
-					string.Join("\n",
-						relations.Select(r =>
-							$"- {r.Relation.Name}: {r.Relation.GetDescription()} Relation: {r.Relation}")),
-					"# Emotions (0% = neutral, 100% = maximum intensity)",
-					string.Join("\n", villager.Emotions.GetEmotions().Select(e => $"- {e.Emotion}: {e.Intensity}%")),
-					"# Location",
-					$"You are located at Sector Coordinate {villager.Sector.Position}.",
-					$"Description: {villager.Sector.Description}",
-					"Items:",
-					string.Join("\n",
-						villager.Sector.Items.Select(i => $"- {i.GetSummary()}")),
-					"# Status",
-					$"- Hunger: {villager.Hunger} (+1 per hour)",
-					"# Inventory",
-					string.Join("\n", villager.Items.Select(i => $"- {i.GetSummary()}"))
-				])
+				Content = statusBuilder.BuildStatusFor(villager)
 			}
 		};
 		messages.AddRange(villager.Memories.Select(m => new Message {
