@@ -18,7 +18,7 @@ public class WorldRunner(
 	VillagerActionErrorService villagerActionErrors,
 	ActionFactory actionFactory,
 	GptUsageService gptUsage,
-	ChatGptApi chatGptApi,
+	OpenApi openApi,
 	RandomProvider random,
 	StatusBuilder statusBuilder
 ) {
@@ -109,7 +109,7 @@ public class WorldRunner(
 					  + "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
 		});
 
-		var response = await chatGptApi.GetChatGptResponseAsync(messages.ToArray(),
+		var response = await openApi.GetChatGptResponseAsync(messages.ToArray(),
 						   actionFactory.Actions.Select(a => new GptFunction {
 							   Name = a.Name,
 							   Description = a.Description,

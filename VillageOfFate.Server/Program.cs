@@ -52,7 +52,7 @@ public class Program {
 
 		var openApiKey = builder.Configuration["OPENAI_API_KEY"]
 						 ?? throw new NullReferenceException("The Secret Configuration 'OPENAI_API_KEY' is not set.");
-		builder.Services.AddSingleton(new ChatGptApi(openApiKey) {
+		builder.Services.AddSingleton(new OpenApi(openApiKey) {
 			Model = GptModel.Gpt_4_Omni
 		});
 

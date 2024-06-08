@@ -12,14 +12,14 @@ using OpenAi.Models;
 
 namespace OpenAi;
 
-public class ChatGptApi {
+public class OpenApi {
 	private readonly HttpClient _httpClient;
 	private const string _apiUrl = "https://api.openai.com/v1";
-	private string ChatCompletionUrl => $"{_apiUrl}/chat/completions";
+	private static string ChatCompletionUrl => $"{_apiUrl}/chat/completions";
 
 	public GptModel Model { get; set; } = GptModel.Gpt_35_Turbo;
 
-	public ChatGptApi(string apiKey) {
+	public OpenApi(string apiKey) {
 		_httpClient = new HttpClient();
 		_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 	}
