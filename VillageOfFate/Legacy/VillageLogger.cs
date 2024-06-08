@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using GptApi;
+using OpenAi;
 
 namespace VillageOfFate.Legacy;
 

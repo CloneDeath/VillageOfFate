@@ -1,6 +1,6 @@
 using System;
 
-namespace GptApi;
+namespace OpenAi.Models;
 
 public enum GptModel {
 	Gpt_35_Turbo,

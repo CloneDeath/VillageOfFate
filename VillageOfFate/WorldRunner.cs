@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GptApi;
+using OpenAi;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.Services.DALServices;

@@ -1,4 +1,4 @@
-using GptApi;
+using OpenAi;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.Services.DALServices.Core;

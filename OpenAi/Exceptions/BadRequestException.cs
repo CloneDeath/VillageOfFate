@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json;
 
-namespace GptApi.Exceptions;
+namespace OpenAi.Exceptions;
 
 public class BadRequestException(ErrorResponse response, ChatGptRequest request)
 	: Exception($"BadRequest: {JsonSerializer.Serialize(response)}, Request: {JsonSerializer.Serialize(request)}") {

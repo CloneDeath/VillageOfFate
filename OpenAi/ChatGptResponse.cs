@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace GptApi;
+namespace OpenAi;
 
 public class ChatGptResponse {
 	[JsonPropertyName("id")] public string Id { get; set; } = string.Empty;

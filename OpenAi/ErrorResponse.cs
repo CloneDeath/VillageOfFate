@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace GptApi; 
+namespace OpenAi; 
 
 public class ErrorResponse {
 	[JsonPropertyName("message")] public string Message { get; set; } = string.Empty;

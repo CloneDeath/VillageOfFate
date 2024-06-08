@@ -7,13 +7,15 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using GptApi.Exceptions;
+using OpenAi.Exceptions;
+using OpenAi.Models;
 
-namespace GptApi;
+namespace OpenAi;
 
 public class ChatGptApi {
 	private readonly HttpClient _httpClient;
-	private const string _apiUrl = "https://api.openai.com/v1/chat/completions";
+	private const string _apiUrl = "https://api.openai.com/v1";
+	private string ChatCompletionUrl => $"{_apiUrl}/chat/completions";
 
 	public GptModel Model { get; set; } = GptModel.Gpt_35_Turbo;
 
@@ -36,7 +38,7 @@ public class ChatGptApi {
 		var jsonContent = JsonSerializer.Serialize(requestBody);
 		var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-		var response = await _httpClient.PostAsync(_apiUrl, content);
+		var response = await _httpClient.PostAsync(ChatCompletionUrl, content);
 		if (response.StatusCode == HttpStatusCode.BadRequest) {
 			var badResponse = await response.Content.ReadAsStringAsync();
 			var errorBody = JsonSerializer.Deserialize<ChatGptResponse>(badResponse)?.Error

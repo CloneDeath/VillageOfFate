@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GptApi;
+namespace OpenAi;
 
 public class Message {
 	[JsonPropertyName("role")] public Role Role { get; set; } = Role.User;
