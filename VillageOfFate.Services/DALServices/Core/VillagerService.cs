@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
-namespace VillageOfFate.Services.DALServices;
+namespace VillageOfFate.Services.DALServices.Core;
 
 public class VillagerService(DataContext context) {
 	public async Task<VillagerDto> CreateAsync(VillagerDto villager) {

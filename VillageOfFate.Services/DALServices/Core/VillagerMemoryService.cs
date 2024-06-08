@@ -1,7 +1,7 @@
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
-namespace VillageOfFate.Services.DALServices;
+namespace VillageOfFate.Services.DALServices.Core;
 
 public class VillagerMemoryService(DataContext context) {
 	public async Task AddAsync(VillagerDto villager, string memory) {
