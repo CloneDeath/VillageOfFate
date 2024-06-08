@@ -21,7 +21,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Quantity").AsInt32().NotNullable()
 				  .WithColumn("Edible").AsBoolean().NotNullable()
-				  .WithColumn("HungerRestored").AsInt32().NotNullable();
+				  .WithColumn("HungerRestored").AsInt32().NotNullable()
+				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
 
 			Create.Table("Activities")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
@@ -114,6 +115,13 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("ActionName").AsString(MaxNameLength).NotNullable()
 				  .WithColumn("Arguments").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Error").AsString(MaxDescriptionLength).NotNullable();
+
+			Create.Table("Images")
+					  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+					  .WithColumn("Created").AsDateTime().NotNullable()
+					  .WithColumn("Base64Image").AsString(ImageDto.MaxBase64ImageLength).NotNullable()
+					  .WithColumn("Prompt").AsString(MaxDescriptionLength).NotNullable();
+
 		}
 
 		public override void Down() {

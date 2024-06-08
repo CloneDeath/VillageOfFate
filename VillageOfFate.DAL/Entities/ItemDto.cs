@@ -19,6 +19,9 @@ public class ItemDto {
 	public bool Edible { get; set; }
 	public int HungerRestored { get; set; }
 
+	public Guid ImageId { get; set; }
+	public ImageDto Image { get; set; } = null!;
+
 	public List<VillagerDto> Villagers { get; } = [];
 	public List<SectorDto> Sectors { get; } = [];
 

@@ -24,6 +24,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
 	public DbSet<GptUsageDto> GptUsage { get; set; } = null!;
 	public DbSet<VillagerActionErrorDto> VillagerActionErrors { get; set; } = null!;
+	public DbSet<ImageDto> Images { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
