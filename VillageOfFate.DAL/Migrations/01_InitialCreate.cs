@@ -100,7 +100,8 @@ namespace SouthernCrm.Dal.Migrations {
 
 			Create.Table("GptUsage")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
-				  .WithColumn("Timestamp").AsDateTime().NotNullable()
+				  .WithColumn("WorldTime").AsDateTime().NotNullable()
+				  .WithColumn("EarthTime").AsDateTime().NotNullable()
 				  .WithColumn("TotalTokens").AsInt32().NotNullable()
 				  .WithColumn("PromptTokens").AsInt32().NotNullable()
 				  .WithColumn("CompletionTokens").AsInt32().NotNullable();

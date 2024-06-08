@@ -14,7 +14,6 @@ namespace VillageOfFate;
 public class WorldRunner(
 	TimeService time,
 	VillagerService villagers,
-	RelationshipService relationships,
 	VillagerActivityService villagerActivities,
 	VillagerActionErrorService villagerActionErrors,
 	ActionFactory actionFactory,
