@@ -48,6 +48,7 @@ public static class WebModelConversions {
 
 	public static WebSector AsWebSector(this SectorDto sector) =>
 		new(sector.Position) {
+			Id = sector.Id,
 			Description = sector.Description,
 			Items = sector.Items.Select(AsWebItem).ToList()
 		};

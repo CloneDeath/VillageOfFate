@@ -29,7 +29,7 @@
                 </td>
                 <td>@villager.Age</td>
                 <td>@villager.Gender</td>
-                <td>@villager.CurrentActivity?.Description ?? "---"</td>
+                <td>@(villager.CurrentActivity?.Description ?? "---")</td>
             </tr>
         }
         </tbody>

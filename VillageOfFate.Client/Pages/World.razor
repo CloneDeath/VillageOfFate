@@ -22,7 +22,7 @@
     <h3>Sectors</h3>
     <ul>
         @foreach (var sector in world.Sectors) {
-            <li>@sector.Position: @sector.Description</li>
+            <li><a href="/world/sectors/@sector.Id">@sector.Position</a>: @sector.Description</li>
         }
     </ul>
 }
