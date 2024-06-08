@@ -10,5 +10,3 @@ public class Activity(IActivityDetails details, World world) : IActivityDetails 
 	public bool Interruptible => details.Interruptible;
 	public ActivityResult OnCompletion() => details.OnCompletion();
 }
-
-public class IdleActivity(TimeSpan duration, World world) : Activity(new IdleActivityDetails(duration), world);

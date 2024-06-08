@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.DAL.Entities;
-using VillageOfFate.Legacy;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server;

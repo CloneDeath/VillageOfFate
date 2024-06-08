@@ -10,6 +10,7 @@ namespace VillageOfFate.Actions;
 
 public class IdleAction : IAction {
 	public string Name => "DoNothing";
+	public ActivityName ActivityName => ActivityName.Idle;
 	public string Description => "You will do nothing, sit idle, and wait for something to happen.";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<IdleArguments>();
 

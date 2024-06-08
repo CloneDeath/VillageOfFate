@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.Actions;
+using VillageOfFate.DAL.Entities;
 
 namespace VillageOfFate;
 
@@ -16,5 +17,6 @@ public class ActionFactory(IdleAction idle, AdjustEmotionalStateAction adjustEmo
 
 	public IReadOnlyList<IAction> Actions => [idle, adjustEmotionalState];
 
-	public IAction Get(string actionName) => Actions.First(a => a.Name == actionName);
+	public IAction? Get(string actionName) => Actions.FirstOrDefault(a => a.Name == actionName);
+	public IAction Get(ActivityName activityName) => Actions.First(a => a.ActivityName == activityName);
 }

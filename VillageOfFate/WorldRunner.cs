@@ -5,9 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GptApi;
 using VillageOfFate.DAL.Entities;
-using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 
@@ -67,32 +65,30 @@ public class WorldRunner(
 	private async Task SimulateWorld() {
 		var currentTime = await time.GetAsync(TimeLabel.World);
 		var villager = villagers.GetVillagerWithTheShortestCompleteTime();
-		if (villager.CurrentActivity == null) return;
+		if (villager.CurrentActivity == null) {
+			await QueueActionsForVillager(villager);
+			if (villager.CurrentActivity == null) return;
+			var action = actionFactory.Get(villager.CurrentActivity.Name);
+			await action.Begin(villager.CurrentActivity);
+			return;
+		}
+
 		if (villager.CurrentActivity.EndTime > currentTime) return;
 
 		var currentActivity = actionFactory.Get(villager.CurrentActivity.Name);
-		var activityResult = currentActivity.End(villager.CurrentActivity);
-
-		if (villager.ActivityQueue.Any()) {
-			await villagerActivities.PopAsync(villager);
-		} else {
-			await QueueActionsForVillager(villager);
-			PushCurrentActivityIntoQueue(villager);
-			villager.CurrentActivity = new IdleActivity(random.NextTimeSpan(TimeSpan.FromMinutes(2)), world);
-		}
+		var activityResult = await currentActivity.End(villager.CurrentActivity);
+		await villagerActivities.PopAsync(villager);
 
 		if (activityResult.TriggerReactions.Any()) {
 			var selected = random.SelectOne(activityResult.TriggerReactions);
-			PushCurrentActivityIntoQueue(selected);
+			await villagerActivities.PushCurrentActivityIntoQueue(selected);
 			await QueueActionsForVillager(selected);
-		}
-	}
 
-	private static void PushCurrentActivityIntoQueue(Villager villager, World world) {
-		var current = villager.CurrentActivity;
-		var remainingTime = current.EndTime - world.CurrenTime;
-		current.Duration = remainingTime < TimeSpan.Zero ? TimeSpan.Zero : remainingTime;
-		villager.ActivityQueue.Push(current);
+			if (selected.CurrentActivity != null) {
+				var action = actionFactory.Get(selected.CurrentActivity.Name);
+				await action.Begin(selected.CurrentActivity);
+			}
+		}
 	}
 
 	private async Task QueueActionsForVillager(VillagerDto villager) {
@@ -141,25 +137,29 @@ public class WorldRunner(
 						   }), ToolChoice.Required);
 		await gptUsage.AddUsageAsync(response);
 
-		var calls = response.Choices.First().Message.ToolCalls;
-		var details = new List<IActivityDetails>();
-		foreach (var call in calls ?? []) {
-			var action = actionFactory.Actions.FirstOrDefault(a => a.Name == call.Function.Name);
+		var calls = response.Choices.First().Message.ToolCalls ?? [];
+		var details = new List<ActivityDto> {
+			new IdleActivityDto {
+				Duration = random.NextTimeSpan(TimeSpan.FromMinutes(2))
+			}
+		};
+		var now = await time.GetAsync(TimeLabel.World);
+		for (var index = 0; index < calls.Length; index++) {
+			var call = calls[index];
+			var action = actionFactory.Get(call.Function.Name);
 			if (action == null) {
 				await villagerActionErrors.LogInvalidAction(villager, call.Function.Name, call.Function.Arguments);
 				continue;
 			}
 
-			details.Add(action.Execute(call.Function.Arguments, new VillagerActionState {
-				World = world,
-				Actor = villager,
-				Others = villagers.Where(v => v != villager).ToArray()
-			}));
+			var activity = action.ParseArguments(call.Function.Arguments);
+			activity.Villager = villager;
+			activity.StartTime = now + index * TimeSpan.FromDays(1);
+			details.Add(activity);
 		}
 
-		villager.CurrentActivity = new Activity(details.First(), world);
 		foreach (var activityDetail in details) {
-			villager.ActivityQueue.Push(new Activity(activityDetail, world));
+			await villagerActivities.AddAsync(villager, activityDetail);
 		}
 	}
 }

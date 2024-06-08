@@ -5,6 +5,7 @@ namespace VillageOfFate;
 
 public interface IAction {
 	string Name { get; }
+	ActivityName ActivityName { get; }
 	string Description { get; }
 	object? Parameters { get; }
 

@@ -18,10 +18,3 @@ public class ActivityDetails : IActivityDetails {
 	ActivityResult IActivityDetails.OnCompletion() =>
 		OnCompletion?.Invoke() ?? new ActivityResult { TriggerReactions = [] };
 }
-
-public class IdleActivityDetails(TimeSpan duration) : IActivityDetails {
-	public string Description => "Idle";
-	public TimeSpan Duration => duration;
-	public bool Interruptible => true;
-	public ActivityResult OnCompletion() => new() { TriggerReactions = [] };
-}

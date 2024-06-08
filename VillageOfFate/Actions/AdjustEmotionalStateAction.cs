@@ -14,8 +14,10 @@ namespace VillageOfFate.Actions;
 public class AdjustEmotionalStateAction(
 	TimeService time,
 	VillagerMemoryService memoryService,
-	VillagerEmotionService emotionService) : IAction {
+	VillagerEmotionService emotionService
+) : IAction {
 	public string Name => "AdjustEmotionalState";
+	public ActivityName ActivityName => ActivityName.AdjustEmotionalState;
 	public string Description => "Adjusts your emotional state by a specified amount.";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<AdjustEmotionalStateArguments>();
 
