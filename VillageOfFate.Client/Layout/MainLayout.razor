@@ -8,7 +8,7 @@
     <main>
         <div class="top-row px-4 auth dp1">
             <div class="left">
-                Current time: @currentTime
+                World Time: @worldTime
             </div>
 
             <LoginDisplay/>
@@ -24,11 +24,11 @@
 @inject TimeApi TimeService
 
 @code {
-    private DateTime? currentTime;
+    private DateTime? worldTime;
 
     protected override async Task OnInitializedAsync() {
         await base.OnInitializedAsync();
-        currentTime = await TimeService.GetTime();
+        worldTime = await TimeService.GetTime();
     }
 
 }
