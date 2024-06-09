@@ -18,8 +18,10 @@
         @sector.Position
     </h1>
 
-    <img src="@ImageApi.GetImageUrl(sector.ImageId)" alt=""/>
-    <p>@sector.Description</p>
+    <div class="d-flex">
+        <img src="@ImageApi.GetImageUrl(sector.ImageId)" alt=""/>
+        <p>@sector.Description</p>
+    </div>
 
     <h3>Items:</h3>
     <div class="item-container">
