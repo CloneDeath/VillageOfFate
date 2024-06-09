@@ -47,4 +47,8 @@ public class SectorService(DataContext context, ItemService items) {
 	public Task<SectorDto> Get(Guid id) {
 		return context.Sectors.Include(s => s.Items).FirstAsync(s => s.Id == id);
 	}
+
+	public IEnumerable<SectorDto> GetSectorsWithoutImages() {
+		return context.Sectors.Where(s => s.ImageId == null);
+	}
 }

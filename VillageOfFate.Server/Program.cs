@@ -73,6 +73,7 @@ public class Program {
 		builder.Services.AddSingleton<RandomProvider>();
 		builder.Services.AddScoped<WorldInitializer>();
 		builder.Services.AddScoped<WorldRunner>();
+		builder.Services.AddScoped<ImageGenerationRunner>();
 		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
 		builder.Services.AddScoped<IdleAction>();
@@ -94,15 +95,17 @@ public class Program {
 						  ?? throw new NullReferenceException("Could not get the WorldInitializer");
 		await initializer.PopulateWorldAsync();
 
-		var runner = scope.ServiceProvider.GetService<WorldRunner>()
-					 ?? throw new NullReferenceException("Could not get the WorldRunner");
+		var worldRunner = scope.ServiceProvider.GetService<WorldRunner>()
+						  ?? throw new NullReferenceException("Could not get the WorldRunner");
+		var imageGenRunner = scope.ServiceProvider.GetService<ImageGenerationRunner>()
+							 ?? throw new NullReferenceException("Could not get the ImageGenerationRunner");
 
 		var cancellationTokenSource = new CancellationTokenSource();
 		var appTask = app.RunAsync(cancellationTokenSource.Token);
-		//var runnerTask = Task.Delay(TimeSpan.FromMinutes(2), cancellationTokenSource.Token);
-		var runnerTask = runner.RunAsync(cancellationTokenSource.Token);
+		var worldRunnerTask = worldRunner.RunAsync(cancellationTokenSource.Token);
+		var imageGenRunnerTask = imageGenRunner.RunAsync(cancellationTokenSource.Token);
 
-		await Task.WhenAny(appTask, runnerTask);
+		await Task.WhenAny(appTask, worldRunnerTask, imageGenRunnerTask);
 		await cancellationTokenSource.CancelAsync();
 	}
 }
