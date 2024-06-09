@@ -1,0 +1,15 @@
+.item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: .5em;
+    border-radius: 4px;
+}
+
+.item img {
+    width: 3em;
+    height: 3em;
+    margin-right: 10px;
+    border-radius: 4px;
+}

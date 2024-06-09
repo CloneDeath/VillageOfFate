@@ -4,6 +4,7 @@
 @using VillageOfFate.WebModels
 @inject SectorApi SectorApi
 @inject NavigationManager NavigationManager
+@inject ImageApi ImageApi
 
 <PageTitle>Villager Detail</PageTitle>
 
@@ -16,16 +17,20 @@
         <button class="btn btn-primary" @onclick="GoBack">&lt;</button>
         @sector.Position
     </h1>
-    <h3>Description:</h3>
+
+    <img src="@ImageApi.GetImageUrl(sector.ImageId)" alt=""/>
     <p>@sector.Description</p>
+
     <h3>Items:</h3>
-    @if (sector.Items.Any()) {
-        @foreach (var item in sector.Items) {
-            <ItemComponent Item="@item"/>
+    <div class="item-container">
+        @if (sector.Items.Any()) {
+            @foreach (var item in sector.Items) {
+                <ItemComponent Item="@item"/>
+            }
+        } else {
+            <i>Empty</i>
         }
-    } else {
-        <i>Empty</i>
-    }
+    </div>
 }
 
 @code {
@@ -42,4 +47,3 @@
     }
 
 }
-
