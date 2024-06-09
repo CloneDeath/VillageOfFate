@@ -16,6 +16,8 @@
         <button class="btn btn-primary" @onclick="GoBack">&lt;</button>
         @sector.Position
     </h1>
+    <h3>Description:</h3>
+    <p>@sector.Description</p>
     <h3>Items:</h3>
     @if (sector.Items.Any()) {
         @foreach (var item in sector.Items) {
@@ -40,3 +42,4 @@
     }
 
 }
+
