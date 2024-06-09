@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.Services.DALServices.Core;
 
 namespace VillageOfFate;
 
 public class StatusBuilder(RelationshipService relationships) {
-	public string BuildStatusFor(VillagerDto villager) {
+	public async Task<string> BuildVillagerStatusAsync(VillagerDto villager) {
 		var results = new List<string> {
 			$"Respond as {villager.Name} would. {villager.GetDescription()}",
 			"Keep your gender, age, role, history, and personality in mind.",
 			"Act like a real person in a fantasy world. Don't declare your actions, just do them."
 		};
-		results.AddRange(GetRelationships(villager));
+		await foreach (var entry in GetRelationships(villager)) {
+			results.Add(entry);
+		}
 		results.AddRange(GetEmotions(villager));
 		results.AddRange(GetLocation(villager));
 		results.AddRange(GetStatus(villager));
@@ -20,8 +23,8 @@ public class StatusBuilder(RelationshipService relationships) {
 		return string.Join(Environment.NewLine, results);
 	}
 
-	private IEnumerable<string> GetRelationships(VillagerDto villager) {
-		var relations = relationships.Get(villager);
+	private async IAsyncEnumerable<string> GetRelationships(VillagerDto villager) {
+		var relations = await relationships.GetAsync(villager);
 		yield return "### Relationships";
 		foreach (var r in relations) {
 			yield return $"- {r.Relation.Name}: {r.Relation.GetDescription()} Relation: {r.Relation}";

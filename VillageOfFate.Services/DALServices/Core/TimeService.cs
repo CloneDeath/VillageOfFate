@@ -3,32 +3,32 @@ using VillageOfFate.DAL.Entities;
 
 namespace VillageOfFate.Services.DALServices.Core;
 
-public class TimeService(DataContext dataContext) {
+public class TimeService(DataContext context) {
 	public async Task<DateTime> GetAsync(TimeLabel label, DateTime? defaultValue = null) {
-		var entry = await dataContext.Time.FindAsync(label);
+		var entry = await context.Time.FindAsync(label);
 		if (entry != null) return entry.Time;
 
 		var now = defaultValue ?? DateTime.UtcNow;
-		await dataContext.Time.AddAsync(new TimeDto {
+		await context.Time.AddAsync(new TimeDto {
 			Label = label,
 			Time = now
 		});
-		await dataContext.SaveChangesAsync();
+		await context.SaveChangesAsync();
 		return now;
 	}
 
 	public async Task SetAsync(TimeLabel label, DateTime value) {
-		var entry = await dataContext.Time.FindAsync(label);
+		var entry = await context.Time.FindAsync(label);
 		if (entry != null) {
 			entry.Time = value.ToUniversalTime();
-			dataContext.Time.Update(entry);
+			context.Time.Update(entry);
 		} else {
-			await dataContext.Time.AddAsync(new TimeDto {
+			await context.Time.AddAsync(new TimeDto {
 				Label = label,
 				Time = value.ToUniversalTime()
 			});
 		}
 
-		await dataContext.SaveChangesAsync();
+		await context.SaveChangesAsync();
 	}
 }

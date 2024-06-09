@@ -12,6 +12,7 @@ using OpenAi.Models;
 using VillageOfFate.Actions;
 using VillageOfFate.DAL;
 using VillageOfFate.Legacy;
+using VillageOfFate.Runners;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Settings;
 using VillageOfFate.Services.DALServices;
@@ -90,22 +91,28 @@ public class Program {
 		app.UseCors("AllowMyOrigin");
 		app.MapDefaultControllerRoute();
 
+		await InitializeWorld(app);
+
+		var cancellationTokenSource = new CancellationTokenSource();
+		var appTask = app.RunAsync(cancellationTokenSource.Token);
+		var worldRunnerTask = ExecuteRunner<WorldRunner>(app, cancellationTokenSource.Token);
+		var imageGenRunnerTask = ExecuteRunner<ImageGenerationRunner>(app, cancellationTokenSource.Token);
+
+		await Task.WhenAny(appTask, worldRunnerTask, imageGenRunnerTask);
+		await cancellationTokenSource.CancelAsync();
+	}
+
+	private static async Task ExecuteRunner<T>(WebApplication app, CancellationToken token) where T : IRunner {
+		await using var scope = app.Services.CreateAsyncScope();
+		var runner = scope.ServiceProvider.GetService<T>()
+					 ?? throw new NullReferenceException($"Could not get the {typeof(T).Name} runner");
+		await runner.RunAsync(token);
+	}
+
+	private static async Task InitializeWorld(WebApplication app) {
 		await using var scope = app.Services.CreateAsyncScope();
 		var initializer = scope.ServiceProvider.GetService<WorldInitializer>()
 						  ?? throw new NullReferenceException("Could not get the WorldInitializer");
 		await initializer.PopulateWorldAsync();
-
-		var worldRunner = scope.ServiceProvider.GetService<WorldRunner>()
-						  ?? throw new NullReferenceException("Could not get the WorldRunner");
-		var imageGenRunner = scope.ServiceProvider.GetService<ImageGenerationRunner>()
-							 ?? throw new NullReferenceException("Could not get the ImageGenerationRunner");
-
-		var cancellationTokenSource = new CancellationTokenSource();
-		var appTask = app.RunAsync(cancellationTokenSource.Token);
-		var worldRunnerTask = worldRunner.RunAsync(cancellationTokenSource.Token);
-		var imageGenRunnerTask = imageGenRunner.RunAsync(cancellationTokenSource.Token);
-
-		await Task.WhenAny(appTask, worldRunnerTask, imageGenRunnerTask);
-		await cancellationTokenSource.CancelAsync();
 	}
 }

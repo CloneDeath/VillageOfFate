@@ -10,7 +10,7 @@ using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 
-namespace VillageOfFate;
+namespace VillageOfFate.Runners;
 
 public class WorldRunner(
 	TimeService time,
@@ -22,7 +22,7 @@ public class WorldRunner(
 	OpenApi openApi,
 	RandomProvider random,
 	StatusBuilder statusBuilder
-) {
+) : IRunner {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
 	public async Task<DateTime> GetWorldTimeAsync() => await time.GetAsync(TimeLabel.World);
@@ -97,7 +97,7 @@ public class WorldRunner(
 		var messages = new List<Message> {
 			new() {
 				Role = Role.System,
-				Content = statusBuilder.BuildStatusFor(villager)
+				Content = await statusBuilder.BuildVillagerStatusAsync(villager)
 			}
 		};
 		messages.AddRange(villager.Memories.Select(m => new Message {

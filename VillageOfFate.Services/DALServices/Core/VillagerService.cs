@@ -34,7 +34,7 @@ public class VillagerService(DataContext context) {
 																.Include(v => v.Sector)
 																.FirstAsync(v => v.Id == id);
 
-	public IEnumerable<VillagerDto> GetVillagersWithoutImages() {
-		return context.Villagers.Where(v => v.ImageId == null);
+	public async Task<IEnumerable<VillagerDto>> GetVillagersWithoutImages() {
+		return await context.Villagers.Where(v => v.ImageId == null).ToListAsync();
 	}
 }

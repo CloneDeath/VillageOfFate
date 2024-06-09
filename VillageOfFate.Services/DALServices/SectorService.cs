@@ -48,7 +48,7 @@ public class SectorService(DataContext context, ItemService items) {
 		return context.Sectors.Include(s => s.Items).FirstAsync(s => s.Id == id);
 	}
 
-	public IEnumerable<SectorDto> GetSectorsWithoutImages() {
-		return context.Sectors.Where(s => s.ImageId == null);
+	public async Task<IEnumerable<SectorDto>> GetSectorsWithoutImagesAsync() {
+		return await context.Sectors.Where(s => s.ImageId == null).ToListAsync();
 	}
 }

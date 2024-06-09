@@ -13,7 +13,7 @@ public class ItemService(DataContext context) {
 		return result;
 	}
 
-	public IEnumerable<ItemDto> GetItemsWithoutImages() {
-		return context.Items.Where(i => i.ImageId == null);
+	public async Task<IEnumerable<ItemDto>> GetItemsWithoutImagesAsync() {
+		return await context.Items.Where(i => i.ImageId == null).ToListAsync();
 	}
 }
