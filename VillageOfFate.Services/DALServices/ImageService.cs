@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using OpenAi;
 using OpenAi.Images;
 using VillageOfFate.DAL;
@@ -16,4 +17,6 @@ public class ImageService(DataContext context, OpenApi api) {
 		});
 		return image.Entity;
 	}
+
+	public async Task<ImageDto> GetAsync(Guid id) => await context.Images.FirstAsync(img => img.Id == id);
 }
