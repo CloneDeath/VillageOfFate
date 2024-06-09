@@ -45,7 +45,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Gender").AsInt32().NotNullable().ForeignKey("Genders", "Id")
 				  .WithColumn("Hunger").AsInt32().NotNullable()
 				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
-				  .WithColumn("EmotionsId").AsGuid().NotNullable().ForeignKey("Emotions", "Id");
+				  .WithColumn("EmotionsId").AsGuid().NotNullable().ForeignKey("Emotions", "Id")
+				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
 
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()
@@ -77,7 +78,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("X").AsInt32().NotNullable()
-				  .WithColumn("Y").AsInt32().NotNullable();
+				  .WithColumn("Y").AsInt32().NotNullable()
+				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
 			Create.UniqueConstraint()
 				  .OnTable("Sectors")
 				  .Columns("X", "Y");

@@ -27,6 +27,9 @@ public class VillagerDto {
 	public Guid EmotionsId { get; set; }
 	public EmotionDto Emotions { get; set; } = new();
 
+	public Guid? ImageId { get; set; }
+	public ImageDto? Image { get; set; }
+
 	[NotMapped] public ActivityDto? CurrentActivity => Activities.MinBy(a => a.StartTime);
 
 	[NotMapped]
