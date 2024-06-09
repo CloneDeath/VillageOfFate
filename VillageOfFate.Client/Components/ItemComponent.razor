@@ -5,7 +5,7 @@
 <div class="item">
     <img src="@ImageApi.GetImageUrl(Item.ImageId)" alt="" width="50" height="50"/>
     <div>
-        <div>@Item.Name x @Item.Quantity</div>
+        <div>@Item.Name @QuantityText</div>
         <div>@Item.Description</div>
     </div>
 </div>
@@ -24,4 +24,5 @@
 
 @code {
     [Parameter] public required WebItem Item { get; set; }
+    public string QuantityText => Item.Quantity > 1 ? $"x{Item.Quantity}" : "";
 }
