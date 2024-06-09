@@ -7,7 +7,7 @@ namespace VillageOfFate.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ImageController(ImageService images) : ControllerBase {
+public class ImagesController(ImageService images) : ControllerBase {
 	[HttpGet("{id:guid}")]
 	public async Task<FileContentResult> GetImage(Guid id) {
 		var image = await images.GetAsync(id);

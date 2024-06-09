@@ -20,6 +20,7 @@ public class Program {
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
 		builder.Services.AddSingleton(new WorldApi(apiBaseUri));
 		builder.Services.AddSingleton(new SectorApi(apiBaseUri));
+		builder.Services.AddSingleton(new ImageApi(apiBaseUri));
 
 		builder.Services.AddOidcAuthentication(options => {
 			// Configure your authentication provider options here.
