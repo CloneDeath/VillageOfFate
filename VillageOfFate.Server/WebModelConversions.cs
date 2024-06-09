@@ -18,7 +18,8 @@ public static class WebModelConversions {
 			Hunger = villager.Hunger,
 			Inventory = villager.Items.Select(AsWebItem).ToList(),
 			CurrentActivity = villager.CurrentActivity?.AsWebActivity(),
-			ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity()))
+			ActivityQueue = new Stack<WebActivity>(villager.ActivityQueue.Select(a => a.AsWebActivity())),
+			ImageId = villager.ImageId
 		};
 
 	public static WebItem AsWebItem(this ItemDto item) => new() {
@@ -51,6 +52,7 @@ public static class WebModelConversions {
 		new(sector.Position) {
 			Id = sector.Id,
 			Description = sector.Description,
-			Items = sector.Items.Select(AsWebItem).ToList()
+			Items = sector.Items.Select(AsWebItem).ToList(),
+			ImageId = sector.ImageId
 		};
 }

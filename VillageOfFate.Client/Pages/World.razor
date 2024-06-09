@@ -1,4 +1,5 @@
 @page "/world"
+@using VillageOfFate.Client.Components
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject WorldApi WorldService
@@ -14,11 +15,10 @@
 } else {
     <p>Time: @world.CurrenTime</p>
     <h3>Villagers</h3>
-    <ul>
-        @foreach (var villager in world.Villagers) {
-            <li>@villager.Name</li>
-        }
-    </ul>
+    @foreach (var villager in world.Villagers) {
+        <VillagerComponent Villager="villager"/>
+    }
+
     <h3>Sectors</h3>
     <ul>
         @foreach (var sector in world.Sectors) {
