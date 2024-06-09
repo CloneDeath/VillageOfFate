@@ -1,42 +1,38 @@
 @page "/world"
 @page "/"
-@using VillageOfFate.Client.Components
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
-@inject WorldApi WorldService
+@inject SectorsApi SectorsApi
+@inject ImageApi ImageApi
+@inject NavigationManager NavigationManager
 
-<PageTitle>World</PageTitle>
+<title>The World</title>
 
-<h1>World</h1>
-
-@if (world == null) {
-    <p>
-        <em>Loading...</em>
-    </p>
+@if (Sectors == null) {
+    <em>Loading...</em>
 } else {
-    <p>Time: @world.CurrenTime</p>
-    <h3>Villagers</h3>
-    <div class="row">
-        <div class="col-sm-6">
-            @foreach (var villager in world.Villagers) {
-                <VillagerComponent Villager="villager"/>
-            }
-        </div>
-    </div>
-
-    <h3>Sectors</h3>
-    <ul>
-        @foreach (var sector in world.Sectors) {
-            <li><a href="/world/sectors/@sector.Id">@sector.Position</a>: @sector.Description</li>
+    <div>
+        @foreach (var sector in Sectors) {
+            <div class="sector"
+                 @onclick="() => GoToSector(sector.Id)"
+                 style="background-image: url('@ImageApi.GetImageUrl(sector.ImageId)')"
+                 title="@sector.Description">
+                <div>@sector.Position</div>
+            </div>
         }
-    </ul>
+    </div>
 }
 
 @code {
-    public WebWorld? world { get; private set; }
+    public IEnumerable<WebSector>? Sectors { get; private set; }
+
+    public void GoToSector(Guid? id) {
+        if (id == null) return;
+        NavigationManager.NavigateTo($"/world/sectors/{id}");
+    }
 
     protected override async Task OnInitializedAsync() {
-        world = await WorldService.GetWorld();
+        Sectors = await SectorsApi.GetAllAsync();
     }
 
 }

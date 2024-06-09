@@ -2,7 +2,7 @@
 @using VillageOfFate.Client.Components
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
-@inject SectorApi SectorApi
+@inject SectorsApi SectorsApi
 @inject NavigationManager NavigationManager
 @inject ImageApi ImageApi
 
@@ -41,7 +41,7 @@
     private WebSector? sector;
 
     protected override async Task OnParametersSetAsync() {
-        sector = await SectorApi.GetSectorAsync(Id);
+        sector = await SectorsApi.GetSectorAsync(Id);
     }
 
     private void GoBack() {

@@ -1,4 +1,5 @@
 ﻿@page "/villagers"
+@using VillageOfFate.Client.Components
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
@@ -34,6 +35,14 @@
         }
         </tbody>
     </table>
+
+    <div class="row">
+        <div class="col-sm-6">
+            @foreach (var villager in villagers) {
+                <VillagerComponent Villager="villager"/>
+            }
+        </div>
+    </div>
 }
 
 @code {

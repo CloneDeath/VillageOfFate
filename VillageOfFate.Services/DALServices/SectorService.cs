@@ -11,8 +11,10 @@ public class SectorService(DataContext context, ItemService items) {
 		return await context.Sectors.AnyAsync(s => s.X == position.X && s.Y == position.Y);
 	}
 
-	public async Task<SectorDto>
-		GetOrCreateSectorAsync(Position position, Action<SectorDto>? sectorConstructor = null) {
+	public async Task<SectorDto> GetOrCreateSectorAsync(
+		Position position,
+		Action<SectorDto>? sectorConstructor = null
+	) {
 		var sector = await context.Sectors.FirstOrDefaultAsync(s => s.X == position.X && s.Y == position.Y);
 		if (sector != null) {
 			return sector;
@@ -42,9 +44,9 @@ public class SectorService(DataContext context, ItemService items) {
 		}
 	}
 
-	public async Task<IEnumerable<SectorDto>> GetAll() => await context.Sectors.ToListAsync();
+	public async Task<IEnumerable<SectorDto>> GetAllAsync() => await context.Sectors.ToListAsync();
 
-	public Task<SectorDto> Get(Guid id) {
+	public Task<SectorDto> GetAsync(Guid id) {
 		return context.Sectors.Include(s => s.Items).FirstAsync(s => s.Id == id);
 	}
 

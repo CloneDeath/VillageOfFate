@@ -1,0 +1,9 @@
+.sector {
+    background-repeat: no-repeat;
+    background-size: 100%;
+    cursor: pointer;
+    width: 200px;
+    height: 200px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
