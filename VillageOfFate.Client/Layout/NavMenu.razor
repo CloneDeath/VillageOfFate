@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">VillageOfFate.Client</a>
+        <a class="navbar-brand" href="">Village of Fate</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,20 +8,16 @@
 </div>
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
+    <nav class="nav nav-pills flex-column p-3">
+        <div class="nav-item">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <img class="bi" src="/icons/world.svg" alt="" width="16" height="16"/>
+                World
             </NavLink>
         </div>
-        <div class="nav-item px-3">
+        <div class="nav-item">
             <NavLink class="nav-link" href="villagers">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Villagers
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="world">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> World
+                <img class="bi" src="/icons/people.svg" alt="" width="16" height="16"/> Villagers
             </NavLink>
         </div>
     </nav>
