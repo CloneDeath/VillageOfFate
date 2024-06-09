@@ -2,26 +2,23 @@
 @using VillageOfFate.WebModels
 @inject ImageApi ImageApi
 
-<div class="villager">
-    <img src="@ImageApi.GetImageUrl(Villager.ImageId)" alt=""/>
-    <div>
-        <h4>@Villager.Name</h4>
-        <div>@Villager.Age Years of Age</div>
-        <div>@Villager.Summary</div>
+<div class="villager card">
+    <div class="card-body d-inline-flex">
+        <div>
+            <img src="@ImageApi.GetImageUrl(Villager.ImageId)" alt=""/>
+        </div>
+        <div class="card-content">
+            <h4>@Villager.Name</h4>
+            <div>@Villager.Age Years of Age</div>
+            <div>@Villager.Summary</div>
+        </div>
     </div>
 </div>
 
 <style>
-    .villager {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
     .villager img {
-        margin-right: 10px;
-        height: 5em;
         width: 5em;
+        height: 5em;
     }
 </style>
 

@@ -15,9 +15,13 @@
 } else {
     <p>Time: @world.CurrenTime</p>
     <h3>Villagers</h3>
-    @foreach (var villager in world.Villagers) {
-        <VillagerComponent Villager="villager"/>
-    }
+    <div class="row">
+        <div class="col-sm-6">
+            @foreach (var villager in world.Villagers) {
+                <VillagerComponent Villager="villager"/>
+            }
+        </div>
+    </div>
 
     <h3>Sectors</h3>
     <ul>

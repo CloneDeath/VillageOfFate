@@ -2,8 +2,8 @@
 @using VillageOfFate.WebModels
 @inject ImageApi ImageApi
 
-<div class="item">
-    <img src="@ImageApi.GetImageUrl(Item.ImageId)" alt="" width="50" height="50"/>
+<div class="item dp2">
+    <img src="@ImageApi.GetImageUrl(Item.ImageId)" alt=""/>
     <div>
         <div>@Item.Name @QuantityText</div>
         <div>@Item.Description</div>
@@ -15,10 +15,15 @@
         display: flex;
         align-items: center;
         margin-bottom: 10px;
+        padding: .5em;
+        border-radius: 4px;
     }
 
     .item img {
+        width: 3em;
+        height: 3em;
         margin-right: 10px;
+        border-radius: 4px;
     }
 </style>
 
