@@ -1,8 +1,10 @@
+@using VillageOfFate.Client.Services
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject ImageApi ImageApi
 @inject NavigationManager NavigationManager
 @inject SectorsApi SectorsApi
+@inject Plurality Plurality
 
 <div class="sector"
      @onclick="() => GoToSector(Sector.Id)"
@@ -10,7 +12,7 @@
      title="@Sector.Description">
     <div class="image-text">@Sector.Position</div>
     @if (VillagerCount > 0) {
-        <div class="image-text">
+        <div class="image-text" title="@VillagerCount @Plurality.Pick(VillagerCount, "villager", "villagers")">
             <img src="icons/people-count.svg" alt="villager count" width="16" height="16"/>
             @VillagerCount
         </div>
