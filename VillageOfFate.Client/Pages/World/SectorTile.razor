@@ -1,0 +1,35 @@
+@using VillageOfFate.Client.Services.Api
+@using VillageOfFate.WebModels
+@inject ImageApi ImageApi
+@inject NavigationManager NavigationManager
+@inject SectorsApi SectorsApi
+
+<div class="sector"
+     @onclick="() => GoToSector(Sector.Id)"
+     style="background-image: url('@ImageApi.GetImageUrl(Sector.ImageId)')"
+     title="@Sector.Description">
+    <div class="image-text">@Sector.Position</div>
+    @if (VillagerCount > 0) {
+        <div class="image-text">
+            <img src="icons/people-count.svg" alt="villager count" width="16" height="16"/>
+            @VillagerCount
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public required WebSector Sector { get; set; }
+
+    public int VillagerCount { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        await base.OnInitializedAsync();
+        VillagerCount = await SectorsApi.GetVillagerCountAsync(Sector.Id);
+    }
+
+    public void GoToSector(Guid? id) {
+        if (id == null) return;
+        NavigationManager.NavigateTo($"/world/sectors/{id}");
+    }
+
+}

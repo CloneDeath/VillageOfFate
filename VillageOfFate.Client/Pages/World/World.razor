@@ -1,0 +1,26 @@
+@page "/world"
+@page "/"
+@using VillageOfFate.Client.Services.Api
+@using VillageOfFate.WebModels
+@inject SectorsApi SectorsApi
+
+<title>The World</title>
+
+@if (Sectors == null) {
+    <em>Loading...</em>
+} else {
+    <div>
+        @foreach (var sector in Sectors) {
+            <SectorTile Sector="sector"/>
+        }
+    </div>
+}
+
+@code {
+    public IEnumerable<WebSector>? Sectors { get; private set; }
+
+    protected override async Task OnInitializedAsync() {
+        Sectors = await SectorsApi.GetAllAsync();
+    }
+
+}
