@@ -23,15 +23,17 @@
         <p>@sector.Description</p>
     </div>
 
-    <h3>Items:</h3>
-    <div class="item-container">
-        @if (sector.Items.Any()) {
-            @foreach (var item in sector.Items) {
-                <ItemComponent Item="@item"/>
+    <div class="dp1">
+        <h3>Items:</h3>
+        <div class="item-container">
+            @if (sector.Items.Any()) {
+                @foreach (var item in sector.Items) {
+                    <ItemComponent Item="@item"/>
+                }
+            } else {
+                <i>Empty</i>
             }
-        } else {
-            <i>Empty</i>
-        }
+        </div>
     </div>
 }
 
