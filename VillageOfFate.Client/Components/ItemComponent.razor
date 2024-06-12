@@ -5,7 +5,12 @@
 <div class="item dp2">
     <img src="@ImageApi.GetImageUrl(Item.ImageId)" alt=""/>
     <div>
-        <div>@Item.Name @QuantityText</div>
+        <div>
+            @Item.Name @QuantityText
+            @if (Item.Edible) {
+                <span class="badge text-bg-secondary">Edible</span>
+            }
+        </div>
         <div>@Item.Description</div>
     </div>
 </div>
