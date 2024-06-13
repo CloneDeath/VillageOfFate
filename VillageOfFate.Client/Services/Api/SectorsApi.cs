@@ -9,7 +9,12 @@ public class SectorsApi(ApiClient client) {
 	public async Task<IReadOnlyList<WebSector>> GetAllAsync() =>
 		await client.GetAsync<IReadOnlyList<WebSector>>("/Sectors");
 
-	public async Task<WebSector> GetSectorAsync(Guid id) => await client.GetAsync<WebSector>($"/Sectors/{id}");
+	public async Task<WebSector> GetSectorAsync(Guid sectorId) =>
+		await client.GetAsync<WebSector>($"/Sectors/{sectorId}");
 
-	public async Task<int> GetVillagerCountAsync(Guid id) => await client.GetAsync<int>($"/Sectors/{id}/VillagerCount");
+	public async Task<int> GetVillagerCountAsync(Guid sectorId) =>
+		await client.GetAsync<int>($"/Sectors/{sectorId}/VillagerCount");
+
+	public async Task<IEnumerable<WebVillager>> GetVillagersAsync(Guid sectorId) =>
+		await client.GetAsync<IEnumerable<WebVillager>>($"/Sectors/{sectorId}/Villagers");
 }

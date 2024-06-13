@@ -57,4 +57,8 @@ public class SectorService(DataContext context, ItemService items) {
 	public async Task<int> GetVillagerCountAsync(Guid id) {
 		return await context.Villagers.CountAsync(v => v.SectorId == id);
 	}
+
+	public async Task<IEnumerable<VillagerDto>> GetVillagersInSectorAsync(Guid sectorId) {
+		return await context.Villagers.Where(v => v.SectorId == sectorId).ToListAsync();
+	}
 }

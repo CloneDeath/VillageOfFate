@@ -19,5 +19,9 @@ public class SectorsController(SectorService sectors) : ControllerBase {
 	public async Task<WebSector> GetSectorAsync(Guid id) => (await sectors.GetAsync(id)).AsWebSector();
 
 	[HttpGet("{id:guid}/VillagerCount")]
-	public async Task<int> GetSectorVillagerAccountAsync(Guid id) => await sectors.GetVillagerCountAsync(id);
+	public async Task<int> GetSectorVillagerCountAsync(Guid id) => await sectors.GetVillagerCountAsync(id);
+
+	[HttpGet("{id:guid}/Villagers")]
+	public async Task<IEnumerable<WebVillager>> GetSectorVillagersAsync(Guid id) =>
+		(await sectors.GetVillagersInSectorAsync(id)).Select(v => v.AsWebVillager());
 }

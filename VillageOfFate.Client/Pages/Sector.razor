@@ -32,7 +32,17 @@
             </h2>
             <div id="villagers" class="accordion-collapse collapse show">
                 <div class="accordion-body">
-                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    @if (villagers == null) {
+                        <p>
+                            <em>Loading...</em>
+                        </p>
+                    } else {
+                        <div class="villager-container">
+                            @foreach (var villager in villagers) {
+                                <VillagerComponent Villager="@villager"/>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -62,9 +72,11 @@
     [Parameter] public Guid Id { get; set; }
 
     private WebSector? sector;
+    private IEnumerable<WebVillager>? villagers;
 
     protected override async Task OnParametersSetAsync() {
         sector = await SectorsApi.GetSectorAsync(Id);
+        villagers = await SectorsApi.GetVillagersAsync(Id);
     }
 
     private void GoBack() {
