@@ -1,8 +1,9 @@
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject ImageApi ImageApi
+@inject NavigationManager NavigationManager
 
-<div class="villager dp2">
+<div class="villager dp2" @onclick="GoToVillagerPage">
     <img src="@ImageApi.GetImageUrl(Villager.ImageId)" alt=""/>
     <div>
         <div>
@@ -25,4 +26,6 @@
 
 @code {
     [Parameter] public required WebVillager Villager { get; set; }
+
+    private void GoToVillagerPage() => NavigationManager.NavigateTo($"/villagers/{Villager.Id}");
 }

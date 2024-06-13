@@ -4,6 +4,7 @@
     margin: 5px;
     padding: .5em;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .villager img {
