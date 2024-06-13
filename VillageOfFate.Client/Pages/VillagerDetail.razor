@@ -4,6 +4,7 @@
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
 @inject SectorsApi SectorsApi
+@inject ImageApi ImageApi
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -30,6 +31,8 @@
     </p>
 } else {
     <title>@villager.Name</title>
+
+    <img src="@ImageApi.GetImageUrl(villager.ImageId)" alt=""/>
 
     <p>Gender: @villager.Gender</p>
     <p>Age: @villager.Age</p>
