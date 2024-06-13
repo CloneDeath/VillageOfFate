@@ -6,7 +6,7 @@
     <img src="@ImageApi.GetImageUrl(Item.ImageId)" alt=""/>
     <div>
         <div>
-            @Item.Name @QuantityText
+            <strong>@Item.Name</strong> @QuantityText
             @if (Item.Edible) {
                 <span class="badge text-bg-secondary">Edible</span>
             }
@@ -14,7 +14,6 @@
         <div>@Item.Description</div>
     </div>
 </div>
-
 
 @code {
     [Parameter] public required WebItem Item { get; set; }

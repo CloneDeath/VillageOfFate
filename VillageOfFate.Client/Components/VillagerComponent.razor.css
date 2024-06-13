@@ -1,4 +1,4 @@
-.item {
+.villager {
     display: flex;
     align-items: center;
     margin: 5px;
@@ -6,13 +6,23 @@
     border-radius: 4px;
 }
 
-.item img {
+.villager img {
     width: 3em;
     height: 3em;
     margin-right: 10px;
     border-radius: 4px;
 }
 
-.item .badge {
+.villager .badge {
     margin-left: 0.25rem;
+}
+
+.text-bg-male {
+    color: #fff;
+    background-color: #007BFF; /* Blue */
+}
+
+.text-bg-female {
+    color: #fff;
+    background-color: #FF69B4; /* Pink */
 }

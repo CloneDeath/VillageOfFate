@@ -2,25 +2,26 @@
 @using VillageOfFate.WebModels
 @inject ImageApi ImageApi
 
-<div class="villager card">
-    <div class="card-body d-inline-flex">
+<div class="villager dp2">
+    <img src="@ImageApi.GetImageUrl(Villager.ImageId)" alt=""/>
+    <div>
         <div>
-            <img src="@ImageApi.GetImageUrl(Villager.ImageId)" alt=""/>
+            <strong>@Villager.Name</strong>
+            @if (Villager.Gender == Gender.Male) {
+                <span class="badge text-bg-male">Male</span>
+            } else {
+                <span class="badge text-bg-female">Female</span>
+            }
         </div>
-        <div class="card-content">
-            <h4>@Villager.Name</h4>
-            <div>@Villager.Age Years of Age</div>
-            <div>@Villager.Summary</div>
+        <div>
+            @if (Villager.CurrentActivity != null) {
+                @Villager.CurrentActivity.Description
+            } else {
+                <em>Deciding what to do next...</em>
+            }
         </div>
     </div>
 </div>
-
-<style>
-    .villager img {
-        width: 5em;
-        height: 5em;
-    }
-</style>
 
 @code {
     [Parameter] public required WebVillager Villager { get; set; }

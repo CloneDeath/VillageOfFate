@@ -31,17 +31,13 @@
                 </button>
             </h2>
             <div id="villagers" class="accordion-collapse collapse show">
-                <div class="accordion-body">
+                <div class="entity-container">
                     @if (villagers == null) {
-                        <p>
-                            <em>Loading...</em>
-                        </p>
+                        <em>Loading...</em>
                     } else {
-                        <div class="villager-container">
-                            @foreach (var villager in villagers) {
-                                <VillagerComponent Villager="@villager"/>
-                            }
-                        </div>
+                        @foreach (var villager in villagers) {
+                            <VillagerComponent Villager="@villager"/>
+                        }
                     }
                 </div>
             </div>
@@ -54,7 +50,7 @@
                 </button>
             </h2>
             <div id="items" class="accordion-collapse collapse show">
-                <div class="item-container">
+                <div class="entity-container">
                     @if (sector.Items.Any()) {
                         @foreach (var item in sector.Items) {
                             <ItemComponent Item="@item"/>
@@ -84,3 +80,4 @@
     }
 
 }
+
