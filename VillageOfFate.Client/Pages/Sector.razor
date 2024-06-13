@@ -39,11 +39,11 @@
 
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="false" aria-controls="items">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="true" aria-controls="items">
                     Items
                 </button>
             </h2>
-            <div id="items" class="accordion-collapse collapse">
+            <div id="items" class="accordion-collapse collapse show">
                 <div class="item-container">
                     @if (sector.Items.Any()) {
                         @foreach (var item in sector.Items) {
