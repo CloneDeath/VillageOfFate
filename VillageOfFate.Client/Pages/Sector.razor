@@ -3,21 +3,24 @@
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject SectorsApi SectorsApi
-@inject NavigationManager NavigationManager
 @inject ImageApi ImageApi
 
-<PageTitle>Villager Detail</PageTitle>
+<title>Sector @sector?.Position</title>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/world">World</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Sector @sector?.Position</li>
+    </ol>
+</nav>
 
 @if (sector == null) {
     <p>
         <em>Loading...</em>
     </p>
 } else {
-    <h1>
-        <button class="btn btn-primary" @onclick="GoBack">&lt;</button>
-        @sector.Position
-    </h1>
-
     <div class="d-flex">
         <img src="@ImageApi.GetImageUrl(sector.ImageId)" alt=""/>
         <p>@sector.Description</p>
@@ -36,7 +39,7 @@
                         <em>Loading...</em>
                     } else {
                         @foreach (var villager in villagers) {
-                            <VillagerComponent Villager="@villager"/>
+                            <VillagerComponent Villager="@villager" SectorId="Id"/>
                         }
                     }
                 </div>
@@ -74,10 +77,4 @@
         sector = await SectorsApi.GetSectorAsync(Id);
         villagers = await SectorsApi.GetVillagersAsync(Id);
     }
-
-    private void GoBack() {
-        NavigationManager.NavigateTo("/world");
-    }
-
 }
-

@@ -3,19 +3,34 @@
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
-@inject NavigationManager NavigationManager
+@inject SectorsApi SectorsApi
 
-<PageTitle>Villager Detail</PageTitle>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        @if (!SectorId.HasValue) {
+            <li class="breadcrumb-item">
+                <a href="/villagers">Villagers</a>
+            </li>
+        } else {
+            <li class="breadcrumb-item">
+                <a href="/world">World</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="/world/sectors/@SectorId">Sector @sector?.Position</a>
+            </li>
+        }
+        <li class="breadcrumb-item active" aria-current="page">@(villager?.Name ?? "Villager")</li>
+    </ol>
+</nav>
 
 @if (villager == null) {
+    <title>Villager</title>
     <p>
         <em>Loading...</em>
     </p>
 } else {
-    <h1>
-        <button class="btn btn-primary" @onclick="GoBack">&lt;</button>
-        @villager.Name
-    </h1>
+    <title>@villager.Name</title>
+
     <p>Gender: @villager.Gender</p>
     <p>Age: @villager.Age</p>
     <p>Summary: @villager.Summary</p>
@@ -53,14 +68,17 @@
 @code {
     [Parameter] public Guid Id { get; set; }
 
+    [SupplyParameterFromQuery(Name = "sectorId")]
+    [Parameter]
+    public Guid? SectorId { get; set; }
+
     private WebVillager? villager;
+    private WebSector? sector;
 
     protected override async Task OnParametersSetAsync() {
         villager = await VillagersService.GetVillager(Id);
+        if (SectorId.HasValue) {
+            sector = await SectorsApi.GetSectorAsync(SectorId.Value);
+        }
     }
-
-    private void GoBack() {
-        NavigationManager.NavigateTo("/villagers");
-    }
-
 }
