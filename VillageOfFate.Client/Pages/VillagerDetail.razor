@@ -32,13 +32,18 @@
 } else {
     <title>@villager.Name</title>
 
-    <img src="@ImageApi.GetImageUrl(villager.ImageId)" alt=""/>
+    <div class="profile">
+        <img src="@ImageApi.GetImageUrl(villager.ImageId)" alt=""/>
 
-    <p>Gender: @villager.Gender</p>
-    <p>Age: @villager.Age</p>
-    <p>Summary: @villager.Summary</p>
-    <p>Hunger: @villager.Hunger</p>
-    <p>Position: @villager.SectorLocation</p>
+        <div>
+            <p>Gender: @villager.Gender</p>
+            <p>Age: @villager.Age</p>
+            <p>Summary: @villager.Summary</p>
+            <p>Hunger: @villager.Hunger</p>
+            <p>Position: @villager.SectorLocation</p>
+        </div>
+    </div>
+
     <h3>Emotions</h3>
     <ul>
         @foreach (var emotionalState in villager.Emotions.GetEmotions()) {
@@ -84,4 +89,5 @@
             sector = await SectorsApi.GetSectorAsync(SectorId.Value);
         }
     }
+
 }

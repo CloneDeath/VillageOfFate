@@ -10,13 +10,13 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="nav nav-pills flex-column p-3">
         <div class="nav-item">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="world" Match="NavLinkMatch.Prefix">
                 <img class="bi" src="/icons/world.svg" alt="" width="16" height="16"/>
                 World
             </NavLink>
         </div>
         <div class="nav-item">
-            <NavLink class="nav-link" href="villagers">
+            <NavLink class="nav-link" href="villagers" Match="NavLinkMatch.Prefix">
                 <img class="bi" src="/icons/people.svg" alt="" width="16" height="16"/> Villagers
             </NavLink>
         </div>
