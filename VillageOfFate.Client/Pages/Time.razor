@@ -1,0 +1,43 @@
+@page "/time"
+@using VillageOfFate.Client.Components
+@using VillageOfFate.Client.Services.Api
+@inject TimeApi TimeApi
+
+<PageTitle>Time</PageTitle>
+
+<div class="line">
+    <div>World Time: </div>
+    @if (WorldTime.HasValue) {
+        <TimeComponent GetTime="() => WorldTime.Value"/>
+    } else {
+        <em>Loading...</em>
+    }
+</div>
+
+<div class="line">
+    <div>End Time: </div>
+    @if (EndTime.HasValue) {
+        <TimeComponent GetTime="() => EndTime.Value"/>
+    } else {
+        <em>Loading...</em>
+    }
+</div>
+
+<div class="line">
+    <div>Current Time: </div>
+    <TimeComponent GetTime="() => CurrentTime"/>
+</div>
+
+@code {
+    public DateTime? WorldTime { get; set; }
+    public DateTime? EndTime { get; set; }
+    public DateTime CurrentTime => DateTime.Now;
+
+    protected override async Task OnInitializedAsync() {
+        await base.OnInitializedAsync();
+
+        WorldTime = await TimeApi.GetWorldTime();
+        EndTime = await TimeApi.GetEndTime();
+    }
+
+}

@@ -18,7 +18,7 @@ public class Program {
 		var apiBaseUri = builder.Configuration.GetValue<string>("ApiBaseUri") ??
 						 throw new Exception("ApiBaseUri is not set in appsettings.json");
 		builder.Services.AddSingleton(new ApiClient(apiBaseUri));
-		builder.Services.AddSingleton(new TimeApi(apiBaseUri));
+		builder.Services.AddSingleton<TimeApi>();
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
 		builder.Services.AddSingleton(new ImageApi(apiBaseUri));
 		builder.Services.AddSingleton<SectorsApi>();
