@@ -1,6 +1,8 @@
-﻿@using VillageOfFate.Client.Services.Api
+﻿@inject NavigationManager NavigationManager
 @using VillageOfFate.Client.Components
+@using VillageOfFate.Client.Services.Api
 @inherits LayoutComponentBase
+
 <div class="page">
     <div class="sidebar">
         <NavMenu/>
@@ -8,10 +10,10 @@
 
     <main>
         <div class="top-row px-4 auth dp1">
-            <div class="left">
+            <div class="left current-time" @onclick="NavigateToTimePage">
                 World Time:
                 @if (worldTime.HasValue) {
-                    <TimeComponent GetTime="() => worldTime.Value" />
+                    <TimeComponent GetTime="() => worldTime.Value"/>
                 } else {
                     <em>Loading...</em>
                 }
@@ -35,6 +37,10 @@
     protected override async Task OnInitializedAsync() {
         await base.OnInitializedAsync();
         worldTime = await TimeService.GetWorldTime();
+    }
+
+    private void NavigateToTimePage() {
+        NavigationManager.NavigateTo("time");
     }
 
 }

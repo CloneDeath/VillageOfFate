@@ -23,6 +23,10 @@ main {
     flex-grow: 1;
 }
 
+.current-time {
+    cursor: pointer;
+}
+
 .top-row ::deep a, .top-row ::deep .btn-link {
     white-space: nowrap;
     margin-left: 1.5rem;
