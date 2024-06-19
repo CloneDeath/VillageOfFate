@@ -15,6 +15,9 @@ public class RelationshipService(DataContext context) {
 	}
 
 	public async Task<IEnumerable<RelationshipDto>> GetAsync(VillagerDto villager) {
-		return await context.Relationships.Where(r => r.VillagerId == villager.Id).ToListAsync();
+		return await context.Relationships
+							.Include(r => r.Villager)
+							.Include(r => r.Relation)
+							.Where(r => r.VillagerId == villager.Id).ToListAsync();
 	}
 }
