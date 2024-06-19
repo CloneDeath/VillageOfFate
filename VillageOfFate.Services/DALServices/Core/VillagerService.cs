@@ -16,7 +16,7 @@ public class VillagerService(DataContext context) {
 		return result.Entity;
 	}
 
-	public VillagerDto GetVillagerWithTheShortestCompleteTime() {
+	public VillagerDto GetVillagerWithTheEarliestCompleteTime() {
 		return Villagers
 			   .ToList()
 			   .OrderBy(v => v.CurrentActivity != null
@@ -40,5 +40,9 @@ public class VillagerService(DataContext context) {
 
 	public async Task<IEnumerable<VillagerDto>> GetVillagersInSectorAsync(Guid sectorId) {
 		return await Villagers.Where(v => v.SectorId == sectorId).ToListAsync();
+	}
+
+	public async Task<IEnumerable<VillagerDto>> GetVillagersWithoutActivities() {
+		return await Villagers.Where(v => v.Activities.Count == 0).ToListAsync();
 	}
 }

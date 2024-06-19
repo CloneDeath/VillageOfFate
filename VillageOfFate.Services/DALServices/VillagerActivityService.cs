@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.Services.DALServices.Core;
@@ -12,31 +13,37 @@ public class VillagerActivityService(DataContext context, TimeService time) {
 
 		var newActivity = villager.ActivityQueue.FirstOrDefault();
 		if (newActivity != null) {
-			newActivity.StartTime = await time.GetAsync(TimeLabel.World);
+			var worldNow = await time.GetAsync(TimeLabel.World);
+			newActivity.StartTime = newActivity.StartTime < worldNow ? worldNow : newActivity.StartTime;
 		}
 
 		await context.SaveChangesAsync();
 	}
 
-	public async Task AddAsync(VillagerDto villager, ActivityDto activityDetail) {
-		activityDetail.Villager = villager;
-		await context.Activities.AddAsync(activityDetail);
-		await context.SaveChangesAsync();
-	}
-
-	public async Task PushCurrentActivityIntoQueue(VillagerDto villager) {
+	public async Task AddAsync(VillagerDto villager, ActivityDto activity) {
 		villager = context.Villagers.Entry(villager).Entity;
+		activity.Villager = villager;
 
 		var current = villager.CurrentActivity;
-		if (current == null) return;
-
-		var remainingTime = current.EndTime - await time.GetAsync(TimeLabel.World);
-		current.Duration = remainingTime < TimeSpan.Zero ? TimeSpan.Zero : remainingTime;
-
-		foreach (var activity in villager.ActivityQueue) {
-			activity.StartTime += TimeSpan.FromDays(1);
+		if (current != null && current.Priority >= activity.Priority) {
+			var worldNow = await time.GetAsync(TimeLabel.World);
+			if (current.StartTime < worldNow) {
+				var remainingTime = current.EndTime - worldNow;
+				current.Duration = remainingTime < TimeSpan.Zero ? TimeSpan.Zero : remainingTime;
+			}
 		}
 
+		var lowerPriorityActivities = await context.Activities
+												   .Where(a => a.Priority >= activity.Priority &&
+															   a.VillagerId == villager.Id)
+												   .ToListAsync();
+		foreach (var lowPriorityActivity in lowerPriorityActivities) {
+			lowPriorityActivity.Priority++;
+		}
+
+		context.Activities.UpdateRange(lowerPriorityActivities);
+
+		await context.Activities.AddAsync(activity);
 		await context.SaveChangesAsync();
 	}
 }

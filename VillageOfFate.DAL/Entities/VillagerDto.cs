@@ -30,10 +30,10 @@ public class VillagerDto {
 	public Guid? ImageId { get; set; }
 	public ImageDto? Image { get; set; }
 
-	[NotMapped] public ActivityDto? CurrentActivity => Activities.MinBy(a => a.StartTime);
+	[NotMapped] public ActivityDto? CurrentActivity => Activities.MinBy(a => a.Priority);
 
 	[NotMapped]
-	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities.OrderBy(a => a.StartTime).Skip(1).ToList();
+	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities.OrderBy(a => a.Priority).Skip(1).ToList();
 
 	public List<VillagerMemoryDto> Memories { get; set; } = [];
 	public List<ItemDto> Items { get; } = [];

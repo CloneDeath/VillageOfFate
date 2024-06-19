@@ -25,17 +25,12 @@ public class WorldRunner(
 ) : IRunner {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
-	public async Task<DateTime> GetWorldTimeAsync() => await time.GetAsync(TimeLabel.World);
-	public async Task SetWorldTimeAsync(DateTime value) => await time.SetAsync(TimeLabel.World, value);
-
-	public async Task<DateTime> GetEndTimeAsync() =>
-		await time.GetAsync(TimeLabel.End, await GetWorldTimeAsync() + TimeSpan.FromMinutes(2));
-
 	public async Task RunAsync(CancellationToken cancellationToken) {
 		try {
 			while (!cancellationToken.IsCancellationRequested) {
 				var worldTime = await GetWorldTimeAsync();
 				if (worldTime > await GetEndTimeAsync()) {
+					await EnsureVillagersHaveActivities();
 					await Task.Delay(Interval, cancellationToken);
 					continue;
 				}
@@ -44,6 +39,7 @@ public class WorldRunner(
 				var timeSinceLastUpdate = now - worldTime;
 
 				if (timeSinceLastUpdate >= Interval) {
+					await EnsureVillagersHaveActivities();
 					await SimulateWorld();
 					await SetWorldTimeAsync(worldTime + Interval);
 				} else {
@@ -64,9 +60,22 @@ public class WorldRunner(
 		}
 	}
 
+	public async Task<DateTime> GetWorldTimeAsync() => await time.GetAsync(TimeLabel.World);
+	public async Task SetWorldTimeAsync(DateTime value) => await time.SetAsync(TimeLabel.World, value);
+
+	public async Task<DateTime> GetEndTimeAsync() =>
+		await time.GetAsync(TimeLabel.End, await GetWorldTimeAsync() + TimeSpan.FromMinutes(2));
+
+	private async Task EnsureVillagersHaveActivities() {
+		var idleVillagers = await villagers.GetVillagersWithoutActivities();
+		foreach (var idleVillager in idleVillagers) {
+			await QueueActionsForVillager(idleVillager);
+		}
+	}
+
 	private async Task SimulateWorld() {
 		var currentTime = await time.GetAsync(TimeLabel.World);
-		var villager = villagers.GetVillagerWithTheShortestCompleteTime();
+		var villager = villagers.GetVillagerWithTheEarliestCompleteTime();
 		if (villager.CurrentActivity == null) {
 			await QueueActionsForVillager(villager);
 			if (villager.CurrentActivity == null) return;
@@ -83,7 +92,6 @@ public class WorldRunner(
 
 		if (activityResult.TriggerReactions.Any()) {
 			var selected = random.SelectOne(activityResult.TriggerReactions);
-			await villagerActivities.PushCurrentActivityIntoQueue(selected);
 			await QueueActionsForVillager(selected);
 
 			if (selected.CurrentActivity != null) {
@@ -119,12 +127,14 @@ public class WorldRunner(
 		await gptUsage.AddUsageAsync(response);
 
 		var calls = response.Choices.First().Message.ToolCalls ?? [];
+		var worldNow = await time.GetAsync(TimeLabel.World);
 		var details = new List<ActivityDto> {
 			new IdleActivityDto {
-				Duration = random.NextTimeSpan(TimeSpan.FromMinutes(2))
+				Duration = random.NextTimeSpan(TimeSpan.FromMinutes(2)),
+				Priority = 0,
+				StartTime = worldNow
 			}
 		};
-		var now = await time.GetAsync(TimeLabel.World);
 		for (var index = 0; index < calls.Length; index++) {
 			var call = calls[index];
 			var action = actionFactory.Get(call.Function.Name);
@@ -135,7 +145,8 @@ public class WorldRunner(
 
 			var activity = action.ParseArguments(call.Function.Arguments);
 			activity.Villager = villager;
-			activity.StartTime = now + index * TimeSpan.FromDays(1);
+			activity.Priority = index + 1;
+			activity.StartTime = worldNow;
 			details.Add(activity);
 		}
 
