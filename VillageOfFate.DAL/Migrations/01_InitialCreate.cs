@@ -29,6 +29,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
 				  .WithColumn("StartTime").AsDateTime().NotNullable()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
+				  .WithColumn("Priority").AsInt32().NotNullable().WithDefaultValue(int.MaxValue)
 				  .WithColumn("DurationTicks").AsInt64().NotNullable()
 				  .WithColumn("Interruptible").AsBoolean().NotNullable()
 				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")

@@ -15,6 +15,8 @@ public abstract class ActivityDto {
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Description { get; set; } = string.Empty;
 
+	public int Priority { get; set; } = int.MaxValue;
+
 	public long DurationTicks { get; set; }
 
 	[NotMapped]
