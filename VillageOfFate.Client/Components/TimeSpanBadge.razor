@@ -1,0 +1,13 @@
+<span class="badge text-bg-secondary">@TimeText</span>
+
+@code {
+    [Parameter] public required Func<TimeSpan> GetTimeSpan { get; init; }
+
+    private TimeSpan TimeSpan => GetTimeSpan();
+
+    private string TimeText =>
+        TimeSpan.TotalMinutes < 1 ? $"{TimeSpan.TotalSeconds:0}s"
+        : TimeSpan.TotalHours < 1 ? $"{TimeSpan.TotalMinutes:0}m"
+        : TimeSpan.TotalDays < 1 ? $"{TimeSpan.TotalHours:0}h"
+        : $"{TimeSpan.TotalDays:0}d";
+}

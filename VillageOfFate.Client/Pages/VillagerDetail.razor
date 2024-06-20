@@ -63,14 +63,12 @@
     @if (villager.CurrentActivity == null) {
         <i>Idle</i>
     } else {
-        <p>@villager.CurrentActivity.Description (@villager.CurrentActivity.Duration)</p>
+        <ActivityComponent Activity="@villager.CurrentActivity"/>
     }
 
-    <ul>
-        @foreach (var activity in villager.ActivityQueue) {
-            <li>@activity.Description (@activity.Duration)</li>
-        }
-    </ul>
+    @foreach (var activity in villager.ActivityQueue) {
+        <ActivityComponent Activity="@activity"/>
+    }
 }
 
 @code {

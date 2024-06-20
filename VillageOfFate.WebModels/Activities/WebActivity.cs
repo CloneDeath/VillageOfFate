@@ -5,6 +5,7 @@ namespace VillageOfFate.WebModels.Activities;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = nameof(Name))]
 [JsonDerivedType(typeof(IdleWebActivity), (int)ActivityName.Idle)]
+[JsonDerivedType(typeof(AdjustEmotionalStateWebActivity), (int)ActivityName.AdjustEmotionalState)]
 public class WebActivity {
 	public required ActivityName Name { get; init; }
 	public DateTime StartTime { get; init; }

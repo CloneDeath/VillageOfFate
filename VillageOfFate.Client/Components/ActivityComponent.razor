@@ -1,0 +1,22 @@
+@using VillageOfFate.WebModels.Activities
+<div class="activity dp2">
+    <div>
+        <div>@Activity.Description</div>
+        <TimeSpanBadge GetTimeSpan="() => Activity.Duration"/>
+    </div>
+
+    @if (Activity is AdjustEmotionalStateWebActivity adjustEmotionalState) {
+        <div>
+            @adjustEmotionalState.Reason
+        </div>
+        <div>
+            <strong>@adjustEmotionalState.Emotion</strong>
+            @(adjustEmotionalState.Adjustment > 0 ? "+" : "")
+            @adjustEmotionalState.Adjustment%
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public required WebActivity Activity { get; init; }
+}
