@@ -1,5 +1,5 @@
 <span @attributes="@CapturedAttributes"
-      class="badge text-bg-secondary @CapturedAttributes["class"]">
+      class="badge text-bg-secondary @CapturedAttributes.GetValueOrDefault("class", "")">
     @TimeText
 </span>
 
