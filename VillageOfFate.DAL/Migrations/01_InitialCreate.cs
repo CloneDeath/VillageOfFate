@@ -49,6 +49,14 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("EmotionsId").AsGuid().NotNullable().ForeignKey("Emotions", "Id")
 				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
 
+			Create.Table("VillagerItems")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("ItemId").AsGuid().NotNullable().ForeignKey("Items", "Id");
+			Create.UniqueConstraint()
+				  .OnTable("VillagerItems")
+				  .Columns("VillagerId", "ItemId");
+
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString().NotNullable();
@@ -62,18 +70,20 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Sadness").AsInt32().NotNullable()
 				  .WithColumn("Fear").AsInt32().NotNullable();
 
-			Create.Table("VillagerItems")
+			Create.Table("Events")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
-				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
-				  .WithColumn("ItemId").AsGuid().NotNullable().ForeignKey("Items", "Id");
-			Create.UniqueConstraint()
-				  .OnTable("VillagerItems")
-				  .Columns("VillagerId", "ItemId");
+				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
+				  .WithColumn("Time").AsDateTime().NotNullable()
+				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
+				  .WithColumn("ActorId").AsGuid().ForeignKey("Villagers", "Id");
 
-			Create.Table("VillagerMemories")
+			Create.Table("EventWitnesses")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
-				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
-				  .WithColumn("Memory").AsString(MaxDescriptionLength).NotNullable();
+				  .WithColumn("EventId").AsGuid().NotNullable().ForeignKey("Events", "Id")
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id");
+			Create.UniqueConstraint()
+				  .OnTable("EventWitnesses")
+				  .Columns("EventId", "VillagerId");
 
 			Create.Table("Sectors")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
@@ -129,12 +139,20 @@ namespace SouthernCrm.Dal.Migrations {
 
 		public override void Down() {
 			Delete.Table("Time");
-			Delete.Table("Villagers");
-			Delete.Table("Genders");
 			Delete.Table("Items");
+			Delete.Table("Activities");
+			Delete.Table("Villagers");
 			Delete.Table("VillagerItems");
+			Delete.Table("Genders");
+			Delete.Table("Emotions");
+			Delete.Table("Events");
+			Delete.Table("EventWitnesses");
 			Delete.Table("Sectors");
 			Delete.Table("SectorItems");
+			Delete.Table("Relationships");
+			Delete.Table("GptUsage");
+			Delete.Table("VillagerActionErrors");
+			Delete.Table("Images");
 		}
 	}
 }
