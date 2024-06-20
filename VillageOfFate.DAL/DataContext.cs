@@ -45,6 +45,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 			}
 		}
 
+		VillagerDto.OnModelCreating(modelBuilder);
 		TimeDto.OnModelCreating(modelBuilder);
 		ItemDto.OnModelCreating(modelBuilder);
 		ActivityDto.OnModelCreating(modelBuilder);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Attributes;
@@ -15,8 +16,10 @@ public class EventDto {
 	[UtcDateTime] public DateTime Time { get; set; }
 
 	public Guid SectorId { get; set; }
-	public required SectorDto Sector { get; set; }
+	public SectorDto Sector { get; set; } = null!;
 
 	public Guid ActorId { get; set; }
-	public required VillagerDto? Actor { get; set; }
+	public VillagerDto? Actor { get; set; }
+
+	public List<VillagerDto> Witnesses { get; set; } = [];
 }

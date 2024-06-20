@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
+using VillageOfFate.DAL.Entities.Events;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.DAL.Entities.Villagers;
@@ -36,7 +38,16 @@ public class VillagerDto {
 	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities.OrderBy(a => a.Priority).Skip(1).ToList();
 
 	public List<ItemDto> Items { get; } = [];
-	public List<ActivityDto> Activities { get; set; } = null!;
+	public List<ActivityDto> Activities { get; set; } = [];
+
+	public List<EventDto> Events { get; set; } = [];
 
 	public string GetDescription() => $"{Name} is a {Age} year old {Gender}. Summary: {Summary}";
+
+	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<VillagerDto>()
+					.HasMany(v => v.Events)
+					.WithMany(v => v.Witnesses)
+					.UsingEntity<EventWitnessDto>();
+	}
 }

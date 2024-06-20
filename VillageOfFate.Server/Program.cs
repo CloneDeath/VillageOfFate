@@ -64,7 +64,7 @@ public class Program {
 		builder.Services.AddScoped<VillagerService>();
 		builder.Services.AddScoped<VillagerActivityService>();
 		builder.Services.AddScoped<VillagerEmotionService>();
-		builder.Services.AddScoped<VillagerMemoryService>();
+		builder.Services.AddScoped<EventsService>();
 		builder.Services.AddScoped<VillagerItemService>();
 		builder.Services.AddScoped<VillagerActionErrorService>();
 		builder.Services.AddScoped<RelationshipService>();
