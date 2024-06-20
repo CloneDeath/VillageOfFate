@@ -7,6 +7,7 @@ using OpenAi;
 using OpenAi.Gpt;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
+using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 

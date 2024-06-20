@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
+using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.WebModels;
 using VillageOfFate.WebModels.Activities;
 

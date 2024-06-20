@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate;
 

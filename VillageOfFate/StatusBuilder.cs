@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.Services.DALServices.Core;
 
 namespace VillageOfFate;
@@ -16,6 +16,7 @@ public class StatusBuilder(RelationshipService relationships) {
 		await foreach (var entry in GetRelationships(villager)) {
 			results.Add(entry);
 		}
+
 		results.AddRange(GetEmotions(villager));
 		results.AddRange(GetLocation(villager));
 		results.AddRange(GetStatus(villager));
