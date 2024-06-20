@@ -63,11 +63,15 @@
     @if (villager.CurrentActivity == null) {
         <i>Idle</i>
     } else {
-        <ActivityComponent Activity="@villager.CurrentActivity"/>
+        <div>
+            <ActivityComponent Activity="@villager.CurrentActivity"/>
+        </div>
     }
 
     @foreach (var activity in villager.ActivityQueue) {
-        <ActivityComponent Activity="@activity"/>
+        <div class="indent">
+            <ActivityComponent Activity="@activity"/>
+        </div>
     }
 }
 
@@ -87,5 +91,4 @@
             sector = await SectorsApi.GetSectorAsync(SectorId.Value);
         }
     }
-
 }

@@ -1,7 +1,10 @@
 .activity {
+    padding: .5em;
+    margin: 5px;
+    border-radius: 4px;
+}
+
+.activity > div {
     display: flex;
     align-items: center;
-    margin: 5px;
-    padding: .5em;
-    border-radius: 4px;
 }

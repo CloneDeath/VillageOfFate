@@ -1,3 +1,7 @@
 .profile {
     display: flex;
 }
+
+.indent {
+    margin-left: 1em;
+}

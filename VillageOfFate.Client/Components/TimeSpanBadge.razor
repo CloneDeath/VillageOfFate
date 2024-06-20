@@ -1,6 +1,12 @@
-<span class="badge text-bg-secondary">@TimeText</span>
+<span @attributes="@CapturedAttributes"
+      class="badge text-bg-secondary @CapturedAttributes["class"]">
+    @TimeText
+</span>
 
 @code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> CapturedAttributes { get; set; } = new();
+
     [Parameter] public required Func<TimeSpan> GetTimeSpan { get; init; }
 
     private TimeSpan TimeSpan => GetTimeSpan();
