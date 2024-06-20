@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate;
 

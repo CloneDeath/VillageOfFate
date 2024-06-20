@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 

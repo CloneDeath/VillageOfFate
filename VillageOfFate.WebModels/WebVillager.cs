@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using VillageOfFate.WebModels.Activities;
 
 namespace VillageOfFate.WebModels;
 

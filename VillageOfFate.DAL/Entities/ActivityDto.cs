@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Attributes;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate.DAL.Entities;
 
@@ -38,9 +39,4 @@ public abstract class ActivityDto {
 					.HasOne(v => v.Villager)
 					.WithMany(v => v.Activities);
 	}
-}
-
-public enum ActivityName {
-	Idle,
-	AdjustEmotionalState
 }

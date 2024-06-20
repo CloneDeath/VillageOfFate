@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.WebModels;
+using VillageOfFate.WebModels.Activities;
 
 namespace VillageOfFate.Server;
 
@@ -39,14 +42,28 @@ public static class WebModelConversions {
 			Fear = emotions.Fear
 		};
 
-	public static WebActivity AsWebActivity(this ActivityDto activity) =>
-		new() {
+	public static WebActivity AsWebActivity(this ActivityDto activity) => activity switch {
+		IdleActivityDto => new IdleWebActivity {
+			Name = activity.Name,
 			Description = activity.Description,
 			Interruptible = activity.Interruptible,
 			Duration = activity.Duration,
 			StartTime = activity.StartTime,
 			EndTime = activity.EndTime
-		};
+		},
+		AdjustEmotionalStateActivityDto emotional => new AdjustEmotionalStateWebActivity {
+			Name = activity.Name,
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime,
+			Adjustment = emotional.Adjustment,
+			Emotion = emotional.Emotion,
+			Reason = emotional.Reason
+		},
+		_ => throw new NotImplementedException()
+	};
 
 	public static WebSector AsWebSector(this SectorDto sector) =>
 		new(sector.Position) {

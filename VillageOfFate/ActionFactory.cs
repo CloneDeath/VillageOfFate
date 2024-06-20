@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.Actions;
-using VillageOfFate.DAL.Entities;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate;
 
@@ -9,7 +9,6 @@ public class ActionFactory(IdleAction idle, AdjustEmotionalStateAction adjustEmo
 	// private readonly IReadOnlyList<IVillagerAction> actions = [
 	// 	new SpeakAction(logger),
 	// 	new InteractAction(logger),
-	// 	new AdjustEmotionalStateAction(logger),
 	// 	new EatAction(logger),
 	// 	new SleepAction(logger),
 	// 	new LookoutAction(logger)
