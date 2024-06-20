@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
+using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
 public class AdjustEmotionalStateAction(
-	TimeService time,
-	VillagerMemoryService memoryService,
+	EventsService eventService,
 	VillagerEmotionService emotionService
 ) : IAction {
 	public string Name => "AdjustEmotionalState";
@@ -42,8 +42,8 @@ public class AdjustEmotionalStateAction(
 
 		var adjustmentString = args.Adjustment > 0 ? $"+{args.Adjustment}" : $"{args.Adjustment}";
 		var activity =
-			$"[{time.GetAsync(TimeLabel.World)}] {args.Villager.Name} [{args.Emotion} {adjustmentString}% ({args.Villager.Emotions[args.Emotion]}%)]: {args.Reason}";
-		await memoryService.AddAsync(args.Villager, activity);
+			$"{args.Villager.Name} {args.Reason} [{args.Emotion} {adjustmentString}% ({args.Villager.Emotions[args.Emotion] + args.Adjustment}%)]";
+		await eventService.AddAsync(args.Villager, activity);
 		await emotionService.AdjustEmotionAsync(args.Villager, args.Emotion, args.Adjustment);
 		return new ActionResults();
 	}
@@ -61,7 +61,12 @@ public class AdjustEmotionalStateArguments {
 
 	[JsonPropertyName("reason")]
 	[JsonDescription("A brief description of why your mood has changed." +
-					 " Should usually start with \"I <verb>\" like \"I am comforted by X's presence\"," +
-					 " but could also be stated like \"The sudden appearance of monsters scares me.\"")]
+					 " It will automatically be prepended with your name, ie \"is comforted by John\" will become \"Marry is comforted by John\"." +
+					 " DO NOT include your name at the start of the reason, it will be added automatically." +
+					 " Make sure to pay close attention to everyone's gender, and to use the correct pronouns, especially your own." +
+					 " Some examples are:" +
+					 " \"is scared by the sudden appearance of monsters.\" +" +
+					 " \"is happy to hear the news of a new baby.\"" +
+					 " \"relaxes, and calms his nerves.\"")]
 	public string Reason { get; set; } = string.Empty;
 }

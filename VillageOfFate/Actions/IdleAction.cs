@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
+using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
-public class IdleAction : IAction {
+public class IdleAction(
+	EventsService eventService
+) : IAction {
 	public string Name => "DoNothing";
 	public ActivityName ActivityName => ActivityName.Idle;
 	public string Description => "You will do nothing, sit idle, and wait for something to happen.";
@@ -25,7 +28,10 @@ public class IdleAction : IAction {
 		};
 	}
 
-	public Task<IActionResults> Begin(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
+	public async Task<IActionResults> Begin(ActivityDto activityDto) {
+		await eventService.AddAsync(activityDto.Villager, $"${activityDto.Villager} takes a break.");
+		return new ActionResults();
+	}
 
 	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
 }

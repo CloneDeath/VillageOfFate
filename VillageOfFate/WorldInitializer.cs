@@ -16,7 +16,7 @@ public class WorldInitializer(
 	VillagerService villagers,
 	RelationshipService relations,
 	VillagerItemService villagerItems,
-	VillagerMemoryService villagerMemories,
+	EventsService events,
 	RandomProvider random
 ) {
 	public async Task PopulateWorldAsync() {
@@ -152,10 +152,8 @@ public class WorldInitializer(
 		await relations.AddRelationAsync(lodis, lyra, "Wife");
 
 		var villagerDTOs = new[] { gamz, chem, carol, lyra, lodis };
-		foreach (var villager in villagerDTOs) {
-			await villagerMemories.AddAsync(villager,
-				$"You and {villagerDTOs.Length - 1} other villagers are lost in the woods, "
-				+ "having just escaped a goblin attack that destroyed your home and entire village.");
-		}
+		await events.AddAsync(sector, villagerDTOs,
+			$"You and {villagerDTOs.Length - 1} other villagers are lost in the woods, "
+			+ "having just escaped a goblin attack that destroyed your home and entire village.");
 	}
 }
