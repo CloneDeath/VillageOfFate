@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VillageOfFate.DAL.Attributes;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
-using VillageOfFate.WebModels;
+using VillageOfFate.DAL.Entities.Events;
+using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.DAL;
 
@@ -17,8 +18,10 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 	public DbSet<VillagerDto> Villagers { get; set; } = null!;
 	public DbSet<VillagerItemDto> VillagerItems { get; set; } = null!;
 	public DbSet<RelationshipDto> Relationships { get; set; } = null!;
-	public DbSet<VillagerMemoryDto> VillagerMemories { get; set; } = null!;
 	public DbSet<EmotionDto> Emotions { get; set; } = null!;
+
+	public DbSet<EventDto> Events { get; set; } = null!;
+	public DbSet<EventWitnessDto> EventWitnesses { get; set; } = null!;
 
 	public DbSet<SectorDto> Sectors { get; set; } = null!;
 	public DbSet<SectorItemDto> SectorItems { get; set; } = null!;
@@ -42,21 +45,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 			}
 		}
 
-		modelBuilder.Entity<TimeDto>().Property(e => e.Label)
-					.HasConversion<string>();
-
-		modelBuilder
-			.Entity<ActivityDto>()
-			.Property(d => d.Name)
-			.HasConversion<string>();
-
-		// TPH pattern
-		// https://learn.microsoft.com/en-us/ef/core/modeling/inheritance
-		modelBuilder.Entity<ActivityDto>()
-					.HasDiscriminator(p => p.Name)
-					.HasValue<IdleActivityDto>(ActivityName.Idle)
-					.HasValue<AdjustEmotionalStateActivityDto>(ActivityName.AdjustEmotionalState);
-
+		TimeDto.OnModelCreating(modelBuilder);
 		ItemDto.OnModelCreating(modelBuilder);
 		ActivityDto.OnModelCreating(modelBuilder);
 		AdjustEmotionalStateActivityDto.OnModelCreating(modelBuilder);

@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using SouthernCrm.Dal.Migrations;
 
-namespace VillageOfFate.DAL.Entities;
+namespace VillageOfFate.DAL.Entities.Villagers;
 
 public class RelationshipDto {
 	public Guid Id { get; set; }

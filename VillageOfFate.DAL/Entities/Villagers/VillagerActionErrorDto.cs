@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Attributes;
 
-namespace VillageOfFate.DAL.Entities;
+namespace VillageOfFate.DAL.Entities.Villagers;
 
 public class VillagerActionErrorDto {
 	public Guid Id { get; set; } = Guid.NewGuid();

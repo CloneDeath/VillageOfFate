@@ -8,6 +8,10 @@ namespace VillageOfFate.DAL.Entities;
 public class TimeDto {
 	public TimeLabel Label { get; set; }
 	[UtcDateTime] public DateTime Time { get; set; }
+
+	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<TimeDto>().Property(e => e.Label).HasConversion<string>();
+	}
 }
 
 public enum TimeLabel {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.WebModels;
 
-namespace VillageOfFate.DAL.Entities;
+namespace VillageOfFate.DAL.Entities.Villagers;
 
 public class EmotionDto {
 	public Guid Id { get; set; } = Guid.NewGuid();

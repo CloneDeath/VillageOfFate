@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
+using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.DAL.Entities;
 

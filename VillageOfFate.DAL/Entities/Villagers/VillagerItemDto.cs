@@ -1,6 +1,6 @@
 using System;
 
-namespace VillageOfFate.DAL.Entities;
+namespace VillageOfFate.DAL.Entities.Villagers;
 
 public class VillagerItemDto {
 	public Guid Id { get; set; } = Guid.NewGuid();

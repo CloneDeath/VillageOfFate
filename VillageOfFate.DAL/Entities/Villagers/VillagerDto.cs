@@ -6,7 +6,7 @@ using System.Linq;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.WebModels;
 
-namespace VillageOfFate.DAL.Entities;
+namespace VillageOfFate.DAL.Entities.Villagers;
 
 public class VillagerDto {
 	public Guid Id { get; set; } = Guid.NewGuid();
@@ -35,7 +35,6 @@ public class VillagerDto {
 	[NotMapped]
 	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities.OrderBy(a => a.Priority).Skip(1).ToList();
 
-	public List<VillagerMemoryDto> Memories { get; set; } = [];
 	public List<ItemDto> Items { get; } = [];
 	public List<ActivityDto> Activities { get; set; } = null!;
 
