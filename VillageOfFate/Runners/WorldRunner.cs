@@ -18,6 +18,7 @@ public class WorldRunner(
 	VillagerService villagers,
 	VillagerActivityService villagerActivities,
 	VillagerActionErrorService villagerActionErrors,
+	EventsService events,
 	ActionFactory actionFactory,
 	GptUsageService gptUsage,
 	OpenApi openApi,
@@ -104,19 +105,24 @@ public class WorldRunner(
 
 	private async Task QueueActionsForVillager(VillagerDto villager) {
 		var messages = new List<Message> {
-			new() {
+			new () {
 				Role = Role.System,
+				Content = "You are an NPC in a village. You have a set of actions you can perform. " +
+						  "You can choose to perform any number of these actions sequentially (planning ahead), or do nothing (deferring decisions for later). " +
+						  "Please always stay in character, and choose actions that make sense for your character, their current mood, situation, recent events they witnessed, and their memories."
+			},
+			new() {
+				Role = Role.User,
 				Content = await statusBuilder.BuildVillagerStatusAsync(villager)
 			}
 		};
-		messages.AddRange(villager.Memories.Select(m => new Message {
+		messages.AddRange(villager.Events.Select(e => new Message {
 			Role = Role.User,
-			Content = m.Memory
+			Content = $"[{e.Time}]@{e.Sector.Position} {e.Description}"
 		}));
 		messages.Add(new Message {
 			Role = Role.User,
 			Content = "Please choose an action befitting your character."
-					  + "You can choose to interact with the other villagers, do nothing and observe, or speak to the group (please do so in-character, and use natural language)."
 		});
 
 		var response = await openApi.GetChatGptResponseAsync(messages.ToArray(),
@@ -151,6 +157,8 @@ public class WorldRunner(
 			details.Add(activity);
 		}
 
+		await events.AddAsync(villager,
+			$"Decides to perform the following actions: {string.Join(", ", details.Select(d => d.Description))}");
 		foreach (var activityDetail in details) {
 			await villagerActivities.AddAsync(villager, activityDetail);
 		}
