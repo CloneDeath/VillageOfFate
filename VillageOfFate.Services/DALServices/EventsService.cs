@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Events;
@@ -41,5 +42,14 @@ public class EventsService(DataContext context, TimeService time) {
 		}
 
 		await context.SaveChangesAsync();
+	}
+
+	public async Task<IEnumerable<EventDto>> GetVillagerEvents(Guid id) {
+		return await context.Events
+					  .Include(e => e.Actor)
+					  .Include(e => e.Witnesses)
+					  .Where(e => e.ActorId == id || e.Witnesses.Any(w => w.Id == id))
+					  .OrderByDescending(e => e.Time)
+					  .ToListAsync();
 	}
 }

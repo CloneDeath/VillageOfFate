@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
+using VillageOfFate.DAL.Entities.Events;
 using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.WebModels;
 using VillageOfFate.WebModels.Activities;
@@ -72,5 +73,15 @@ public static class WebModelConversions {
 			Description = sector.Description,
 			Items = sector.Items.Select(AsWebItem).ToList(),
 			ImageId = sector.ImageId
+		};
+
+	public static WebEvent AsWebEvent(this EventDto e) =>
+		new() {
+			Id = e.Id,
+			Time = e.Time,
+			Sector = e.Sector.Position,
+			Description = e.Description,
+			ActorId = e.Actor?.Id,
+			WitnessIds = e.Witnesses.Select(w => w.Id).ToArray()
 		};
 }
