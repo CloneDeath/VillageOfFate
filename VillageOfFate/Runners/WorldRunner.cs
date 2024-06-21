@@ -116,7 +116,7 @@ public class WorldRunner(
 				Content = await statusBuilder.BuildVillagerStatusAsync(villager)
 			}
 		};
-		messages.AddRange(villager.Events.Select(e => new Message {
+		messages.AddRange(villager.WitnessedEvents.Select(e => new Message {
 			Role = Role.User,
 			Content = $"[{e.Time}]@{e.Sector.Position} {e.Description}"
 		}));

@@ -40,13 +40,15 @@ public class VillagerDto {
 	public List<ItemDto> Items { get; } = [];
 	public List<ActivityDto> Activities { get; set; } = [];
 
-	public List<EventDto> Events { get; set; } = [];
+	public List<EventDto> ActorEvents { get; set; } = [];
+
+	public List<EventDto> WitnessedEvents { get; set; } = [];
 
 	public string GetDescription() => $"{Name} is a {Age} year old {Gender}. Summary: {Summary}";
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<VillagerDto>()
-					.HasMany(v => v.Events)
+					.HasMany(v => v.WitnessedEvents)
 					.WithMany(v => v.Witnesses)
 					.UsingEntity<EventWitnessDto>();
 	}

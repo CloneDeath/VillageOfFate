@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Attributes;
 using VillageOfFate.DAL.Entities.Villagers;
@@ -18,8 +19,15 @@ public class EventDto {
 	public Guid SectorId { get; set; }
 	public SectorDto Sector { get; set; } = null!;
 
-	public Guid ActorId { get; set; }
+	public Guid? ActorId { get; set; }
 	public VillagerDto? Actor { get; set; }
 
 	public List<VillagerDto> Witnesses { get; set; } = [];
+
+	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<EventDto>()
+					.HasOne(e => e.Actor)
+					.WithMany(v => v.ActorEvents)
+					.HasForeignKey(e => e.ActorId);
+	}
 }
