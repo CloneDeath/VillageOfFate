@@ -73,6 +73,15 @@
             <ActivityComponent Activity="@activity"/>
         </div>
     }
+
+    <h3>Events</h3>
+    @if (events == null) {
+        <em>Loading...</em>
+    } else {
+        @foreach (var webEvent in events) {
+            <EventComponent Event="@webEvent"/>
+        }
+    }
 }
 
 @code {
@@ -85,10 +94,13 @@
     private WebVillager? villager;
     private WebSector? sector;
 
+    private WebEvent[]? events;
+
     protected override async Task OnParametersSetAsync() {
         villager = await VillagersService.GetVillager(Id);
         if (SectorId.HasValue) {
             sector = await SectorsApi.GetSectorAsync(SectorId.Value);
         }
+        events = await VillagersService.GetVillagerEvents(Id);
     }
 }

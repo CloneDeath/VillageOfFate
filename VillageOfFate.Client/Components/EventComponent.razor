@@ -1,0 +1,13 @@
+@using VillageOfFate.WebModels
+
+<div class="event">
+    <span>@Event.ActorId</span>
+    <span>@Event.Time</span>
+    <span>@Event.Sector</span>
+    <span>@Event.Description</span>
+</div>
+
+
+@code {
+    [Parameter] public required WebEvent Event { get; set; }
+}

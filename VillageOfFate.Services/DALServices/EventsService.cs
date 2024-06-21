@@ -48,6 +48,7 @@ public class EventsService(DataContext context, TimeService time) {
 		return await context.Events
 					  .Include(e => e.Actor)
 					  .Include(e => e.Witnesses)
+					  .Include(e => e.Sector)
 					  .Where(e => e.ActorId == id || e.Witnesses.Any(w => w.Id == id))
 					  .OrderByDescending(e => e.Time)
 					  .ToListAsync();
