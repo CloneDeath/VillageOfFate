@@ -34,6 +34,7 @@
             <option name="type" value="waitPortOpened" />
           </ConditionSnapshot>
         </option>
+        <option name="disableDebugging" value="true" />
         <option name="executable">
           <ExecutableSnapshot>
             <option name="id" value="runConfig:.NET Launch Settings Profile.VillageOfFate.Client: https" />

@@ -11,4 +11,8 @@ public class ApiClient(string baseUri) {
 	public async Task<T> GetAsync<T>(string requestUri) =>
 		await client.GetFromJsonAsync<T>(requestUri)
 		?? throw new Exception($"Failed to get {typeof(T).Name} from {requestUri}.");
+
+	public async Task PostAsync<T>(string requestUri, T body) {
+		await client.PostAsJsonAsync(requestUri, body);
+	}
 }

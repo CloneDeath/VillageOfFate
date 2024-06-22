@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using OpenAi;
 using OpenAi.Gpt;
+using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.Services.DALServices;
@@ -22,13 +23,16 @@ public class WorldRunner(
 	GptUsageService gptUsage,
 	OpenApi openApi,
 	RandomProvider random,
-	StatusBuilder statusBuilder
+	StatusBuilder statusBuilder,
+	DataContext context
 ) : IRunner {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
 	public async Task RunAsync(CancellationToken cancellationToken) {
 		try {
 			while (!cancellationToken.IsCancellationRequested) {
+				context.ChangeTracker.Clear();
+
 				var worldTime = await GetWorldTimeAsync();
 				if (worldTime > await GetEndTimeAsync()) {
 					await EnsureVillagersHaveActivities();

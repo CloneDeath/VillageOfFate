@@ -14,4 +14,7 @@ public class TimeController(TimeService time) : ControllerBase {
 
 	[HttpGet("End")]
 	public async Task<DateTime> GetEndTime() => await time.GetAsync(TimeLabel.End);
+
+	[HttpPost("Add")]
+	public async Task AddTime([FromBody] TimeSpan timeToAdd) => await time.AddToEndTime(timeToAdd);
 }

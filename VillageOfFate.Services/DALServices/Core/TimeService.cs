@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
@@ -5,7 +6,7 @@ namespace VillageOfFate.Services.DALServices.Core;
 
 public class TimeService(DataContext context) {
 	public async Task<DateTime> GetAsync(TimeLabel label, DateTime? defaultValue = null) {
-		var entry = await context.Time.FindAsync(label);
+		var entry = await context.Time.FirstOrDefaultAsync(t => t.Label == label);
 		if (entry != null) return entry.Time;
 
 		var now = defaultValue ?? DateTime.UtcNow;
@@ -18,7 +19,7 @@ public class TimeService(DataContext context) {
 	}
 
 	public async Task SetAsync(TimeLabel label, DateTime value) {
-		var entry = await context.Time.FindAsync(label);
+		var entry = await context.Time.FirstOrDefaultAsync(t => t.Label == label);
 		if (entry != null) {
 			entry.Time = value.ToUniversalTime();
 			context.Time.Update(entry);
@@ -30,5 +31,10 @@ public class TimeService(DataContext context) {
 		}
 
 		await context.SaveChangesAsync();
+	}
+
+	public async Task AddToEndTime(TimeSpan timeToAdd) {
+		var endTime = await GetAsync(TimeLabel.End);
+		await SetAsync(TimeLabel.End, endTime + timeToAdd);
 	}
 }

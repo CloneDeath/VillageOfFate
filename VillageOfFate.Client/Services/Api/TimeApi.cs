@@ -13,4 +13,8 @@ public class TimeApi(ApiClient client) {
 		var result = await client.GetAsync<string>("/Time/End");
 		return DateTime.Parse(result);
 	}
+
+	public async Task AddTime(TimeSpan time) {
+		await client.PostAsync("/Time/Add", time);
+	}
 }

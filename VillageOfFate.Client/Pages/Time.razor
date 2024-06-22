@@ -28,6 +28,11 @@
     <TimeComponent GetTime="() => CurrentTime"/>
 </div>
 
+<button type="button" class="btn btn-primary"
+        @onclick="() => AddTime(TimeSpan.FromMinutes(5))">
+    Add 5m to Simulation
+</button>
+
 @code {
     public DateTime? WorldTime { get; set; }
     public DateTime? EndTime { get; set; }
@@ -35,8 +40,16 @@
 
     protected override async Task OnInitializedAsync() {
         await base.OnInitializedAsync();
+        await RefreshTime();
+    }
 
+    private async Task RefreshTime() {
         WorldTime = await TimeApi.GetWorldTime();
         EndTime = await TimeApi.GetEndTime();
+    }
+
+    protected async Task AddTime(TimeSpan time) {
+        await TimeApi.AddTime(time);
+        await RefreshTime();
     }
 }
