@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VillageOfFate.DAL.Entities;
@@ -121,9 +122,12 @@ public class WorldInitializer(
 		await relations.AddRelationAsync(lodis, carol, "Daughter");
 		await relations.AddRelationAsync(lodis, lyra, "Wife");
 
+		var worldTime = await time.GetAsync(TimeLabel.World);
+
 		var villagerDTOs = new[] { gamz, chem, carol, lyra, lodis };
 		await events.AddAsync(sector, villagerDTOs,
 			$"You and {villagerDTOs.Length - 1} other villagers are lost in the woods, "
-			+ "having just escaped a goblin attack that destroyed your home and entire village.");
+			+ "having just escaped a goblin attack that destroyed your home and entire village.",
+			worldTime - TimeSpan.FromHours(1));
 	}
 }

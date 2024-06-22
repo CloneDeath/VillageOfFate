@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using OpenAi;
 using OpenAi.Gpt;
 using VillageOfFate.DAL.Entities;
-using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
@@ -105,7 +104,7 @@ public class WorldRunner(
 
 	private async Task QueueActionsForVillager(VillagerDto villager) {
 		var messages = new List<Message> {
-			new () {
+			new() {
 				Role = Role.System,
 				Content = "You are an NPC in a village. You have a set of actions you can perform. " +
 						  "You can choose to perform any number of these actions sequentially (planning ahead), or do nothing (deferring decisions for later). " +
@@ -135,13 +134,7 @@ public class WorldRunner(
 
 		var calls = response.Choices.First().Message.ToolCalls ?? [];
 		var worldNow = await time.GetAsync(TimeLabel.World);
-		var details = new List<ActivityDto> {
-			new IdleActivityDto {
-				Duration = random.NextTimeSpan(TimeSpan.FromMinutes(2)),
-				Priority = 0,
-				StartTime = worldNow
-			}
-		};
+		var details = new List<ActivityDto>();
 		for (var index = 0; index < calls.Length; index++) {
 			var call = calls[index];
 			var action = actionFactory.Get(call.Function.Name);
@@ -153,7 +146,7 @@ public class WorldRunner(
 			var activity = action.ParseArguments(call.Function.Arguments);
 			activity.Villager = villager;
 			activity.Priority = index + 1;
-			activity.StartTime = worldNow;
+			activity.StartTime = worldNow + random.NextTimeSpan(TimeSpan.FromMinutes(2));
 			details.Add(activity);
 		}
 
