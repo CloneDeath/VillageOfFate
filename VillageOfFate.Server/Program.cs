@@ -77,6 +77,7 @@ public class Program {
 		builder.Services.AddScoped<ImageGenerationRunner>();
 		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
+
 		builder.Services.AddScoped<IdleAction>();
 		builder.Services.AddScoped<AdjustEmotionalStateAction>();
 
