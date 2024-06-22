@@ -50,38 +50,68 @@
             <li>@emotionalState.Emotion - @emotionalState.Intensity%</li>
         }
     </ul>
-    <h3>Inventory</h3>
-    @if (villager.Inventory.Any()) {
-        @foreach (var item in villager.Inventory) {
-            <ItemComponent Item="@item"/>
-        }
-    } else {
-        <i>Empty</i>
-    }
 
-    <h3>Activities</h3>
-    @if (villager.CurrentActivity == null) {
-        <i>Idle</i>
-    } else {
-        <div>
-            <ActivityComponent Activity="@villager.CurrentActivity"/>
+    <div class="accordion" id="accordionPanels">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#villagers" aria-expanded="true" aria-controls="villagers">
+                    Inventory
+                </button>
+            </h2>
+            <div id="villagers" class="accordion-collapse collapse show">
+                <div class="entity-container">
+                    @if (villager.Inventory.Any()) {
+                        @foreach (var item in villager.Inventory) {
+                            <ItemComponent Item="@item"/>
+                        }
+                    } else {
+                        <i>Empty</i>
+                    }
+                </div>
+            </div>
         </div>
-    }
 
-    @foreach (var activity in villager.ActivityQueue) {
-        <div class="indent">
-            <ActivityComponent Activity="@activity"/>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="true" aria-controls="items">
+                    Activities
+                </button>
+            </h2>
+            <div id="items" class="accordion-collapse collapse show">
+                @if (villager.CurrentActivity == null) {
+                    <i>Idle</i>
+                } else {
+                    <div>
+                        <ActivityComponent Activity="@villager.CurrentActivity"/>
+                    </div>
+                }
+
+                @foreach (var activity in villager.ActivityQueue) {
+                    <div class="indent">
+                        <ActivityComponent Activity="@activity"/>
+                    </div>
+                }
+            </div>
         </div>
-    }
 
-    <h3>Events</h3>
-    @if (events == null) {
-        <em>Loading...</em>
-    } else {
-        @foreach (var webEvent in events) {
-            <EventComponent Event="@webEvent"/>
-        }
-    }
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="true" aria-controls="items">
+                    Events
+                </button>
+            </h2>
+            <div id="items" class="accordion-collapse collapse show">
+                @if (events == null) {
+                    <em>Loading...</em>
+                } else {
+                    @foreach (var webEvent in events) {
+                        <EventComponent Event="@webEvent"/>
+                    }
+                }
+            </div>
+        </div>
+    </div>
 }
 
 @code {
@@ -101,6 +131,7 @@
         if (SectorId.HasValue) {
             sector = await SectorsApi.GetSectorAsync(SectorId.Value);
         }
+
         events = await VillagersService.GetVillagerEvents(Id);
     }
 }

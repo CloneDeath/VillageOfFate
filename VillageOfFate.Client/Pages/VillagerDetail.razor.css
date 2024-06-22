@@ -5,3 +5,12 @@
 .indent {
     margin-left: 1em;
 }
+
+#accordionPanels {
+    margin-top: 1em;
+}
+
+.entity-container {
+    display: flex;
+    flex-wrap: wrap;
+}
