@@ -13,29 +13,6 @@
         <em>Loading...</em>
     </p>
 } else {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Activity</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var villager in villagers) {
-            <tr>
-                <td>
-                    <a href="villagers/@villager.Id">@villager.Name</a>
-                </td>
-                <td>@villager.Gender</td>
-                <td>@villager.Age</td>
-                <td>@(villager.CurrentActivity?.Description ?? "---")</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-
     <div class="row">
         <div class="col-sm-6">
             @foreach (var villager in villagers) {

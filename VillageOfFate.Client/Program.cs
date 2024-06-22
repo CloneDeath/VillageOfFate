@@ -23,6 +23,7 @@ public class Program {
 		builder.Services.AddSingleton(new ImageApi(apiBaseUri));
 		builder.Services.AddSingleton<SectorsApi>();
 		builder.Services.AddSingleton<Plurality>();
+		builder.Services.AddSingleton<NavigationService>();
 
 		builder.Services.AddOidcAuthentication(options => {
 			// Configure your authentication provider options here.

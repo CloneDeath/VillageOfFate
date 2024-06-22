@@ -9,6 +9,10 @@
     --theme-link-color-visited: #bbb;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 div {
     background-color: rgba(var(--theme-layer-color), 0%);
 }

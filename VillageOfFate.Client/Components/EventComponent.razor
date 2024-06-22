@@ -1,7 +1,9 @@
+@using VillageOfFate.Client.Services
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersApi
 @inject ImageApi ImageApi
+@inject NavigationService Navigate
 
 <div class="event dp2">
 
@@ -9,7 +11,9 @@
         @if (Villager == null) {
             <em>Loading...</em>
         } else {
-            <img class="event-image" src="@ImageApi.GetImageUrl(Villager.ImageId)" width="45" height="45" alt=""/>
+            <img class="event-image clickable"
+                 src="@ImageApi.GetImageUrl(Villager.ImageId)" width="45" height="45" alt=""
+                 @onclick="() => Navigate.ToVillager(Event.ActorId.Value)"/>
         }
     }
 
@@ -19,7 +23,10 @@
                 @if (Villager == null) {
                     <em>Loading...</em>
                 } else {
-                    <strong class="me-4">@Villager.Name</strong>
+                    <strong class="me-4 clickable"
+                            @onclick="() => Navigate.ToVillager(Event.ActorId.Value)">
+                        @Villager.Name
+                    </strong>
                 }
             }
             <TimeComponent GetTime="() => Event.Time"/>
