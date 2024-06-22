@@ -1,5 +1,11 @@
 .event {
     padding: .5em;
     margin: 5px;
+    display: flex;
     border-radius: 4px;
+}
+
+.event .event-image {
+    border-radius: 4px;
+    margin-right: 10px;
 }

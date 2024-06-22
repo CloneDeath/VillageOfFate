@@ -4,21 +4,32 @@
 @inject ImageApi ImageApi
 
 <div class="event dp2">
-    <span>
-        <TimeComponent GetTime="() => Event.Time"/>
-    </span>
-    <span>@Event.Sector</span>
+
     @if (Event.ActorId.HasValue) {
         @if (Villager == null) {
             <em>Loading...</em>
         } else {
-            <img src="@ImageApi.GetImageUrl(Villager.ImageId)" width="20" height="20" alt=""/>
-            <span>@Villager.Name</span>
+            <img class="event-image" src="@ImageApi.GetImageUrl(Villager.ImageId)" width="45" height="45" alt=""/>
         }
     }
-    <span>@Event.Description</span>
-</div>
 
+    <span>
+        <div>
+            @if (Event.ActorId.HasValue) {
+                @if (Villager == null) {
+                    <em>Loading...</em>
+                } else {
+                    <strong class="me-4">@Villager.Name</strong>
+                }
+            }
+            <TimeComponent GetTime="() => Event.Time"/>
+            <span>@Event.Sector</span>
+        </div>
+        <div>
+            @Event.Description
+        </div>
+    </span>
+</div>
 
 @code {
     [Parameter] public required WebEvent Event { get; set; }
