@@ -5,8 +5,8 @@
 
 <PageTitle>Time</PageTitle>
 
-<div class="line">
-    <div>World Time: </div>
+<div class="time-data dp2">
+    <span>World Time: </span>
     @if (WorldTime.HasValue) {
         <TimeComponent GetTime="() => WorldTime.Value"/>
     } else {
@@ -14,8 +14,8 @@
     }
 </div>
 
-<div class="line">
-    <div>End Time: </div>
+<div class="time-data dp2">
+    <span>End Time: </span>
     @if (EndTime.HasValue) {
         <TimeComponent GetTime="() => EndTime.Value"/>
     } else {
@@ -23,8 +23,8 @@
     }
 </div>
 
-<div class="line">
-    <div>Current Time: </div>
+<div class="time-data dp2">
+    <span>Current Time: </span>
     <TimeComponent GetTime="() => CurrentTime"/>
 </div>
 
@@ -39,5 +39,4 @@
         WorldTime = await TimeApi.GetWorldTime();
         EndTime = await TimeApi.GetEndTime();
     }
-
 }

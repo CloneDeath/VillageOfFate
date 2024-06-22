@@ -1,3 +1,5 @@
-.line {
-    display: flex;
+.time-data {
+    border-radius: 4px;
+    margin: 5px;
+    padding: .5em;
 }
