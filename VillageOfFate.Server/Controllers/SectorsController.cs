@@ -11,7 +11,7 @@ namespace VillageOfFate.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class SectorsController(SectorService sectors, VillagerService villagers) : ControllerBase {
+public class SectorsController(SectorService sectors, VillagerService villagers, EventsService events) : ControllerBase {
 	[HttpGet]
 	public async Task<IEnumerable<WebSector>> GetAllAsync() =>
 		(await sectors.GetAllAsync()).Select(s => s.AsWebSector());
@@ -25,4 +25,8 @@ public class SectorsController(SectorService sectors, VillagerService villagers)
 	[HttpGet("{id:guid}/Villagers")]
 	public async Task<IEnumerable<WebVillager>> GetSectorVillagersAsync(Guid id) =>
 		(await villagers.GetVillagersInSectorAsync(id)).Select(v => v.AsWebVillager());
+
+	[HttpGet("{id:guid}/Events")]
+	public async Task<IEnumerable<WebEvent>> GetSectorEventsAsync(Guid id) =>
+		(await events.GetSectorEventsAsync(id)).Select(v => v.AsWebEvent());
 }

@@ -54,11 +54,11 @@
     <div class="accordion" id="accordionPanels">
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#villagers" aria-expanded="true" aria-controls="villagers">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="true" aria-controls="items">
                     Inventory
                 </button>
             </h2>
-            <div id="villagers" class="accordion-collapse collapse show">
+            <div id="items" class="accordion-collapse collapse show">
                 <div class="entity-container">
                     @if (villager.Inventory.Any()) {
                         @foreach (var item in villager.Inventory) {
@@ -73,11 +73,11 @@
 
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="true" aria-controls="items">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#activities" aria-expanded="true" aria-controls="activities">
                     Activities
                 </button>
             </h2>
-            <div id="items" class="accordion-collapse collapse show">
+            <div id="activities" class="accordion-collapse collapse show">
                 @if (villager.CurrentActivity == null) {
                     <i>Idle</i>
                 } else {
@@ -97,11 +97,11 @@
 
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#items" aria-expanded="true" aria-controls="items">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#events" aria-expanded="true" aria-controls="events">
                     Events
                 </button>
             </h2>
-            <div id="items" class="accordion-collapse collapse show">
+            <div id="events" class="accordion-collapse collapse show">
                 @if (events == null) {
                     <em>Loading...</em>
                 } else {

@@ -17,4 +17,7 @@ public class SectorsApi(ApiClient client) {
 
 	public async Task<IEnumerable<WebVillager>> GetVillagersAsync(Guid sectorId) =>
 		await client.GetAsync<IEnumerable<WebVillager>>($"/Sectors/{sectorId}/Villagers");
+
+	public async Task<IEnumerable<WebEvent>?> GetEventsAsync(Guid sectorId) =>
+		await client.GetAsync<IEnumerable<WebEvent>>($"/Sectors/{sectorId}/Events");
 }

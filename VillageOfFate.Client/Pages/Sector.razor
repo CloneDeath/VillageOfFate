@@ -64,6 +64,24 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#events" aria-expanded="true" aria-controls="events">
+                    Events
+                </button>
+            </h2>
+            <div id="events" class="accordion-collapse collapse show">
+                @if (events == null) {
+                    <em>Loading...</em>
+                } else {
+                    @foreach (var webEvent in events) {
+                        <EventComponent Event="@webEvent"/>
+                    }
+                }
+            </div>
+        </div>
     </div>
 }
 
@@ -72,9 +90,11 @@
 
     private WebSector? sector;
     private IEnumerable<WebVillager>? villagers;
+    private IEnumerable<WebEvent>? events;
 
     protected override async Task OnParametersSetAsync() {
         sector = await SectorsApi.GetSectorAsync(Id);
         villagers = await SectorsApi.GetVillagersAsync(Id);
+        events = await SectorsApi.GetEventsAsync(Id);
     }
 }

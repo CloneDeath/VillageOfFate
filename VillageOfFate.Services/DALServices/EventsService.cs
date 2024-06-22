@@ -8,6 +8,11 @@ using VillageOfFate.Services.DALServices.Core;
 namespace VillageOfFate.Services.DALServices;
 
 public class EventsService(DataContext context, TimeService time) {
+	protected IQueryable<EventDto> Events => context.Events
+													.Include(e => e.Actor)
+													.Include(e => e.Witnesses)
+													.Include(e => e.Sector);
+
 	public Task AddAsync(SectorDto sector, IEnumerable<VillagerDto> witnesses, string description,
 						 DateTime? eventTime = null) =>
 		AddAsync(null, sector, witnesses, description, eventTime);
@@ -45,12 +50,14 @@ public class EventsService(DataContext context, TimeService time) {
 	}
 
 	public async Task<IEnumerable<EventDto>> GetVillagerEvents(Guid id) {
-		return await context.Events
-					  .Include(e => e.Actor)
-					  .Include(e => e.Witnesses)
-					  .Include(e => e.Sector)
-					  .Where(e => e.ActorId == id || e.Witnesses.Any(w => w.Id == id))
-					  .OrderByDescending(e => e.Time)
-					  .ToListAsync();
+		return await Events.Where(e => e.ActorId == id || e.Witnesses.Any(w => w.Id == id))
+						   .OrderByDescending(e => e.Time)
+						   .ToListAsync();
+	}
+
+	public async Task<IEnumerable<EventDto>> GetSectorEventsAsync(Guid sectorId) {
+		return await Events.Where(e => e.SectorId == sectorId)
+						   .OrderByDescending(e => e.Time)
+						   .ToListAsync();
 	}
 }
