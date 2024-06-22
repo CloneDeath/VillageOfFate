@@ -1,13 +1,33 @@
+@using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
+@inject VillagersApi VillagersApi
+@inject ImageApi ImageApi
 
-<div class="event">
-    <span>@Event.ActorId</span>
-    <span>@Event.Time</span>
+<div class="event dp2">
+    <span>
+        <TimeComponent GetTime="() => Event.Time"/>
+    </span>
     <span>@Event.Sector</span>
+    @if (Event.ActorId.HasValue) {
+        @if (Villager == null) {
+            <em>Loading...</em>
+        } else {
+            <img src="@ImageApi.GetImageUrl(Villager.ImageId)" width="20" height="20" alt=""/>
+            <span>@Villager.Name</span>
+        }
+    }
     <span>@Event.Description</span>
 </div>
 
 
 @code {
     [Parameter] public required WebEvent Event { get; set; }
+
+    private WebVillager? Villager { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        if (Event.ActorId.HasValue) {
+            Villager = await VillagersApi.GetVillager(Event.ActorId.Value);
+        }
+    }
 }

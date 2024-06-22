@@ -1,9 +1,9 @@
 @using System.Timers
-<div class="date-time" title="@Time">
+<span class="date-time" title="@Time">
     <span class="hours-minutes">@Time.Hour:@Time.Minute.ToString("00")</span>
     <span class="am-pm">@AmPm</span>
     <span class="date">@Time.Month/@Time.Day</span>
-</div>
+</span>
 
 @code {
     [Parameter] public required Func<DateTime> GetTime { get; set; }
@@ -17,5 +17,4 @@
         timer.Elapsed += (_, _) => InvokeAsync(StateHasChanged);
         timer.Start();
     }
-
 }
