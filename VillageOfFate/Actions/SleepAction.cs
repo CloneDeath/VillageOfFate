@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.Legacy;
 using VillageOfFate.Legacy.Activities;
 using VillageOfFate.Legacy.VillagerActions;
@@ -20,9 +21,9 @@ public class SleepAction(VillageLogger logger) : IAction {
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<SleepArguments>();
 
 	public ActivityDto ParseArguments(string arguments) {
-		var args = JsonSerializer.Deserialize<>(arguments)
+		var args = JsonSerializer.Deserialize<SleepArguments>(arguments)
 				   ?? throw new NullReferenceException();
-		return new {
+		return new SleepActivityDto {
 			Description = "Doing Nothing",
 			Interruptible = true
 		};
