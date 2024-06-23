@@ -2,23 +2,36 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using VillageOfFate.Actions.Parameters;
+using VillageOfFate.DAL.Entities;
+using VillageOfFate.Legacy;
 using VillageOfFate.Legacy.Activities;
+using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.WebModels;
 
-namespace VillageOfFate.Legacy.VillagerActions;
+namespace VillageOfFate.Actions;
 
-public class EatAction(VillageLogger logger) : IVillagerAction {
+public class EatAction(VillageLogger logger) : IAction {
 	public string Name => "Eat";
+	public ActivityName ActivityName => ActivityName.Eat;
+
 	public string Description => "Eat some Food";
-	public object Parameters => new {
-		type = "object",
-		properties = new {
-			targetItemId = new {
-				type = "string",
-				description = "the Id of the item to be eaten"
-			}
-		},
-		required = new[] { "targetItemId" }
-	};
+	public object Parameters => ParameterBuilder.GenerateJsonSchema<EatArguments>();
+
+	public ActivityDto ParseArguments(string arguments) {
+		var args = JsonSerializer.Deserialize<>(arguments)
+				   ?? throw new NullReferenceException();
+		return new {
+			Description = "Doing Nothing",
+			Interruptible = true
+		};
+	}
+
+	public async Task<IActionResults> Begin(ActivityDto activityDto) =>
+		Task.FromResult<IActionResults>(new ActionResults());
+
+	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
 
 	public IActivityDetails Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<EatArguments>(arguments) ?? throw new NullReferenceException();
@@ -71,5 +84,8 @@ public class EatAction(VillageLogger logger) : IVillagerAction {
 }
 
 public class EatArguments {
-	[JsonPropertyName("targetItemId")] public Guid TargetItemId { get; set; } = Guid.Empty;
+	[JsonRequired]
+	[JsonPropertyName("targetItemId")]
+	[JsonDescription("the Id of the item to be eaten")]
+	public Guid TargetItemId { get; set; } = Guid.Empty;
 }

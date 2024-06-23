@@ -2,5 +2,10 @@ namespace VillageOfFate.WebModels;
 
 public enum ActivityName {
 	Idle,
-	AdjustEmotionalState
+	AdjustEmotionalState,
+	Eat,
+	Interact,
+	Lookout,
+	Sleep,
+	Speak
 }

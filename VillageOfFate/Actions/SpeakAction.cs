@@ -2,23 +2,36 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using VillageOfFate.Actions.Parameters;
+using VillageOfFate.DAL.Entities;
+using VillageOfFate.Legacy;
 using VillageOfFate.Legacy.Activities;
+using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.WebModels;
 
-namespace VillageOfFate.Legacy.VillagerActions;
+namespace VillageOfFate.Actions;
 
-public class SpeakAction(VillageLogger logger) : IVillagerAction {
+public class SpeakAction(VillageLogger logger) : IAction {
 	public string Name => "Speak";
+	public ActivityName ActivityName => ActivityName.Speak;
+
 	public string Description => "Say something";
-	public object Parameters => new {
-		type = "object",
-		properties = new {
-			content = new {
-				type = "string",
-				description = "what to say"
-			}
-		},
-		required = new[] { "content" }
-	};
+	public object Parameters => ParameterBuilder.GenerateJsonSchema<SpeakArguments>();
+
+	public ActivityDto ParseArguments(string arguments) {
+		var args = JsonSerializer.Deserialize<>(arguments)
+				   ?? throw new NullReferenceException();
+		return new {
+			Description = "Doing Nothing",
+			Interruptible = true
+		};
+	}
+
+	public async Task<IActionResults> Begin(ActivityDto activityDto) =>
+		Task.FromResult<IActionResults>(new ActionResults());
+
+	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
 
 	public IActivityDetails Execute(string arguments, VillagerActionState state) {
 		var args = JsonSerializer.Deserialize<SpeakArguments>(arguments) ?? throw new NullReferenceException();
@@ -44,5 +57,8 @@ public class SpeakAction(VillageLogger logger) : IVillagerAction {
 }
 
 public class SpeakArguments {
-	[JsonPropertyName("content")] public string Content { get; set; } = string.Empty;
+	[JsonRequired]
+	[JsonPropertyName("content")]
+	[JsonDescription("what to say")]
+	public string Content { get; set; } = string.Empty;
 }
