@@ -41,7 +41,12 @@ public abstract class ActivityDto {
 		modelBuilder.Entity<ActivityDto>()
 					.HasDiscriminator(p => p.Name)
 					.HasValue<IdleActivityDto>(ActivityName.Idle)
-					.HasValue<AdjustEmotionalStateActivityDto>(ActivityName.AdjustEmotionalState);
+					.HasValue<AdjustEmotionalStateActivityDto>(ActivityName.AdjustEmotionalState)
+					.HasValue<EatActivityDto>(ActivityName.Eat)
+					.HasValue<InteractActivityDto>(ActivityName.Interact)
+					.HasValue<LookoutActivityDto>(ActivityName.Lookout)
+					.HasValue<SleepActivityDto>(ActivityName.Sleep)
+					.HasValue<SpeakActivityDto>(ActivityName.Speak);
 
 		modelBuilder.Entity<ActivityDto>()
 					.Property(d => d.Name)
