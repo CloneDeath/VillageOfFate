@@ -36,7 +36,20 @@ namespace SouthernCrm.Dal.Migrations {
 				  // Adjust Emotional State
 				  .WithColumn("Emotion").AsString(MaxNameLength).Nullable()
 				  .WithColumn("Adjustment").AsInt32().Nullable()
-				  .WithColumn("Reason").AsString(MaxDescriptionLength).Nullable();
+				  .WithColumn("Reason").AsString(MaxDescriptionLength).Nullable()
+				  // Speak
+				  .WithColumn("Content").AsString(MaxDescriptionLength).Nullable()
+				  // Interact
+				  .WithColumn("Action").AsString(MaxDescriptionLength).Nullable()
+				  // Eat
+				  .WithColumn("TargetItemId").AsGuid().Nullable().ForeignKey("Items", "Id");
+			Create.Table("InteractActivityTargets")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("ActivityId").AsGuid().NotNullable().ForeignKey("Activities", "Id")
+				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id");
+			Create.UniqueConstraint()
+				  .OnTable("InteractActivityTargets")
+				  .Columns(["ActivityId", "VillagerId"]);
 
 			Create.Table("Villagers")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()

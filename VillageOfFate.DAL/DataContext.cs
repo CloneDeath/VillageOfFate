@@ -50,6 +50,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 		TimeDto.OnModelCreating(modelBuilder);
 		ItemDto.OnModelCreating(modelBuilder);
 		ActivityDto.OnModelCreating(modelBuilder);
+		InteractActivityTargetDto.OnModelCreating(modelBuilder);
 		AdjustEmotionalStateActivityDto.OnModelCreating(modelBuilder);
 	}
 }
