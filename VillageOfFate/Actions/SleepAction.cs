@@ -1,62 +1,52 @@
 using System;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
-using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
-public class SleepAction(VillageLogger logger) : IAction {
+public class SleepAction(EventsService events) : IAction {
 	public string Name => "Sleep";
 	public ActivityName ActivityName => ActivityName.Sleep;
 
 	public string Description => "Sleep for a while";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<SleepArguments>();
 
-	public ActivityDto ParseArguments(string arguments) {
+	public Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<SleepArguments>(arguments)
 				   ?? throw new NullReferenceException();
-		return new SleepActivityDto {
-			Description = "Doing Nothing",
-			Interruptible = true
-		};
-	}
-
-	public async Task<IActionResults> Begin(ActivityDto activityDto) =>
-		Task.FromResult<IActionResults>(new ActionResults());
-
-	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
-
-	public IActivityDetails Execute(string arguments, VillagerActionState state) {
-		var args = JsonSerializer.Deserialize<SleepArguments>(arguments) ?? throw new NullReferenceException();
-		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} lays down to rest";
-		logger.LogActivity(activity);
-		foreach (var v in state.Others.Append(state.Actor)) {
-			v.AddMemory(activity);
-		}
-
-		return new ActivityDetails {
+		return Task.FromResult<ActivityDto>(new SleepActivityDto {
 			Description = "Sleeping",
 			Duration = TimeSpan.FromHours(args.DurationInHours),
-			Interruptible = false,
-			OnCompletion = () => {
-				var completionActivity =
-					$"[{state.World.CurrenTime}] {state.Actor.Name} wakes up from an {args.DurationInHours}-hour rest";
-				logger.LogActivity(completionActivity);
-				foreach (var v in state.Others.Append(state.Actor)) {
-					v.AddMemory(completionActivity);
-				}
+			Interruptible = false
+		});
+	}
 
-				return new ActivityResult { TriggerReactions = [] };
-			}
-		};
+	public async Task<IActionResults> Begin(ActivityDto activityDto) {
+		if (activityDto is not SleepActivityDto sleepActivity) {
+			throw new ArgumentException("ActivityDto is not a SleepActivityDto");
+		}
+
+		var villager = sleepActivity.Villager;
+		var description = $"{villager.Name} lays down to rest";
+		await events.AddAsync(villager, villager.Sector.Villagers, description);
+		return new ActionResults();
+	}
+
+	public async Task<IActionResults> End(ActivityDto activityDto) {
+		if (activityDto is not SleepActivityDto sleepActivity) {
+			throw new ArgumentException("ActivityDto is not a SleepActivityDto");
+		}
+
+		var villager = activityDto.Villager;
+		var description = $"{villager.Name} wakes up from an {sleepActivity.Duration}-hour rest.";
+		await events.AddAsync(villager, villager.Sector.Villagers, description);
+		return new ActionResults();
 	}
 }
 

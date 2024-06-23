@@ -14,13 +14,14 @@ namespace VillageOfFate.Server.Controllers;
 public class VillagersController(VillagerService villagers, EventsService events) : ControllerBase {
 	[HttpGet]
 	public async Task<IEnumerable<WebVillager>> ListVillagers() {
-		var results = await villagers.GetAll();
+		var results = await villagers.GetAllAsync();
 		return results.Select(v => v.AsWebVillager());
 	}
 
 	[HttpGet("{id:guid}")]
-	public async Task<WebVillager> GetVillager(Guid id) => (await villagers.Get(id)).AsWebVillager();
+	public async Task<WebVillager> GetVillager(Guid id) => (await villagers.GetAsync(id)).AsWebVillager();
 
 	[HttpGet("{id:guid}/Events")]
-	public async Task<IEnumerable<WebEvent>> GetEvents(Guid id) => (await events.GetVillagerEvents(id)).Select(e => e.AsWebEvent());
+	public async Task<IEnumerable<WebEvent>> GetEvents(Guid id) =>
+		(await events.GetVillagerEvents(id)).Select(e => e.AsWebEvent());
 }

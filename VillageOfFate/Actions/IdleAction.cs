@@ -18,14 +18,14 @@ public class IdleAction(
 	public string Description => "You will do nothing, sit idle, and wait for something to happen.";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<IdleArguments>();
 
-	public ActivityDto ParseArguments(string arguments) {
+	public Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<IdleArguments>(arguments)
 				   ?? throw new NullReferenceException();
-		return new IdleActivityDto {
+		return Task.FromResult<ActivityDto>(new IdleActivityDto {
 			Description = "Doing Nothing",
 			Interruptible = true,
 			Duration = TimeSpan.FromHours(args.DurationInHours)
-		};
+		});
 	}
 
 	public async Task<IActionResults> Begin(ActivityDto activityDto) {

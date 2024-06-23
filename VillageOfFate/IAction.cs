@@ -10,7 +10,7 @@ public interface IAction {
 	string Description { get; }
 	object? Parameters { get; }
 
-	ActivityDto ParseArguments(string arguments);
+	Task<ActivityDto> ParseArguments(string arguments);
 	Task<IActionResults> Begin(ActivityDto activityDto);
 	Task<IActionResults> End(ActivityDto activityDto);
 }

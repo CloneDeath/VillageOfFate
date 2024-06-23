@@ -6,48 +6,47 @@ using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
-using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
-public class SpeakAction(VillageLogger logger) : IAction {
+public class SpeakAction(EventsService events) : IAction {
 	public string Name => "Speak";
 	public ActivityName ActivityName => ActivityName.Speak;
 
 	public string Description => "Say something";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<SpeakArguments>();
 
-	public ActivityDto ParseArguments(string arguments) {
+	public Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<SpeakArguments>(arguments)
 				   ?? throw new NullReferenceException();
-		return new SpeakActivityDto {
-			Description = "Doing Nothing",
-			Interruptible = true
-		};
-	}
-
-	public async Task<IActionResults> Begin(ActivityDto activityDto) =>
-		Task.FromResult<IActionResults>(new ActionResults());
-
-	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
-
-	public IActivityDetails Execute(string arguments, VillagerActionState state) {
-		var args = JsonSerializer.Deserialize<SpeakArguments>(arguments) ?? throw new NullReferenceException();
-		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} says: \"{args.Content}\"";
-		logger.LogActivity(activity);
-		foreach (var v in state.Others.Append(state.Actor)) {
-			v.AddMemory(activity);
-		}
-
-		return new ActivityDetails {
+		return Task.FromResult<ActivityDto>(new SpeakActivityDto {
 			Description = "Speaking",
 			Duration = CalculateSpeakDuration(args.Content),
-			Interruptible = false,
-			OnCompletion = () => new ActivityResult { TriggerReactions = state.Others }
-		};
+			Interruptible = false
+		});
+	}
+
+	public async Task<IActionResults> Begin(ActivityDto activityDto) {
+		if (activityDto is not SpeakActivityDto speakActivity) {
+			throw new ArgumentException("ActivityDto is not a SpeakActivityDto");
+		}
+
+		var villager = activityDto.Villager;
+		var activity = $"{villager.Name} says: \"{speakActivity.Content}\"";
+		await events.AddAsync(villager, villager.Sector.Villagers, activity);
+		return new ActionResults();
+	}
+
+	public Task<IActionResults> End(ActivityDto activityDto) {
+		if (activityDto is not SpeakActivityDto speakActivity) {
+			throw new ArgumentException("ActivityDto is not a SpeakActivityDto");
+		}
+
+		var villager = speakActivity.Villager;
+		var others = villager.Sector.Villagers.Where(v => v.Id != villager.Id).ToList();
+		return Task.FromResult<IActionResults>(new ActionResults { TriggerReactions = others });
 	}
 
 	public static TimeSpan CalculateSpeakDuration(string sentence) {

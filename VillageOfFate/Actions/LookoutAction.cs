@@ -1,61 +1,52 @@
 using System;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
-using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.Services.DALServices;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
-public class LookoutAction(VillageLogger logger) : IAction {
+public class LookoutAction(EventsService events) : IAction {
 	public string Name => "Lookout";
 	public ActivityName ActivityName => ActivityName.Lookout;
 
 	public string Description => "Keep a Lookout for monsters";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<LookoutArguments>();
 
-	public ActivityDto ParseArguments(string arguments) {
+	public Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<LookoutArguments>(arguments)
 				   ?? throw new NullReferenceException();
-		return new LookoutActivityDto {
-			Description = "Doing Nothing",
-			Interruptible = true
-		};
-	}
-
-	public async Task<IActionResults> Begin(ActivityDto activityDto) =>
-		Task.FromResult<IActionResults>(new ActionResults());
-
-	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
-
-	public IActivityDetails Execute(string arguments, VillagerActionState state) {
-		var args = JsonSerializer.Deserialize<LookoutArguments>(arguments) ?? throw new NullReferenceException();
-		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} starts to lookout for monsters";
-		logger.LogActivity(activity);
-		foreach (var v in state.Others.Append(state.Actor)) {
-			v.AddMemory(activity);
-		}
-
-		return new ActivityDetails {
+		return Task.FromResult<ActivityDto>(new LookoutActivityDto {
 			Description = "On Lookout",
 			Duration = TimeSpan.FromHours(args.DurationInHours),
-			Interruptible = true,
-			OnCompletion = () => {
-				var completionActivity = $"[{state.World.CurrenTime}] {state.Actor.Name} finishes their lookout duty";
-				logger.LogActivity(completionActivity);
-				foreach (var v in state.Others.Append(state.Actor)) {
-					v.AddMemory(completionActivity);
-				}
+			Interruptible = true
+		});
+	}
 
-				return new ActivityResult { TriggerReactions = [] };
-			}
-		};
+	public async Task<IActionResults> Begin(ActivityDto activityDto) {
+		if (activityDto is not LookoutActivityDto lookoutActivity) {
+			throw new ArgumentException("ActivityDto is not a LookoutActivityDto");
+		}
+
+		var villager = lookoutActivity.Villager;
+		await events.AddAsync(villager, villager.Sector.Villagers, $"{villager.Name} starts to lookout for monsters");
+		return new ActionResults();
+	}
+
+	public async Task<IActionResults> End(ActivityDto activityDto) {
+		if (activityDto is not LookoutActivityDto lookoutActivity) {
+			throw new ArgumentException("ActivityDto is not a LookoutActivityDto");
+		}
+
+		var villager = lookoutActivity.Villager;
+		var completionActivity = $"{villager.Name} finishes their lookout duty";
+		await events.AddAsync(villager, villager.Sector.Villagers, completionActivity);
+
+		return new ActionResults();
 	}
 }
 

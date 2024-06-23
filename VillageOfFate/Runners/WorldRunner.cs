@@ -147,7 +147,7 @@ public class WorldRunner(
 				continue;
 			}
 
-			var activity = action.ParseArguments(call.Function.Arguments);
+			var activity = await action.ParseArguments(call.Function.Arguments);
 			activity.Villager = villager;
 			activity.Priority = index + 1;
 			activity.StartTime = worldNow + random.NextTimeSpan(TimeSpan.FromMinutes(2));

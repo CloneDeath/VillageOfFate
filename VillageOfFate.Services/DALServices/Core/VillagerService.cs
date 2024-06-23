@@ -24,11 +24,18 @@ public class VillagerService(DataContext context) {
 								 : DateTime.MaxValue).First();
 	}
 
-	public async Task<IEnumerable<VillagerDto>> GetAll() => await Villagers
-																.ToListAsync();
+	public async Task<IEnumerable<VillagerDto>> GetAllAsync() => await Villagers
+																	 .ToListAsync();
 
-	public async Task<VillagerDto> Get(Guid id) => await Villagers
-													   .FirstAsync(v => v.Id == id);
+	public async Task<VillagerDto> GetAsync(Guid id) => await Villagers
+															.FirstAsync(v => v.Id == id);
+
+	public async Task<IEnumerable<VillagerDto>> GetManyAsync(VillagerDto[] villagers) {
+		var ids = villagers.Select(v => v.Id).ToArray();
+		return await Villagers
+					 .Where(v => ids.Contains(v.Id))
+					 .ToListAsync();
+	}
 
 	public async Task<IEnumerable<VillagerDto>> GetVillagersWithoutImages() {
 		return await context.Villagers.Where(v => v.ImageId == null).ToListAsync();
@@ -44,5 +51,11 @@ public class VillagerService(DataContext context) {
 
 	public async Task<IEnumerable<VillagerDto>> GetVillagersWithoutActivities() {
 		return await Villagers.Where(v => v.Activities.Count == 0).ToListAsync();
+	}
+
+	public async Task DecreaseHungerAsync(VillagerDto villager, int amount) {
+		villager = context.Villagers.Entry(villager).Entity;
+		villager.Hunger = Math.Max(0, villager.Hunger - amount);
+		await context.SaveChangesAsync();
 	}
 }

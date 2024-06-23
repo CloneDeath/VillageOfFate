@@ -20,17 +20,17 @@ public class AdjustEmotionalStateAction(
 	public string Description => "Adjusts your emotional state by a specified amount.";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<AdjustEmotionalStateArguments>();
 
-	public ActivityDto ParseArguments(string arguments) {
+	public Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<AdjustEmotionalStateArguments>(arguments) ??
 				   throw new NullReferenceException();
-		return new AdjustEmotionalStateActivityDto {
+		return Task.FromResult<ActivityDto>(new AdjustEmotionalStateActivityDto {
 			Description = "Adjusting Emotional State",
 			Interruptible = true,
 			Duration = TimeSpan.FromSeconds(2),
 			Emotion = args.Emotion,
 			Adjustment = args.Adjustment,
 			Reason = args.Reason
-		};
+		});
 	}
 
 	public Task<IActionResults> Begin(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());

@@ -7,53 +7,58 @@ using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
-using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.Services.DALServices;
+using VillageOfFate.Services.DALServices.Core;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
-public class InteractAction(VillageLogger logger) : IAction {
+public class InteractAction(EventsService events, VillagerService villagers) : IAction {
 	public string Name => "Interact";
 	public ActivityName ActivityName => ActivityName.Interact;
 
 	public string Description => "Interact with someone else";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<InteractArguments>();
 
-	public ActivityDto ParseArguments(string arguments) {
+	public Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<InteractArguments>(arguments)
 				   ?? throw new NullReferenceException();
-		return new InteractActivityDto {
-			Description = "Doing Nothing",
-			Interruptible = true
-		};
-	}
-
-	public async Task<IActionResults> Begin(ActivityDto activityDto) =>
-		Task.FromResult<IActionResults>(new ActionResults());
-
-	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
-
-	public IActivityDetails Execute(string arguments, VillagerActionState state) {
-		var args = JsonSerializer.Deserialize<InteractArguments>(arguments) ?? throw new NullReferenceException();
-		var targets = state.Others.Where(o => args.Targets.Contains(o.Name)).ToList();
-
-		var targetNames = joinNames(args.Targets);
-		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} interacts with {targetNames}: \"{args.Action}\"";
-		logger.LogActivity(activity);
-		foreach (var villager in targets.Append(state.Actor)) {
-			villager.AddMemory(activity);
-		}
-
-		return new ActivityDetails {
+		return Task.FromResult<ActivityDto>(new InteractActivityDto {
 			Description = "Interacting",
 			Duration = TimeSpan.FromSeconds(args.DurationInSeconds),
-			Interruptible = true,
-			OnCompletion = () => new ActivityResult {
-				TriggerReactions = targets
-			}
-		};
+			Interruptible = true
+		});
+	}
+
+	public async Task<IActionResults> Begin(ActivityDto activityDto) {
+		if (activityDto is not InteractActivityDto interactActivity) {
+			throw new ArgumentException("ActivityDto is not an InteractActivityDto");
+		}
+
+		var villager = interactActivity.Villager;
+		var targets = await villagers.GetManyAsync(interactActivity.Targets);
+		var targetNames = joinNames(targets.Select(t => t.Name).ToList());
+		var actionDescription = interactActivity.Description;
+		if (!actionDescription.Contains("{target}") && !actionDescription.Contains("{targets}")) {
+			throw new ArgumentException("Action description must contain either {target} or {targets}");
+		}
+
+		actionDescription = actionDescription.Replace("{target}", targetNames);
+		actionDescription = actionDescription.Replace("{targets}", targetNames);
+
+		var description = $"{villager.Name} {actionDescription}";
+		await events.AddAsync(villager, villager.Sector.Villagers, description);
+		return new ActionResults();
+	}
+
+	public Task<IActionResults> End(ActivityDto activityDto) {
+		if (activityDto is not InteractActivityDto interactActivity) {
+			throw new ArgumentException("ActivityDto is not an InteractActivityDto");
+		}
+
+		return Task.FromResult<IActionResults>(new ActionResults {
+			TriggerReactions = interactActivity.Targets.ToList()
+		});
 	}
 
 	private static string joinNames(IReadOnlyList<string> names) {
@@ -70,9 +75,9 @@ public class InteractAction(VillageLogger logger) : IAction {
 
 public class InteractArguments {
 	[JsonRequired]
-	[JsonPropertyName("targets")]
-	[JsonDescription("who the action is directed at")]
-	public string[] Targets { get; set; } = [];
+	[JsonPropertyName("villagerIds")]
+	[JsonDescription("the villager id(s) the action is directed at")]
+	public Guid[] VillagerIds { get; set; } = [];
 
 	[JsonRequired]
 	[JsonPropertyName("durationInSeconds")]
@@ -82,12 +87,13 @@ public class InteractArguments {
 	[JsonRequired]
 	[JsonPropertyName("action")]
 	[JsonDescription("A description of the interaction you are performing." +
-					 " It will automatically be prepended with your name, ie \"holds John's hand.\" will become \"Marry holds John's hand.\"." +
+					 " You MUST use {target} or {targets} to refer to the villager(s) you are interacting with." +
+					 " Also, the description will automatically be prepended with your name, ie \"holds {target}'s hand.\" will become \"Marry holds John's hand.\"." +
 					 " DO NOT include your name at the start of the action, it will be added automatically." +
 					 " Make sure to pay close attention to everyone's gender, and to use the correct pronouns, especially your own." +
 					 " Some examples are:" +
-					 " \"scares Jannet.\" +" +
-					 " \"comforts the crying child.\"" +
-					 " \"offers some food to Brian.\"")]
+					 "\n \"scares {target}.\" becomes \"Michael scares Janet.\"" +
+					 "\n \"comforts the crying children {targets}.\" becomes \"Roe comforts the crying children Penny and Sue\"" +
+					 "\n \"offers some food to {targets}.\" becomes \"Mark offers some food to Richard, Blake, and Amy\"")]
 	public string Action { get; set; } = string.Empty;
 }

@@ -1,77 +1,68 @@
 using System;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using VillageOfFate.Actions.Parameters;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
-using VillageOfFate.Legacy;
-using VillageOfFate.Legacy.Activities;
-using VillageOfFate.Legacy.VillagerActions;
+using VillageOfFate.Services.DALServices;
+using VillageOfFate.Services.DALServices.Core;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
-public class EatAction(VillageLogger logger) : IAction {
+public class EatAction(ItemService items, EventsService events, VillagerService villagers) : IAction {
 	public string Name => "Eat";
 	public ActivityName ActivityName => ActivityName.Eat;
 
 	public string Description => "Eat some Food";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<EatArguments>();
 
-	public ActivityDto ParseArguments(string arguments) {
+	public async Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<EatArguments>(arguments)
 				   ?? throw new NullReferenceException();
+		var item = await items.GetAsync(args.TargetItemId);
 		return new EatActivityDto {
-			Description = "Doing Nothing",
-			Interruptible = true
+			Description = "Eating",
+			Interruptible = true,
+			Duration = TimeSpan.FromMinutes(7) * item.HungerRestored
 		};
 	}
 
-	public async Task<IActionResults> Begin(ActivityDto activityDto) =>
-		Task.FromResult<IActionResults>(new ActionResults());
-
-	public Task<IActionResults> End(ActivityDto activityDto) => Task.FromResult<IActionResults>(new ActionResults());
-
-	public IActivityDetails Execute(string arguments, VillagerActionState state) {
-		var args = JsonSerializer.Deserialize<EatArguments>(arguments) ?? throw new NullReferenceException();
-		var sector = state.World.GetSector(state.Actor.SectorLocation);
-		var target = sector.Items.First(i => i.Id == args.TargetItemId);
-		if (!target.Edible) {
-			throw new Exception($"Item {target.Name} is not Edible!");
+	public async Task<IActionResults> Begin(ActivityDto activityDto) {
+		if (activityDto is not EatActivityDto eatActivity) {
+			throw new Exception($"{nameof(ActivityDto)} is not {nameof(EatActivityDto)}");
 		}
 
-		if (target.Quantity > 1) {
-			target.Quantity -= 1;
-		} else {
-			sector.Items.Remove(target);
+		var item = eatActivity.TargetItem;
+		if (!item.Edible) {
+			throw new Exception($"Item {item.Name} is not Edible!");
 		}
 
-		var activity = $"[{state.World.CurrenTime}] {state.Actor.Name} starts to eat {GetNameWithArticle(target.Name)}";
-		logger.LogActivity(activity);
-		var villagersInSector = state.World.GetVillagersInSector(state.Actor.SectorLocation).ToList();
-		foreach (var v in villagersInSector) {
-			v.AddMemory(activity);
+		var villager = eatActivity.Villager;
+		await items.ConsumeSingle(villager, item);
+
+		var activity = $"{villager.Name} starts to eat {GetNameWithArticle(item.Name)}";
+		await events.AddAsync(villager, villager.Sector.Villagers, activity);
+
+		return new ActionResults();
+	}
+
+	public async Task<IActionResults> End(ActivityDto activityDto) {
+		if (activityDto is not EatActivityDto eatActivity) {
+			throw new Exception($"{nameof(ActivityDto)} is not {nameof(EatActivityDto)}");
 		}
 
-		return new ActivityDetails {
-			Description = "Eating",
-			Duration = TimeSpan.FromMinutes(7) * target.HungerRestored,
-			Interruptible = true,
-			OnCompletion = () => {
-				state.Actor.DecreaseHunger(target.HungerRestored);
+		var villager = eatActivity.Villager;
+		var item = eatActivity.TargetItem;
 
-				var completionActivity =
-					$"[{state.World.CurrenTime}] {state.Actor.Name} finishes eating {GetNameWithArticle(target.Name)} (Hunger -{target.HungerRestored})";
-				logger.LogActivity(completionActivity);
-				foreach (var v in villagersInSector) {
-					v.AddMemory(completionActivity);
-				}
+		await villagers.DecreaseHungerAsync(villager, item.HungerRestored);
 
-				return new ActivityResult { TriggerReactions = state.Others };
-			}
-		};
+		var completionActivity =
+			$"{villager.Name} finishes eating {GetNameWithArticle(item.Name)} (Hunger -{item.HungerRestored})";
+		await events.AddAsync(villager, villager.Sector.Villagers, completionActivity);
+
+		return new ActionResults();
 	}
 
 	public static string GetNameWithArticle(string itemName) {

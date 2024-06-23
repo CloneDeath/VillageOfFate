@@ -1,8 +1,6 @@
 using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using CommandLine;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +9,6 @@ using OpenAi;
 using OpenAi.Models;
 using VillageOfFate.Actions;
 using VillageOfFate.DAL;
-using VillageOfFate.Legacy;
 using VillageOfFate.Runners;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Settings;
@@ -22,9 +19,6 @@ namespace VillageOfFate.Server;
 
 public class Program {
 	public static async Task Main(string[] args) {
-		var parser = new Parser(with => with.HelpWriter = Console.Error);
-		var result = parser.ParseArguments<ProgramOptions>(args);
-
 		var builder = WebApplication.CreateBuilder(args);
 
 		builder.Services.AddControllers();
@@ -58,7 +52,6 @@ public class Program {
 			ImageModel = ImageModel.Dall_E_2
 		});
 
-		builder.Services.AddSingleton(new VillageLogger(result.Value.LogDirectory ?? Directory.GetCurrentDirectory()));
 		builder.Services.AddScoped<TimeService>();
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
