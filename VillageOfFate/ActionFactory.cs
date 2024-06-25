@@ -5,16 +5,16 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate;
 
-public class ActionFactory(IdleAction idle, AdjustEmotionalStateAction adjustEmotionalState) {
-	// private readonly IReadOnlyList<IVillagerAction> actions = [
-	// 	new SpeakAction(logger),
-	// 	new InteractAction(logger),
-	// 	new EatAction(logger),
-	// 	new SleepAction(logger),
-	// 	new LookoutAction(logger)
-	// ];
-
-	public IReadOnlyList<IAction> Actions => [idle, adjustEmotionalState];
+public class ActionFactory(
+	AdjustEmotionalStateAction adjustEmotionalState,
+	EatAction eat,
+	IdleAction idle,
+	InteractAction interact,
+	LookoutAction lookout,
+	SleepAction sleep,
+	SpeakAction speak
+) {
+	public IReadOnlyList<IAction> Actions => [adjustEmotionalState, eat, idle, interact, lookout, sleep, speak];
 
 	public IAction? Get(string actionName) => Actions.FirstOrDefault(a => a.Name == actionName);
 	public IAction Get(ActivityName activityName) => Actions.First(a => a.ActivityName == activityName);

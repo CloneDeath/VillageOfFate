@@ -1,3 +1,3 @@
 namespace VillageOfFate.WebModels.Activities;
 
-public class IdleWebActivity : WebActivity;
+public class LookoutWebActivity : WebActivity;

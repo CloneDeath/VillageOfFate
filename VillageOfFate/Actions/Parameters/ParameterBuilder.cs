@@ -19,22 +19,7 @@ public static class ParameterBuilder {
 			var propertyType = property.PropertyType;
 			var required = property.GetCustomAttribute<JsonRequiredAttribute>() != null;
 
-			var jsonData = propertyType switch {
-				{ Name: "String" } => (IJsonData)new JsonString {
-					Description = description
-				},
-				{ Name: "Int32" } => new JsonNumber {
-					Description = description
-				},
-				{ Name: "Double" } => new JsonNumber {
-					Description = description
-				},
-				{ IsEnum: true } => new JsonEnum {
-					Description = description,
-					Enum = Enum.GetNames(propertyType).ToList()
-				},
-				_ => throw new NotSupportedException($"Unsupported property type: {propertyType.Name}")
-			};
+			var jsonData = GetJsonSchemaFor(propertyType, description);
 			jsonObject.Properties.Add(propertyName, jsonData);
 
 			if (required) {
@@ -43,6 +28,35 @@ public static class ParameterBuilder {
 		}
 
 		return jsonObject;
+	}
+
+	private static IJsonData GetJsonSchemaFor(Type type, string description) {
+		return type switch {
+			{ Name: "String" } => new JsonString {
+				Description = description
+			},
+			{ Name: "Int32" } => new JsonNumber {
+				Description = description
+			},
+			{ Name: "Double" } => new JsonNumber {
+				Description = description
+			},
+			{ IsEnum: true } => new JsonEnum {
+				Description = description,
+				Enum = Enum.GetNames(type).ToList()
+			},
+			{ Name: "Guid" } => new JsonString {
+				Description = description,
+				Format = "uuid"
+			},
+			{ IsArray: true } => new JsonArray {
+				Description = description,
+				Items = GetJsonSchemaFor(type.GetElementType()
+										 ?? throw new NullReferenceException("Found an array, without an element type"),
+					description)
+			},
+			_ => throw new NotSupportedException($"Unsupported property type: {type.Name}")
+		};
 	}
 
 	private static string GetPropertyName(PropertyInfo property) {

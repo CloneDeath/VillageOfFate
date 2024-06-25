@@ -71,8 +71,14 @@ public class Program {
 		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
 
-		builder.Services.AddScoped<IdleAction>();
+		// Actions
 		builder.Services.AddScoped<AdjustEmotionalStateAction>();
+		builder.Services.AddScoped<EatAction>();
+		builder.Services.AddScoped<IdleAction>();
+		builder.Services.AddScoped<InteractAction>();
+		builder.Services.AddScoped<LookoutAction>();
+		builder.Services.AddScoped<SleepAction>();
+		builder.Services.AddScoped<SpeakAction>();
 
 		var app = builder.Build();
 		if (app.Environment.IsDevelopment()) {

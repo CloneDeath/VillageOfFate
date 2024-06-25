@@ -45,14 +45,6 @@ public static class WebModelConversions {
 		};
 
 	public static WebActivity AsWebActivity(this ActivityDto activity) => activity switch {
-		IdleActivityDto => new IdleWebActivity {
-			Name = activity.Name,
-			Description = activity.Description,
-			Interruptible = activity.Interruptible,
-			Duration = activity.Duration,
-			StartTime = activity.StartTime,
-			EndTime = activity.EndTime
-		},
 		AdjustEmotionalStateActivityDto emotional => new AdjustEmotionalStateWebActivity {
 			Name = activity.Name,
 			Description = activity.Description,
@@ -63,6 +55,14 @@ public static class WebModelConversions {
 			Adjustment = emotional.Adjustment,
 			Emotion = emotional.Emotion,
 			Reason = emotional.Reason
+		},
+		IdleActivityDto => new IdleWebActivity {
+			Name = activity.Name,
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime
 		},
 		_ => throw new NotImplementedException()
 	};
