@@ -6,6 +6,7 @@
     <ItemGroup>
         <ProjectReference Include="..\OpenAi\OpenAi.csproj" />
         <ProjectReference Include="..\VillageOfFate.DAL\VillageOfFate.DAL.csproj"/>
+        <ProjectReference Include="..\VillageOfFate.Localization\VillageOfFate.Localization.csproj" />
         <ProjectReference Include="..\VillageOfFate.Services\VillageOfFate.Services.csproj"/>
         <ProjectReference Include="..\VillageOfFate.WebModels\VillageOfFate.WebModels.csproj"/>
     </ItemGroup>

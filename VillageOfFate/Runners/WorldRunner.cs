@@ -8,6 +8,7 @@ using OpenAi.Gpt;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Villagers;
+using VillageOfFate.Localization;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 
@@ -24,7 +25,8 @@ public class WorldRunner(
 	OpenApi openApi,
 	RandomProvider random,
 	StatusBuilder statusBuilder,
-	DataContext context
+	DataContext context,
+	Plurality plurality
 ) : IRunner {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
 
@@ -155,7 +157,7 @@ public class WorldRunner(
 		}
 
 		await events.AddAsync(villager,
-			$"Decides to perform the following actions: {string.Join(", ", details.Select(d => d.Description))}");
+			$"Decides to perform the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Description))}");
 		foreach (var activityDetail in details) {
 			await villagerActivities.AddAsync(villager, activityDetail);
 		}
