@@ -29,7 +29,7 @@ public class IdleAction(
 	}
 
 	public async Task<IActionResults> Begin(ActivityDto activityDto) {
-		await eventService.AddAsync(activityDto.Villager, $"${activityDto.Villager} takes a break.");
+		await eventService.AddAsync(activityDto.Villager, $"{activityDto.Villager.Name} takes a break.");
 		return new ActionResults();
 	}
 
