@@ -56,6 +56,15 @@ public static class WebModelConversions {
 			Emotion = emotional.Emotion,
 			Reason = emotional.Reason
 		},
+		EatActivityDto eat => new EatWebActivity {
+			Name = activity.Name,
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime,
+			TargetItemId = eat.TargetItemId
+		},
 		IdleActivityDto => new IdleWebActivity {
 			Name = activity.Name,
 			Description = activity.Description,
@@ -63,6 +72,41 @@ public static class WebModelConversions {
 			Duration = activity.Duration,
 			StartTime = activity.StartTime,
 			EndTime = activity.EndTime
+		},
+		InteractActivityDto interact => new InteractWebActivity {
+			Name = activity.Name,
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime,
+			Action = interact.Action,
+			TargetIds = interact.Targets.Select(t => t.Id).ToArray()
+		},
+		LookoutActivityDto => new LookoutWebActivity {
+			Name = activity.Name,
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime
+		},
+		SleepActivityDto => new SleepWebActivity {
+			Name = activity.Name,
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime
+		},
+		SpeakActivityDto speak => new SpeakWebActivity {
+			Name = activity.Name,
+			Description = activity.Description,
+			Interruptible = activity.Interruptible,
+			Duration = activity.Duration,
+			StartTime = activity.StartTime,
+			EndTime = activity.EndTime,
+			Content = speak.Content
 		},
 		_ => throw new NotImplementedException()
 	};
