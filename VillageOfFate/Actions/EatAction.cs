@@ -25,7 +25,8 @@ public class EatAction(ItemService items, EventsService events, VillagerService 
 		return new EatActivityDto {
 			Description = "Eating",
 			Interruptible = true,
-			Duration = TimeSpan.FromMinutes(7) * item.HungerRestored
+			Duration = TimeSpan.FromMinutes(7) * item.HungerRestored,
+			TargetItem = item
 		};
 	}
 

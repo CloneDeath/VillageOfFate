@@ -20,14 +20,17 @@ public class InteractAction(EventsService events, VillagerService villagers) : I
 	public string Description => "Interact with someone else";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<InteractArguments>();
 
-	public Task<ActivityDto> ParseArguments(string arguments) {
+	public async Task<ActivityDto> ParseArguments(string arguments) {
 		var args = JsonSerializer.Deserialize<InteractArguments>(arguments)
 				   ?? throw new NullReferenceException();
-		return Task.FromResult<ActivityDto>(new InteractActivityDto {
+		var targets = await villagers.GetManyAsync(args.VillagerIds);
+		return new InteractActivityDto {
 			Description = "Interacting",
 			Duration = TimeSpan.FromSeconds(args.DurationInSeconds),
-			Interruptible = true
-		});
+			Interruptible = true,
+			Action = args.Action,
+			Targets = targets.ToArray()
+		};
 	}
 
 	public async Task<IActionResults> Begin(ActivityDto activityDto) {

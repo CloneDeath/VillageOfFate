@@ -24,7 +24,8 @@ public class SpeakAction(EventsService events) : IAction {
 		return Task.FromResult<ActivityDto>(new SpeakActivityDto {
 			Description = "Speaking",
 			Duration = CalculateSpeakDuration(args.Content),
-			Interruptible = false
+			Interruptible = false,
+			Content = args.Content
 		});
 	}
 
