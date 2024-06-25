@@ -9,6 +9,7 @@ using OpenAi;
 using OpenAi.Models;
 using VillageOfFate.Actions;
 using VillageOfFate.DAL;
+using VillageOfFate.Localization;
 using VillageOfFate.Runners;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Settings;
@@ -70,6 +71,9 @@ public class Program {
 		builder.Services.AddScoped<ImageGenerationRunner>();
 		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
+
+		// Localization
+		builder.Services.AddScoped<Plurality>();
 
 		// Actions
 		builder.Services.AddScoped<AdjustEmotionalStateAction>();

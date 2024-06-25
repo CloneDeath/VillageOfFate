@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VillageOfFate.Client.Services;
 using VillageOfFate.Client.Services.Api;
+using VillageOfFate.Localization;
 
 namespace VillageOfFate.Client;
 

@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\VillageOfFate.Localization\VillageOfFate.Localization.csproj" />
         <ProjectReference Include="..\VillageOfFate.WebModels\VillageOfFate.WebModels.csproj"/>
     </ItemGroup>
 
