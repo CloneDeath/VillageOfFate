@@ -11,6 +11,7 @@ using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.Localization;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Runners;
 
@@ -142,6 +143,7 @@ public class WorldRunner(
 		var worldNow = await time.GetAsync(TimeLabel.World);
 		var details = new List<ActivityDto>();
 		for (var index = 0; index < calls.Length; index++) {
+			worldNow += random.NextTimeSpan(TimeSpan.FromMinutes(2));
 			var call = calls[index];
 			var action = actionFactory.Get(call.Function.Name);
 			if (action == null) {
@@ -150,14 +152,15 @@ public class WorldRunner(
 			}
 
 			var activity = await action.ParseArguments(call.Function.Arguments);
+			activity.DurationRemaining = activity.TotalDuration;
 			activity.Villager = villager;
 			activity.Priority = index + 1;
-			activity.StartTime = worldNow + random.NextTimeSpan(TimeSpan.FromMinutes(2));
 			details.Add(activity);
+			worldNow += activity.TotalDuration;
 		}
 
 		await events.AddAsync(villager,
-			$"Decides to perform the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Description))}");
+			$"Decides to perform the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Name.ToFutureString()))}");
 		foreach (var activityDetail in details) {
 			await villagerActivities.AddAsync(villager, activityDetail);
 		}

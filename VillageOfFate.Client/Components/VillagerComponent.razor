@@ -16,8 +16,8 @@
         </div>
         <div>
             @if (Villager.CurrentActivity != null) {
-                @Villager.CurrentActivity.Description
-                <TimeSpanBadge class="ms-1" GetTimeSpan="() => Villager.CurrentActivity.Duration"/>
+                @Villager.CurrentActivity.Name.ToActiveString()
+                <TimeSpanBadge class="ms-1" GetTimeSpan="() => Villager.CurrentActivity.DurationRemaining"/>
             } else {
                 <em>Deciding what to do next...</em>
             }

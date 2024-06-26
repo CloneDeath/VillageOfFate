@@ -23,9 +23,7 @@ public class EatAction(ItemService items, EventsService events, VillagerService 
 				   ?? throw new NullReferenceException();
 		var item = await items.GetAsync(args.TargetItemId);
 		return new EatActivityDto {
-			Description = "Eating",
-			Interruptible = true,
-			Duration = TimeSpan.FromMinutes(7) * item.HungerRestored,
+			TotalDuration = TimeSpan.FromMinutes(7) * item.HungerRestored,
 			TargetItem = item
 		};
 	}

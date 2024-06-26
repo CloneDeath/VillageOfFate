@@ -25,9 +25,7 @@ public class InteractAction(EventsService events, VillagerService villagers) : I
 				   ?? throw new NullReferenceException();
 		var targets = await villagers.GetManyAsync(args.VillagerIds);
 		return new InteractActivityDto {
-			Description = "Interacting",
-			Duration = TimeSpan.FromSeconds(args.DurationInSeconds),
-			Interruptible = true,
+			TotalDuration = TimeSpan.FromSeconds(args.DurationInSeconds),
 			Action = args.Action,
 			Targets = targets.ToArray()
 		};
@@ -41,7 +39,7 @@ public class InteractAction(EventsService events, VillagerService villagers) : I
 		var villager = interactActivity.Villager;
 		var targets = await villagers.GetManyAsync(interactActivity.Targets);
 		var targetNames = joinNames(targets.Select(t => t.Name).ToList());
-		var actionDescription = interactActivity.Description;
+		var actionDescription = interactActivity.Action;
 		if (!actionDescription.Contains("{target}") && !actionDescription.Contains("{targets}")) {
 			throw new ArgumentException("Action description must contain either {target} or {targets}");
 		}

@@ -30,7 +30,7 @@ public class VillagerActivityService(DataContext context, TimeService time) {
 			var worldNow = await time.GetAsync(TimeLabel.World);
 			if (current.StartTime < worldNow) {
 				var remainingTime = current.EndTime - worldNow;
-				current.Duration = remainingTime < TimeSpan.Zero ? TimeSpan.Zero : remainingTime;
+				current.DurationRemaining = remainingTime < TimeSpan.Zero ? TimeSpan.Zero : remainingTime;
 			}
 		}
 

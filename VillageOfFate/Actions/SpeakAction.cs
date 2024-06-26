@@ -22,9 +22,7 @@ public class SpeakAction(EventsService events) : IAction {
 		var args = JsonSerializer.Deserialize<SpeakArguments>(arguments)
 				   ?? throw new NullReferenceException();
 		return Task.FromResult<ActivityDto>(new SpeakActivityDto {
-			Description = "Speaking",
-			Duration = CalculateSpeakDuration(args.Content),
-			Interruptible = false,
+			TotalDuration = CalculateSpeakDuration(args.Content),
 			Content = args.Content
 		});
 	}

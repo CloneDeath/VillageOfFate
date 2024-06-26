@@ -21,9 +21,7 @@ public class LookoutAction(EventsService events) : IAction {
 		var args = JsonSerializer.Deserialize<LookoutArguments>(arguments)
 				   ?? throw new NullReferenceException();
 		return Task.FromResult<ActivityDto>(new LookoutActivityDto {
-			Description = "On Lookout",
-			Duration = TimeSpan.FromHours(args.DurationInHours),
-			Interruptible = true
+			TotalDuration = TimeSpan.FromHours(args.DurationInHours)
 		});
 	}
 

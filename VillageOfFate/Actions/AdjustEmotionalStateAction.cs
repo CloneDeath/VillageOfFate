@@ -24,9 +24,7 @@ public class AdjustEmotionalStateAction(
 		var args = JsonSerializer.Deserialize<AdjustEmotionalStateArguments>(arguments) ??
 				   throw new NullReferenceException();
 		return Task.FromResult<ActivityDto>(new AdjustEmotionalStateActivityDto {
-			Description = "Adjusting Emotional State",
-			Interruptible = true,
-			Duration = TimeSpan.FromSeconds(2),
+			TotalDuration = TimeSpan.FromSeconds(2),
 			Emotion = args.Emotion,
 			Adjustment = args.Adjustment,
 			Reason = args.Reason

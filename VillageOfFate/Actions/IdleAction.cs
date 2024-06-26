@@ -22,9 +22,7 @@ public class IdleAction(
 		var args = JsonSerializer.Deserialize<IdleArguments>(arguments)
 				   ?? throw new NullReferenceException();
 		return Task.FromResult<ActivityDto>(new IdleActivityDto {
-			Description = "Doing Nothing",
-			Interruptible = true,
-			Duration = TimeSpan.FromHours(args.DurationInHours)
+			TotalDuration = TimeSpan.FromHours(args.DurationInHours)
 		});
 	}
 

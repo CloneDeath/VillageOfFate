@@ -35,12 +35,17 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
 		foreach (var entityType in modelBuilder.Model.GetEntityTypes()) {
 			foreach (var property in entityType.GetProperties()) {
-				if (property.PropertyInfo != null &&
-					Attribute.IsDefined(property.PropertyInfo, typeof(UtcDateTimeAttribute))) {
+				if (property.PropertyInfo == null) continue;
+				if (Attribute.IsDefined(property.PropertyInfo, typeof(UtcDateTimeAttribute))) {
 					modelBuilder.Entity(entityType.Name).Property(property.Name)
 								.HasConversion(new ValueConverter<DateTime, DateTime>(
 									v => v.ToUniversalTime(),
 									v => DateTime.SpecifyKind(v, DateTimeKind.Utc)));
+				} else if (Attribute.IsDefined(property.PropertyInfo, typeof(TimeSpanTicksAttribute))) {
+					modelBuilder.Entity(entityType.Name).Property(property.Name)
+								.HasConversion(new ValueConverter<TimeSpan, long>(
+									v => v.Ticks,
+									v => new TimeSpan(v)));
 				}
 			}
 		}

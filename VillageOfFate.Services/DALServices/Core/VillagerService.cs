@@ -20,7 +20,7 @@ public class VillagerService(DataContext context) {
 		return Villagers
 			   .ToList()
 			   .OrderBy(v => v.CurrentActivity != null
-								 ? v.CurrentActivity.StartTime + v.CurrentActivity.Duration
+								 ? v.CurrentActivity.StartTime + v.CurrentActivity.DurationRemaining
 								 : DateTime.MaxValue).First();
 	}
 

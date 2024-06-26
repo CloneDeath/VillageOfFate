@@ -21,9 +21,7 @@ public class SleepAction(EventsService events) : IAction {
 		var args = JsonSerializer.Deserialize<SleepArguments>(arguments)
 				   ?? throw new NullReferenceException();
 		return Task.FromResult<ActivityDto>(new SleepActivityDto {
-			Description = "Sleeping",
-			Duration = TimeSpan.FromHours(args.DurationInHours),
-			Interruptible = false
+			TotalDuration = TimeSpan.FromHours(args.DurationInHours)
 		});
 	}
 
@@ -44,7 +42,7 @@ public class SleepAction(EventsService events) : IAction {
 		}
 
 		var villager = activityDto.Villager;
-		var description = $"{villager.Name} wakes up from an {sleepActivity.Duration}-hour rest.";
+		var description = $"{villager.Name} wakes up from an {sleepActivity.TotalDuration.Hours}-hour rest.";
 		await events.AddAsync(villager, villager.Sector.Villagers, description);
 		return new ActionResults();
 	}

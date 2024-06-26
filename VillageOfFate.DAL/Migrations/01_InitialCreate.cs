@@ -1,5 +1,6 @@
 using System;
 using FluentMigrator;
+using FluentMigrator.Expressions;
 using FluentMigrator.SqlServer;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.WebModels;
@@ -27,11 +28,11 @@ namespace SouthernCrm.Dal.Migrations {
 			Create.Table("Activities")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
-				  .WithColumn("StartTime").AsDateTime().NotNullable()
-				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
+				  .WithColumn("Status").AsString(MaxNameLength).NotNullable().WithDefaultValue(nameof(ActivityStatus.Pending))
 				  .WithColumn("Priority").AsInt32().NotNullable().WithDefaultValue(int.MaxValue)
-				  .WithColumn("DurationTicks").AsInt64().NotNullable()
-				  .WithColumn("Interruptible").AsBoolean().NotNullable()
+				  .WithColumn("StartTime").AsDateTime().Nullable()
+				  .WithColumn("TotalDuration").AsTime().NotNullable()
+				  .WithColumn("DurationRemaining").AsTime().NotNullable()
 				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
 				  // Adjust Emotional State
 				  .WithColumn("Emotion").AsString(MaxNameLength).Nullable()

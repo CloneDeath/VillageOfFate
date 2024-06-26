@@ -13,9 +13,8 @@ namespace VillageOfFate.WebModels.Activities;
 [JsonDerivedType(typeof(SpeakWebActivity), (int)ActivityName.Speak)]
 public class WebActivity {
 	public required ActivityName Name { get; init; }
-	public DateTime StartTime { get; init; }
-	public DateTime EndTime { get; init; }
-	public required string Description { get; init; }
-	public TimeSpan Duration { get; init; }
-	public bool Interruptible { get; init; }
+	public required DateTime? StartTime { get; init; }
+	public required DateTime? EndTime { get; init; }
+	public required TimeSpan TotalDuration { get; init; }
+	public required TimeSpan DurationRemaining { get; init; }
 }
