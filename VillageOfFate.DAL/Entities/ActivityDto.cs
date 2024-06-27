@@ -55,6 +55,5 @@ public abstract class ActivityDto {
 public enum ActivityStatus {
 	Pending,
 	InProgress,
-	OnHold,
-	Completed
+	OnHold
 }

@@ -37,11 +37,10 @@ public class VillagerDto {
 
 	[NotMapped]
 	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities
-															 .Where(a => a.Status is ActivityStatus.Pending or ActivityStatus.OnHold)
+															 .Where(a => a.Status is ActivityStatus.Pending
+																			 or ActivityStatus.OnHold)
+															 .OrderBy(a => a.Priority)
 															 .ToList();
-	[NotMapped]
-	private IReadOnlyCollection<ActivityDto> CompletedActivities =>
-		Activities.Where(a => a.Status == ActivityStatus.Completed).ToList();
 
 	public List<ItemDto> Items { get; } = [];
 	public List<ActivityDto> Activities { get; set; } = [];

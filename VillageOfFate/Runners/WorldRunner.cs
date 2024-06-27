@@ -18,7 +18,7 @@ namespace VillageOfFate.Runners;
 public class WorldRunner(
 	TimeService time,
 	VillagerService villagers,
-	VillagerActivityService villagerActivities,
+	VillagerActivityService activities,
 	VillagerActionErrorService villagerActionErrors,
 	EventsService events,
 	ActionFactory actionFactory,
@@ -82,31 +82,36 @@ public class WorldRunner(
 	}
 
 	private async Task SimulateWorld() {
-		var currentTime = await time.GetAsync(TimeLabel.World);
-		var villager = villagers.GetVillagerWithTheEarliestCompleteTime();
+		foreach (var villager in await villagers.GetAllAsync()) {
+			await SimulateVillager(villager);
+		}
+	}
+
+	private async Task SimulateVillager(VillagerDto villager) {
+		var currentTime = await GetWorldTimeAsync();
 		if (villager.CurrentActivity == null) {
-			await QueueActionsForVillager(villager);
-			if (villager.CurrentActivity == null) return;
-			var action = actionFactory.Get(villager.CurrentActivity.Name);
-			await action.Begin(villager.CurrentActivity);
+			if (!villager.ActivityQueue.Any()) {
+				await QueueActionsForVillager(villager);
+			}
+
+			var nextActivity = villager.ActivityQueue.FirstOrDefault();
+			if (nextActivity == null) return;
+
+			var action = actionFactory.Get(nextActivity.Name);
+			nextActivity.StartTime = currentTime;
+			nextActivity.Status = ActivityStatus.InProgress;
+			await activities.SaveAsync(nextActivity);
+			var beginResult = await action.Begin(nextActivity);
+			await HandleResult(beginResult);
 			return;
 		}
 
 		if (villager.CurrentActivity.EndTime > currentTime) return;
 
 		var currentActivity = actionFactory.Get(villager.CurrentActivity.Name);
-		var activityResult = await currentActivity.End(villager.CurrentActivity);
-		await villagerActivities.PopAsync(villager);
-
-		if (activityResult.TriggerReactions.Any()) {
-			var selected = random.SelectOne(activityResult.TriggerReactions);
-			await QueueActionsForVillager(selected);
-
-			if (selected.CurrentActivity != null) {
-				var action = actionFactory.Get(selected.CurrentActivity.Name);
-				await action.Begin(selected.CurrentActivity);
-			}
-		}
+		var endResult = await currentActivity.End(villager.CurrentActivity);
+		await activities.RemoveAsync(villager.CurrentActivity);
+		await HandleResult(endResult);
 	}
 
 	private async Task QueueActionsForVillager(VillagerDto villager) {
@@ -140,10 +145,8 @@ public class WorldRunner(
 		await gptUsage.AddUsageAsync(response);
 
 		var calls = response.Choices.First().Message.ToolCalls ?? [];
-		var worldNow = await time.GetAsync(TimeLabel.World);
 		var details = new List<ActivityDto>();
 		for (var index = 0; index < calls.Length; index++) {
-			worldNow += random.NextTimeSpan(TimeSpan.FromMinutes(2));
 			var call = calls[index];
 			var action = actionFactory.Get(call.Function.Name);
 			if (action == null) {
@@ -154,15 +157,38 @@ public class WorldRunner(
 			var activity = await action.ParseArguments(call.Function.Arguments);
 			activity.DurationRemaining = activity.TotalDuration;
 			activity.Villager = villager;
-			activity.Priority = index + 1;
+			activity.Priority = index;
+			activity.Status = ActivityStatus.Pending;
+			activity.StartTime = null;
 			details.Add(activity);
-			worldNow += activity.TotalDuration;
 		}
 
 		await events.AddAsync(villager,
 			$"Decides to perform the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Name.ToFutureString()))}");
 		foreach (var activityDetail in details) {
-			await villagerActivities.AddAsync(villager, activityDetail);
+			await activities.AddAsync(villager, activityDetail);
+		}
+	}
+
+	private async Task HandleResult(IActionResults result) {
+		if (!result.TriggerReactions.Any()) {
+			return;
+		}
+
+		var currentTime = await GetWorldTimeAsync();
+		var selected = random.SelectOne(result.TriggerReactions);
+		if (selected.CurrentActivity != null) {
+			if (!selected.CurrentActivity.EndTime.HasValue) throw new NullReferenceException();
+			selected.CurrentActivity.DurationRemaining = selected.CurrentActivity.EndTime.Value - currentTime;
+			selected.CurrentActivity.Status = ActivityStatus.OnHold;
+			await activities.SaveAsync(selected.CurrentActivity);
+		}
+
+		await QueueActionsForVillager(selected);
+
+		if (selected.CurrentActivity != null) {
+			var action = actionFactory.Get(selected.CurrentActivity.Name);
+			await action.Begin(selected.CurrentActivity);
 		}
 	}
 }
