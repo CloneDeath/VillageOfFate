@@ -177,18 +177,14 @@ public class WorldRunner(
 
 		var currentTime = await GetWorldTimeAsync();
 		var selected = random.SelectOne(result.TriggerReactions);
-		if (selected.CurrentActivity != null) {
-			if (!selected.CurrentActivity.EndTime.HasValue) throw new NullReferenceException();
-			selected.CurrentActivity.DurationRemaining = selected.CurrentActivity.EndTime.Value - currentTime;
-			selected.CurrentActivity.Status = ActivityStatus.OnHold;
-			await activities.SaveAsync(selected.CurrentActivity);
+		var currentActivity = selected.CurrentActivity;
+		if (currentActivity != null) {
+			if (!currentActivity.EndTime.HasValue) throw new NullReferenceException();
+			currentActivity.DurationRemaining = currentActivity.EndTime.Value - currentTime;
+			currentActivity.Status = ActivityStatus.OnHold;
+			await activities.SaveAsync(currentActivity);
 		}
 
 		await QueueActionsForVillager(selected);
-
-		if (selected.CurrentActivity != null) {
-			var action = actionFactory.Get(selected.CurrentActivity.Name);
-			await action.Begin(selected.CurrentActivity);
-		}
 	}
 }
