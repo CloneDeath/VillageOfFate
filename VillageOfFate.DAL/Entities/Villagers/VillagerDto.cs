@@ -32,10 +32,16 @@ public class VillagerDto {
 	public Guid? ImageId { get; set; }
 	public ImageDto? Image { get; set; }
 
-	[NotMapped] public ActivityDto? CurrentActivity => Activities.MinBy(a => a.Priority);
+	[NotMapped]
+	public ActivityDto? CurrentActivity => Activities.FirstOrDefault(a => a.Status == ActivityStatus.InProgress);
 
 	[NotMapped]
-	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities.OrderBy(a => a.Priority).Skip(1).ToList();
+	public IReadOnlyCollection<ActivityDto> ActivityQueue => Activities
+															 .Where(a => a.Status is ActivityStatus.Pending or ActivityStatus.OnHold)
+															 .ToList();
+	[NotMapped]
+	private IReadOnlyCollection<ActivityDto> CompletedActivities =>
+		Activities.Where(a => a.Status == ActivityStatus.Completed).ToList();
 
 	public List<ItemDto> Items { get; } = [];
 	public List<ActivityDto> Activities { get; set; } = [];

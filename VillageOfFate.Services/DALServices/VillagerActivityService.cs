@@ -7,17 +7,8 @@ using VillageOfFate.Services.DALServices.Core;
 namespace VillageOfFate.Services.DALServices;
 
 public class VillagerActivityService(DataContext context, TimeService time) {
-	public async Task PopAsync(VillagerDto villager) {
-		villager = context.Villagers.Entry(villager).Entity;
-		if (villager.CurrentActivity == null) return;
-		context.Activities.Remove(villager.CurrentActivity);
-
-		var newActivity = villager.ActivityQueue.FirstOrDefault();
-		if (newActivity != null) {
-			var worldNow = await time.GetAsync(TimeLabel.World);
-			newActivity.StartTime = newActivity.StartTime < worldNow ? worldNow : newActivity.StartTime;
-		}
-
+	public async Task RemoveAsync(ActivityDto activity) {
+		context.Activities.Remove(activity);
 		await context.SaveChangesAsync();
 	}
 
