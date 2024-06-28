@@ -15,6 +15,7 @@ public class EventDto {
 	public string Description { get; set; } = string.Empty;
 
 	[UtcDateTime] public DateTime Time { get; set; }
+	public int Order { get; set; }
 
 	public Guid SectorId { get; set; }
 	public SectorDto Sector { get; set; } = null!;

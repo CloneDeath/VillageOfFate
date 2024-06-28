@@ -116,6 +116,7 @@ public static class WebModelConversions {
 		new() {
 			Id = e.Id,
 			Time = e.Time,
+			Order = e.Order,
 			Sector = e.Sector.Position,
 			Description = e.Description,
 			ActorId = e.Actor?.Id,

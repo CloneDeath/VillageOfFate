@@ -88,6 +88,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Time").AsDateTime().NotNullable()
+				  .WithColumn("Order").AsInt32().NotNullable()
 				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
 				  .WithColumn("ActorId").AsGuid().Nullable().ForeignKey("Villagers", "Id");
 
