@@ -27,10 +27,16 @@ public class Program {
 		builder.Services.AddSingleton<Plurality>();
 		builder.Services.AddSingleton<NavigationService>();
 
+		var clientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("No Google Client Id configured");
+
 		builder.Services.AddOidcAuthentication(options => {
-			// Configure your authentication provider options here.
-			// For more information, see https://aka.ms/blazor-standalone-auth
-			builder.Configuration.Bind("Local", options.ProviderOptions);
+			options.ProviderOptions.Authority = "https://accounts.google.com";
+			options.ProviderOptions.ClientId = clientId;
+			options.ProviderOptions.DefaultScopes.Add("openid");
+			options.ProviderOptions.DefaultScopes.Add("profile"); // .../auth/userinfo.profile
+			options.ProviderOptions.DefaultScopes.Add("email"); // .../auth/userinfo.email
+			options.ProviderOptions.RedirectUri = builder.HostEnvironment.BaseAddress + "authentication/login-callback";
+			options.ProviderOptions.PostLogoutRedirectUri = builder.HostEnvironment.BaseAddress;
 		});
 
 		await builder.Build().RunAsync();
