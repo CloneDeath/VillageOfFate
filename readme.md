@@ -24,3 +24,15 @@ These miracle points can be spent to cast miracles such as:
 [ ] Weather Control (Rain, Clear Skies, Thunderstorm, etc)
 [ ] Chance Encounters (Wandering Herbalist, Traveling Merchant, etc) 
 [ ] Familiars (Raven, Stone Golem, etc)
+
+## Authentication
+
+To use your own Authentication:
+
+1) Make a new Project in [Google Cloud Console](https://console.cloud.google.com/cloud-resource-manager)
+2) Navigate to the "Credentials" section.
+3) Configure the OAuth consent screen.
+4) Click "Create Credentials" and choose "OAuth 2.0 Client IDs".
+5) Choose "Web application" and set the authorized redirect URIs.
+It will be something like https://yourapp.com/authentication/login-callback.
+6) Update the `GoogleClientId` in `VillageOfFate.Client/wwwroot/appsettings.Development.json` with your new Client ID.
