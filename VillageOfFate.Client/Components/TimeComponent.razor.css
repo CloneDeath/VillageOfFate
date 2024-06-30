@@ -2,6 +2,11 @@
     font-size: 1.0rem;
 }
 
+.seconds {
+    font-size: 0.5rem;
+    align-self: center;
+}
+
 .am-pm {
     font-size: 0.5rem;
     align-self: center;

@@ -1,6 +1,7 @@
 @using System.Timers
 <span class="date-time" title="@Time">
     <span class="hours-minutes">@Time.Hour:@Time.Minute.ToString("00")</span>
+    <span class="seconds">:@Time.Second.ToString("00")</span>
     <span class="am-pm">@AmPm</span>
     <span class="date">@Time.Month/@Time.Day</span>
 </span>
