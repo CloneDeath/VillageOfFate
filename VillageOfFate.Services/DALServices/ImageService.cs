@@ -24,7 +24,8 @@ public class ImageService(DataContext context, OpenApi api) {
 
 	public async Task GenerateImageFor(ItemDto item) {
 		if (item.ImageId != null) return;
-		item.Image = await GenerateImageAsync($"{item.Name}, {item.Description}");
+		item.Image = await GenerateImageAsync($"Generate an image for this item, with a solid white background: " +
+											  $"{item.Name}, {item.Description}");
 		await context.SaveChangesAsync();
 	}
 
@@ -37,7 +38,7 @@ public class ImageService(DataContext context, OpenApi api) {
 
 	public async Task GenerateImageFor(VillagerDto villager) {
 		if (villager.ImageId != null) return;
-		villager.Image = await GenerateImageAsync($"Generate a portrait for the villager {villager.Name}: "
+		villager.Image = await GenerateImageAsync($"Generate a photorealistic portrait for the villager {villager.Name}: "
 												  + $"{villager.GetDescription()}");
 		await context.SaveChangesAsync();
 	}
