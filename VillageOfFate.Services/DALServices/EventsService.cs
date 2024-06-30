@@ -26,10 +26,8 @@ public class EventsService(DataContext context, TimeService timeService) {
 
 	public async Task AddAsync(VillagerDto? actor, SectorDto sector, IEnumerable<VillagerDto> witnesses,
 							   string description, DateTime? eventTime = null) {
-		var worldTime = await timeService.GetAsync(TimeLabel.World);
-		var time = eventTime ?? worldTime;
-		var mostRecentEvent = context.Events.OrderBy(p => p.Order).FirstOrDefaultAsync(e => e.Time == time);
-		var order = mostRecentEvent.Result != null ? mostRecentEvent.Result.Order + 1 : 0;
+		var time = eventTime ?? await timeService.GetAsync(TimeLabel.World);
+		var order = await context.Events.CountAsync(e => e.Time == time);
 		var eventEntity = await context.Events.AddAsync(new EventDto {
 			Time = time,
 			Actor = actor,
@@ -56,14 +54,14 @@ public class EventsService(DataContext context, TimeService timeService) {
 	public async Task<IEnumerable<EventDto>> GetVillagerEvents(Guid id) {
 		return await Events.Where(e => e.ActorId == id || e.Witnesses.Any(w => w.Id == id))
 						   .OrderByDescending(e => e.Time)
-						   .ThenBy(e => e.Order)
+						   .ThenByDescending(e => e.Order)
 						   .ToListAsync();
 	}
 
 	public async Task<IEnumerable<EventDto>> GetSectorEventsAsync(Guid sectorId) {
 		return await Events.Where(e => e.SectorId == sectorId)
 						   .OrderByDescending(e => e.Time)
-						   .ThenBy(e => e.Order)
+						   .ThenByDescending(e => e.Order)
 						   .ToListAsync();
 	}
 }
