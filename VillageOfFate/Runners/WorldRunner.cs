@@ -161,7 +161,15 @@ public class WorldRunner(
 				continue;
 			}
 
-			var activity = await action.ParseArguments(call.Function.Arguments);
+			ActivityDto activity;
+
+			try {
+				activity = await action.ParseArguments(call.Function.Arguments);
+			}
+			catch (Exception e) {
+				await villagerActionErrors.LogActionParseError(villager, call.Function.Name, call.Function.Arguments, e);
+				continue;
+			}
 			activity.DurationRemaining = activity.TotalDuration;
 			activity.Villager = villager;
 			activity.Priority = index;
@@ -173,7 +181,7 @@ public class WorldRunner(
 		var reactionVerb = GetReactionVerb(reaction);
 
 		await events.AddAsync(villager,
-			$"Decides to ${reactionVerb} the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Name.ToFutureString()))}");
+			$"Decides to {reactionVerb} the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Name.ToFutureString()))}");
 		foreach (var activityDetail in details) {
 			await activities.AddAsync(villager, activityDetail);
 		}

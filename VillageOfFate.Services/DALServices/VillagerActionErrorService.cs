@@ -16,4 +16,15 @@ public class VillagerActionErrorService(DataContext context, TimeService time) {
 			WorldTime = await time.GetAsync(TimeLabel.World)
 		});
 	}
+
+	public async Task LogActionParseError(VillagerDto villager, string name, string arguments, Exception ex) {
+		await context.VillagerActionErrors.AddAsync(new VillagerActionErrorDto {
+			Villager = villager,
+			ActionName = name,
+			Arguments = arguments,
+			Error = ex.Message,
+			EarthTime = DateTime.UtcNow,
+			WorldTime = await time.GetAsync(TimeLabel.World)
+		});
+	}
 }
