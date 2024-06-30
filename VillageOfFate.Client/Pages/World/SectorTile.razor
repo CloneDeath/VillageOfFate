@@ -8,7 +8,7 @@
 
 <div class="sector"
      @onclick="() => GoToSector(Sector.Id)"
-     style="background-image: url('@ImageApi.GetImageUrl(Sector.ImageId)')"
+     style="@Style"
      title="@Sector.Description">
     <div class="image-text">@Sector.Position</div>
     @if (VillagerCount > 0) {
@@ -17,12 +17,18 @@
             @VillagerCount
         </div>
     }
+    @if (!Sector.ImageId.HasValue) {
+        <em>Loading...</em>
+    }
 </div>
 
 @code {
     [Parameter] public required WebSector Sector { get; set; }
 
     public int VillagerCount { get; set; }
+    public string Style => Sector.ImageId.HasValue
+                               ? $"background-image: url('{ImageApi.GetImageUrl(Sector.ImageId)}')"
+                               : "background-color: #f0f0f0";
 
     protected override async Task OnInitializedAsync() {
         await base.OnInitializedAsync();
@@ -33,5 +39,5 @@
         if (id == null) return;
         NavigationManager.NavigateTo($"/world/sectors/{id}");
     }
-
 }
+
