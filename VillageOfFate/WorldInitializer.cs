@@ -78,23 +78,58 @@ public class WorldInitializer(
 			Sector = sector,
 			Hunger = 5
 		});
+		await villagerItems.AddAsync(chem, new ItemDto {
+			Name = "Chemm's Holy Bible of the God of Fate",
+			Description = "This bible will glow when the God of Fate performs a miracle. " +
+						  "Whenever the God of Fate leaves a new message, you will feel it. As a priestess, you should" +
+						  " read this message aloud to all other villagers.",
+			Quantity = 1,
+			Edible = false, HungerRestored = 0
+		});
+		await villagerItems.AddAsync(chem, new ItemDto {
+			Name = "Healing Potion",
+			Description = "A small vial of red liquid that heals minor wounds.",
+			Quantity = 1,
+			Edible = false, HungerRestored = 0
+		});
+
 		var carol = await villagers.CreateAsync(new VillagerDto {
 			Name = "Carol", Age = 7, Gender = Gender.Female,
 			Summary = "A cheerful child, although quite mature for her age.",
 			Sector = sector,
 			Hunger = 8
 		});
+		await villagerItems.AddAsync(carol, new ItemDto {
+			Name = "Doll",
+			Description = "A small, handmade doll with a stitched-on smile.",
+			Quantity = 1,
+			Edible = false, HungerRestored = 0
+		});
+
 		var lyra = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
 			Summary = "A younger wife than her husband, but capable of keeping him in check.",
 			Sector = sector,
 			Hunger = 4
 		});
+		await villagerItems.AddAsync(lyra, new ItemDto {
+			Name = "Lyra's Wedding Ring",
+			Description = "A simple gold band that symbolizes the bond between you and your husband.",
+			Quantity = 1,
+			Edible = false, HungerRestored = 0
+		});
+
 		var lodis = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lodis", Age = 33, Gender = Gender.Male,
 			Summary = "The father of a family of three that ran a general store in the village.",
 			Sector = sector,
 			Hunger = 5
+		});
+		await villagerItems.AddAsync(lodis, new ItemDto {
+			Name = "Lodis' Wedding Ring",
+			Description = "A simple gold band that symbolizes the bond between you and your wife.",
+			Quantity = 1,
+			Edible = false, HungerRestored = 0
 		});
 
 		await relations.AddRelationAsync(gamz, chem, "Younger Sister");
