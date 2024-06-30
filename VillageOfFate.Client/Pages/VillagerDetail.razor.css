@@ -2,6 +2,11 @@
     display: flex;
 }
 
+.profile img {
+    padding-right: 1em;
+    padding-bottom: 1em;
+}
+
 .indent {
     margin-left: 1em;
 }

@@ -1,10 +1,12 @@
 @page "/villagers/{Id:guid}"
 @using VillageOfFate.Client.Components
 @using VillageOfFate.Client.Services.Api
+@using VillageOfFate.Localization
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
 @inject SectorsApi SectorsApi
 @inject ImageApi ImageApi
+@inject Plurality Plurality
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -30,15 +32,15 @@
         <em>Loading...</em>
     </p>
 } else {
-    <title>@villager.Name</title>
-
     <div class="profile">
         <img src="@ImageApi.GetImageUrl(villager.ImageId)" alt=""/>
 
         <div>
+            <h1>@villager.Name</h1>
+            <p>@villager.Age @Plurality.Pick(villager.Age, "Year", "Years") of Age</p>
+            <p>@villager.Summary</p>
+
             <p>Gender: @villager.Gender</p>
-            <p>Age: @villager.Age</p>
-            <p>Summary: @villager.Summary</p>
             <p>Hunger: @villager.Hunger</p>
             <p>Position: @villager.SectorLocation</p>
         </div>
