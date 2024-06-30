@@ -28,7 +28,7 @@ public class StatusBuilder(RelationshipService relationships) {
 		var relations = await relationships.GetAsync(villager);
 		yield return "### Relationships";
 		foreach (var r in relations) {
-			yield return $"- {r.Relation.Name}: {r.Relation.GetDescription()} Relation: {r.Relation}";
+			yield return $"- {r.Relation.Name} (${r.RelationId}): {r.Relation.GetDescription()} Relation: {r.Relation}";
 		}
 	}
 

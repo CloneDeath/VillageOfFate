@@ -77,7 +77,8 @@ public class InteractAction(EventsService events, VillagerService villagers) : I
 public class InteractArguments {
 	[JsonRequired]
 	[JsonPropertyName("villagerIds")]
-	[JsonDescription("the villager id(s) the action is directed at")]
+	[JsonDescription("the villager id(s) the action is directed at." +
+					 "Use their GUIDs, ie, \"villagerIds\": [\"FC100EB1-B72A-4286-8C55-69E284FADB58\"]")]
 	public Guid[] VillagerIds { get; set; } = [];
 
 	[JsonRequired]
