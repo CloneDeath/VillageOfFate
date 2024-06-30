@@ -8,10 +8,10 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.DAL.Entities;
 
-public abstract class ActivityDto {
+public abstract class ActivityDto(ActivityName name) {
 	public Guid Id { get; set; } = Guid.NewGuid();
 
-	public ActivityName Name { get; protected init; }
+	public ActivityName Name { get; } = name;
 	public ActivityStatus Status { get; set; } = ActivityStatus.Pending;
 	public int Priority { get; set; } = int.MaxValue;
 

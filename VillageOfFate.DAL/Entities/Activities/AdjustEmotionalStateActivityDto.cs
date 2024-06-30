@@ -5,11 +5,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.DAL.Entities.Activities;
 
-public class AdjustEmotionalStateActivityDto : ActivityDto {
-	public AdjustEmotionalStateActivityDto() {
-		Name = ActivityName.AdjustEmotionalState;
-	}
-
+public class AdjustEmotionalStateActivityDto() : ActivityDto(ActivityName.AdjustEmotionalState) {
 	public required VillagerEmotion Emotion { get; init; }
 	public required int Adjustment { get; init; }
 
