@@ -20,15 +20,23 @@ public class EventDto {
 	public Guid SectorId { get; set; }
 	public SectorDto Sector { get; set; } = null!;
 
-	public Guid? ActorId { get; set; }
-	public VillagerDto? Actor { get; set; }
+	public Guid? VillagerActorId { get; set; }
+	public VillagerDto? VillagerActor { get; set; }
+
+	public Guid? ItemActorId { get; set; }
+	public ItemDto? ItemActor { get; set; }
 
 	public List<VillagerDto> Witnesses { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<EventDto>()
-					.HasOne(e => e.Actor)
+					.HasOne(e => e.VillagerActor)
 					.WithMany(v => v.ActorEvents)
-					.HasForeignKey(e => e.ActorId);
+					.HasForeignKey(e => e.VillagerActorId);
+
+		modelBuilder.Entity<EventDto>()
+					.HasOne(e => e.ItemActor)
+					.WithMany(v => v.ActorEvents)
+					.HasForeignKey(e => e.ItemActorId);
 	}
 }

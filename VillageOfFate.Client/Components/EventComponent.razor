@@ -2,33 +2,50 @@
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject VillagersApi VillagersApi
+@inject ItemsApi ItemsApi
 @inject ImageApi ImageApi
 @inject NavigationService Navigate
 
 <div class="event dp2">
 
-    @if (Event.ActorId.HasValue) {
+    @if (Event.VillagerActorId.HasValue) {
         @if (Villager == null) {
             <em>Loading...</em>
         } else {
             <img class="event-image clickable"
                  src="@ImageApi.GetImageUrl(Villager.ImageId)" width="45" height="45" alt=""
-                 @onclick="() => Navigate.ToVillager(Event.ActorId.Value)"/>
+                 @onclick="() => Navigate.ToVillager(Event.VillagerActorId.Value)"/>
+        }
+    } else if (Event.ItemActorId.HasValue) {
+        @if (Item == null) {
+            <em>Loading...</em>
+        } else {
+            <img class="event-image"
+                 src="@ImageApi.GetImageUrl(Item.ImageId)" width="45" height="45" alt=""/>
         }
     }
 
     <span>
         <div>
-            @if (Event.ActorId.HasValue) {
+            @if (Event.VillagerActorId.HasValue) {
                 @if (Villager == null) {
                     <em>Loading...</em>
                 } else {
                     <strong class="me-4 clickable"
-                            @onclick="() => Navigate.ToVillager(Event.ActorId.Value)">
+                            @onclick="() => Navigate.ToVillager(Event.VillagerActorId.Value)">
                         @Villager.Name
                     </strong>
                 }
+            } else if (Event.ItemActorId.HasValue) {
+                @if (Item == null) {
+                    <em>Loading...</em>
+                } else {
+                    <strong class="me-4">
+                        @Item.Name
+                    </strong>
+                }
             }
+
             <TimeComponent GetTime="() => Event.Time"/>
             <span>@Event.Sector</span>
         </div>
@@ -42,10 +59,15 @@
     [Parameter] public required WebEvent Event { get; set; }
 
     private WebVillager? Villager { get; set; }
+    private WebItem? Item { get; set; }
 
     protected override async Task OnInitializedAsync() {
-        if (Event.ActorId.HasValue) {
-            Villager = await VillagersApi.GetVillager(Event.ActorId.Value);
+        if (Event.VillagerActorId.HasValue) {
+            Villager = await VillagersApi.GetVillagerAsync(Event.VillagerActorId.Value);
+        }
+
+        if (Event.ItemActorId.HasValue) {
+            Item = await ItemsApi.GetItemAsync(Event.ItemActorId.Value);
         }
     }
 }

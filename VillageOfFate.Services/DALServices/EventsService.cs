@@ -9,7 +9,8 @@ namespace VillageOfFate.Services.DALServices;
 
 public class EventsService(DataContext context, TimeService timeService) {
 	protected IQueryable<EventDto> Events => context.Events
-													.Include(e => e.Actor)
+													.Include(e => e.VillagerActor)
+													.Include(e => e.ItemActor)
 													.Include(e => e.Witnesses)
 													.Include(e => e.Sector);
 
@@ -30,7 +31,7 @@ public class EventsService(DataContext context, TimeService timeService) {
 		var order = await context.Events.CountAsync(e => e.Time == time);
 		var eventEntity = await context.Events.AddAsync(new EventDto {
 			Time = time,
-			Actor = actor,
+			VillagerActor = actor,
 			Sector = sector,
 			Description = description,
 			Order = order
@@ -52,7 +53,7 @@ public class EventsService(DataContext context, TimeService timeService) {
 	}
 
 	public async Task<IEnumerable<EventDto>> GetVillagerEvents(Guid id) {
-		return await Events.Where(e => e.ActorId == id || e.Witnesses.Any(w => w.Id == id))
+		return await Events.Where(e => e.VillagerActorId == id || e.Witnesses.Any(w => w.Id == id))
 						   .OrderByDescending(e => e.Time)
 						   .ThenByDescending(e => e.Order)
 						   .ToListAsync();

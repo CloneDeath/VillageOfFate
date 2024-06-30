@@ -90,7 +90,8 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Time").AsDateTime().NotNullable()
 				  .WithColumn("Order").AsInt32().NotNullable()
 				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
-				  .WithColumn("ActorId").AsGuid().Nullable().ForeignKey("Villagers", "Id");
+				  .WithColumn("VillagerActorId").AsGuid().Nullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("ItemActorId").AsGuid().Nullable().ForeignKey("Items", "Id");
 
 			Create.Table("EventWitnesses")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()

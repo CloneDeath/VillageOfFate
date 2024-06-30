@@ -129,7 +129,7 @@
     private WebEvent[]? events;
 
     protected override async Task OnParametersSetAsync() {
-        villager = await VillagersService.GetVillager(Id);
+        villager = await VillagersService.GetVillagerAsync(Id);
         if (SectorId.HasValue) {
             sector = await SectorsApi.GetSectorAsync(SectorId.Value);
         }

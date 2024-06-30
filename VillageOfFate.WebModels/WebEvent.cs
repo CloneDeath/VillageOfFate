@@ -8,6 +8,7 @@ public class WebEvent {
 	public required int Order { get; init; }
 	public required Position Sector { get; init; }
 	public required string Description { get; init; }
-	public required Guid? ActorId { get; init; }
+	public required Guid? VillagerActorId { get; init; }
+	public required Guid? ItemActorId { get; init; }
 	public required Guid[] WitnessIds { get; init; }
 }

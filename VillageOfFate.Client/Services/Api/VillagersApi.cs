@@ -15,13 +15,11 @@ public class VillagersApi(string baseUri) {
 		return result;
 	}
 
-	public async Task<WebVillager> GetVillager(Guid id) {
-		return await client.GetFromJsonAsync<WebVillager>($"/Villagers/{id}")
-			   ?? throw new Exception($"Failed to get Villager with Id {id} from server.");
-	}
+	public async Task<WebVillager> GetVillagerAsync(Guid id) =>
+		await client.GetFromJsonAsync<WebVillager>($"/Villagers/{id}")
+		?? throw new Exception($"Failed to get Villager with Id {id} from server.");
 
-	public async Task<WebEvent[]> GetVillagerEvents(Guid id) {
-		return await client.GetFromJsonAsync<WebEvent[]>($"/Villagers/{id}/Events")
-			   ?? throw new Exception($"Failed to get Events for Villager with Id {id} from server.");
-	}
+	public async Task<WebEvent[]> GetVillagerEvents(Guid id) =>
+		await client.GetFromJsonAsync<WebEvent[]>($"/Villagers/{id}/Events")
+		?? throw new Exception($"Failed to get Events for Villager with Id {id} from server.");
 }

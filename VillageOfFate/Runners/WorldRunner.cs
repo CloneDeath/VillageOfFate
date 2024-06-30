@@ -136,7 +136,8 @@ public class WorldRunner(
 		};
 		messages.AddRange(villager.WitnessedEvents.Select(e => new Message {
 			Role = Role.User,
-			Content = $"[{e.Time}]@{e.Sector.Position} {e.Actor?.Name ?? "World Event"}: {e.Description}"
+			Content =
+				$"[{e.Time}]@{e.Sector.Position} {e.VillagerActor?.Name ?? e.ItemActor?.Name ?? "World Event"}: {e.Description}"
 		}));
 		messages.Add(new Message {
 			Role = Role.User,
@@ -167,9 +168,11 @@ public class WorldRunner(
 				activity = await action.ParseArguments(call.Function.Arguments);
 			}
 			catch (Exception e) {
-				await villagerActionErrors.LogActionParseError(villager, call.Function.Name, call.Function.Arguments, e);
+				await villagerActionErrors.LogActionParseError(villager, call.Function.Name, call.Function.Arguments,
+					e);
 				continue;
 			}
+
 			activity.DurationRemaining = activity.TotalDuration;
 			activity.Villager = villager;
 			activity.Priority = index;

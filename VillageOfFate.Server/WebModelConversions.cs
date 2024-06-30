@@ -119,7 +119,8 @@ public static class WebModelConversions {
 			Order = e.Order,
 			Sector = e.Sector.Position,
 			Description = e.Description,
-			ActorId = e.Actor?.Id,
+			VillagerActorId = e.VillagerActorId,
+			ItemActorId = e.ItemActorId,
 			WitnessIds = e.Witnesses.Select(w => w.Id).ToArray()
 		};
 }
