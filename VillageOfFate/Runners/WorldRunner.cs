@@ -114,7 +114,7 @@ public class WorldRunner(
 
 		var currentAction = actionFactory.Get(currentActivity.Name);
 		var endResult = await currentAction.End(currentActivity);
-		await activities.RemoveAsync(currentActivity);
+		await activities.CompleteAsync(currentActivity);
 		await HandleResult(endResult, new ReactionData {
 			Actor = villager,
 			Action = currentActivity

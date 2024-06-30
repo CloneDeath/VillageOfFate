@@ -6,13 +6,9 @@ using VillageOfFate.DAL.Entities.Villagers;
 namespace VillageOfFate.Services.DALServices.Core;
 
 public class VillagerActivityService(DataContext context) {
-	public async Task RemoveRangeAsync(IEnumerable<ActivityDto> activity) {
-		context.Activities.RemoveRange(activity);
-		await context.SaveChangesAsync();
-	}
-
-	public async Task RemoveAsync(ActivityDto activity) {
-		context.Activities.Remove(activity);
+	public async Task CompleteAsync(ActivityDto activity) {
+		activity.Status = ActivityStatus.Complete;
+		context.Activities.Update(activity);
 		await context.SaveChangesAsync();
 	}
 
