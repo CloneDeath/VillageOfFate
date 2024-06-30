@@ -89,7 +89,8 @@ public class WorldRunner(
 
 	private async Task SimulateVillager(VillagerDto villager) {
 		var currentTime = await GetWorldTimeAsync();
-		if (villager.CurrentActivity == null) {
+		var currentActivity = villager.CurrentActivity;
+		if (currentActivity == null) {
 			if (!villager.ActivityQueue.Any()) {
 				await QueueActionsForVillager(villager);
 			}
@@ -102,19 +103,25 @@ public class WorldRunner(
 			nextActivity.Status = ActivityStatus.InProgress;
 			await activities.SaveAsync(nextActivity);
 			var beginResult = await action.Begin(nextActivity);
-			await HandleResult(beginResult);
+			await HandleResult(beginResult, new ReactionData {
+				Actor = villager,
+				Action = nextActivity
+			});
 			return;
 		}
 
-		if (villager.CurrentActivity.EndTime > currentTime) return;
+		if (currentActivity.EndTime > currentTime) return;
 
-		var currentActivity = actionFactory.Get(villager.CurrentActivity.Name);
-		var endResult = await currentActivity.End(villager.CurrentActivity);
-		await activities.RemoveAsync(villager.CurrentActivity);
-		await HandleResult(endResult);
+		var currentAction = actionFactory.Get(currentActivity.Name);
+		var endResult = await currentAction.End(currentActivity);
+		await activities.RemoveAsync(currentActivity);
+		await HandleResult(endResult, new ReactionData {
+			Actor = villager,
+			Action = currentActivity
+		});
 	}
 
-	private async Task QueueActionsForVillager(VillagerDto villager) {
+	private async Task QueueActionsForVillager(VillagerDto villager, ReactionData? reaction = null) {
 		var messages = new List<Message> {
 			new() {
 				Role = Role.System,
@@ -163,14 +170,21 @@ public class WorldRunner(
 			details.Add(activity);
 		}
 
+		var reactionVerb = GetReactionVerb(reaction);
+
 		await events.AddAsync(villager,
-			$"Decides to perform the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Name.ToFutureString()))}");
+			$"Decides to ${reactionVerb} the following {plurality.Pick(details, "action", "actions")}: {string.Join(", ", details.Select(d => d.Name.ToFutureString()))}");
 		foreach (var activityDetail in details) {
 			await activities.AddAsync(villager, activityDetail);
 		}
 	}
 
-	private async Task HandleResult(IActionResults result) {
+	private static string GetReactionVerb(ReactionData? reaction) =>
+		reaction == null
+			? "perform"
+			: $"react to {reaction.Actor.Name}'s {reaction.Action.Name.ToActiveString()} by performing";
+
+	private async Task HandleResult(IActionResults result, ReactionData reaction) {
 		if (!result.TriggerReactions.Any()) {
 			return;
 		}
@@ -185,6 +199,6 @@ public class WorldRunner(
 			await activities.SaveAsync(currentActivity);
 		}
 
-		await QueueActionsForVillager(selected);
+		await QueueActionsForVillager(selected, reaction);
 	}
 }
