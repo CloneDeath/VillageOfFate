@@ -26,9 +26,14 @@ public class Program {
 									  throw new NullReferenceException("AccessTokenProvider");
 			var navigationManager = sp.GetService<NavigationManager>() ??
 									throw new NullReferenceException("NavigationManager");
-			var messageHandler = new BaseAddressAuthorizationMessageHandler(accessTokenProvider, navigationManager) {
+			var messageHandler = new AuthorizationMessageHandler(accessTokenProvider, navigationManager) {
 				InnerHandler = new HttpClientHandler()
 			};
+			messageHandler.ConfigureHandler(new[]
+			{
+				navigationManager.BaseUri,
+				apiBaseUri
+			});
 			var client = new HttpClient(messageHandler) {
 				BaseAddress = new Uri(apiBaseUri)
 			};
