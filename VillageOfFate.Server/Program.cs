@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,18 @@ public class Program {
 					 .AllowAnyHeader()
 					 .AllowAnyMethod());
 		});
+
+		var clientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("No Google Client Id configured");
+		builder.Services.AddAuthentication(options => {
+				   options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			   })
+			   .AddJwtBearer(options => {
+				   options.Authority = "https://accounts.google.com";
+				   options.Audience = clientId;
+			   });
+		builder.Services.AddAuthorizationBuilder();
+		//.AddPolicy("ApiScope", policy => { policy.RequireAuthenticatedUser(); });
 
 		var appSettingsSection = builder.Configuration.GetSection("AppSettings");
 		builder.Services.Configure<AppSettings>(appSettingsSection);
@@ -93,6 +106,8 @@ public class Program {
 
 		app.UseHttpsRedirection();
 		app.UseCors("AllowMyOrigin");
+		app.UseAuthentication();
+		app.UseAuthorization();
 		app.MapDefaultControllerRoute();
 
 		await InitializeWorld(app);

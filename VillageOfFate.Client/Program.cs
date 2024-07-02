@@ -1,6 +1,9 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,14 +21,27 @@ public class Program {
 
 		var apiBaseUri = builder.Configuration.GetValue<string>("ApiBaseUri") ??
 						 throw new Exception("ApiBaseUri is not set in appsettings.json");
-		builder.Services.AddSingleton(new ApiClient(apiBaseUri));
-		builder.Services.AddSingleton<TimeApi>();
+		builder.Services.AddScoped(sp => {
+			var accessTokenProvider = sp.GetService<IAccessTokenProvider>() ??
+									  throw new NullReferenceException("AccessTokenProvider");
+			var navigationManager = sp.GetService<NavigationManager>() ??
+									throw new NullReferenceException("NavigationManager");
+			var messageHandler = new BaseAddressAuthorizationMessageHandler(accessTokenProvider, navigationManager) {
+				InnerHandler = new HttpClientHandler()
+			};
+			var client = new HttpClient(messageHandler) {
+				BaseAddress = new Uri(apiBaseUri)
+			};
+			return client;
+		});
+		builder.Services.AddScoped<ApiClient>();
+		builder.Services.AddScoped<TimeApi>();
 		builder.Services.AddSingleton(new ItemsApi(apiBaseUri));
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
 		builder.Services.AddSingleton(new ImageApi(apiBaseUri));
-		builder.Services.AddSingleton<SectorsApi>();
-		builder.Services.AddSingleton<Plurality>();
-		builder.Services.AddSingleton<NavigationService>();
+		builder.Services.AddScoped<SectorsApi>();
+		builder.Services.AddScoped<Plurality>();
+		builder.Services.AddScoped<NavigationService>();
 
 		var clientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("No Google Client Id configured");
 
