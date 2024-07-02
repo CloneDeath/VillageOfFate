@@ -36,3 +36,4 @@ To use your own Authentication:
 5) Choose "Web application" and set the authorized redirect URIs.
 It will be something like https://yourapp.com/authentication/login-callback.
 6) Update the `GoogleClientId` in `VillageOfFate.Client/wwwroot/appsettings.Development.json` with your new Client ID.
+6) Update the `GoogleClientId` in `VillageOfFate.Server/appsettings.Development.json` with the same Client ID.
