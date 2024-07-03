@@ -14,10 +14,7 @@ public class ApiClient(string baseUrl, IAccessTokenProvider accessToken) {
 
 	private async Task<AuthenticationHeaderValue?> GetAuthenticationHeader() {
 		var request = await accessToken.RequestAccessToken();
-		Console.WriteLine($"Token request status: {request.Status}");
-		var gotToken = request.TryGetToken(out var token);
-		Console.WriteLine($"{gotToken} {token.Value}");
-		return gotToken
+		return request.TryGetToken(out var token)
 				   ? new AuthenticationHeaderValue("Bearer", token.Value)
 				   : null;
 	}
