@@ -1,7 +1,5 @@
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -23,23 +21,9 @@ public class Program {
 						 throw new Exception("ApiBaseUri is not set in appsettings.json");
 		builder.Services.AddScoped(sp => {
 			var accessTokenProvider = sp.GetService<IAccessTokenProvider>() ??
-									  throw new NullReferenceException("AccessTokenProvider");
-			var navigationManager = sp.GetService<NavigationManager>() ??
-									throw new NullReferenceException("NavigationManager");
-			var messageHandler = new AuthorizationMessageHandler(accessTokenProvider, navigationManager) {
-				InnerHandler = new HttpClientHandler()
-			};
-			messageHandler.ConfigureHandler(new[]
-			{
-				navigationManager.BaseUri,
-				apiBaseUri
-			});
-			var client = new HttpClient(messageHandler) {
-				BaseAddress = new Uri(apiBaseUri)
-			};
-			return client;
+									  throw new NullReferenceException("IAccessTokenProvider");
+			return new ApiClient(apiBaseUri, accessTokenProvider);
 		});
-		builder.Services.AddScoped<ApiClient>();
 		builder.Services.AddScoped<TimeApi>();
 		builder.Services.AddSingleton(new ItemsApi(apiBaseUri));
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
@@ -53,6 +37,7 @@ public class Program {
 		builder.Services.AddOidcAuthentication(options => {
 			options.ProviderOptions.Authority = "https://accounts.google.com";
 			options.ProviderOptions.ClientId = clientId;
+			options.ProviderOptions.ResponseType = "id_token token";
 			options.ProviderOptions.DefaultScopes.Add("openid");
 			options.ProviderOptions.DefaultScopes.Add("profile"); // .../auth/userinfo.profile
 			options.ProviderOptions.DefaultScopes.Add("email"); // .../auth/userinfo.email
