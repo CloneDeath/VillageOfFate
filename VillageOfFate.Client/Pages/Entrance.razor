@@ -1,0 +1,31 @@
+@page "/entrance"
+@layout EmptyLayout
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationState
+@attribute [AllowAnonymous]
+
+<div class="entrance-container">
+    <div class="background-image">
+        <div class="overlay">
+            <h1 class="title">Village of Fate</h1>
+            <p class="description">
+                Welcome to the Village of Fate.
+                Your followers await thee!
+            </p>
+            <button class="login-button" @onclick="NavigateToLogin">Enter the World</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync() {
+        var authState = await AuthenticationState.GetAuthenticationStateAsync();
+        if (authState.User.Identity?.IsAuthenticated ?? false) {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private void NavigateToLogin() {
+        NavigationManager.NavigateTo("authentication/login");
+    }
+}

@@ -1,0 +1,51 @@
+.entrance-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('images/village-background.webp') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.background-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.title {
+    font-size: 4em;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 1.5em;
+    color: #ddd;
+    margin-bottom: 30px;
+}
+
+.login-button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #218838;
+}
