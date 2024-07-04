@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using OpenAi;
 using OpenAi.Models;
 using VillageOfFate.Actions;
@@ -41,9 +42,26 @@ public class Program {
 			   })
 			   .AddJwtBearer(options => {
 				   options.Authority = "https://accounts.google.com";
-				   options.Audience = clientId;
+				   options.TokenValidationParameters = new TokenValidationParameters {
+					   ValidateIssuer = true,
+					   ValidIssuer = "https://accounts.google.com",
+					   ValidateAudience = true,
+					   ValidAudience = clientId,
+					   ValidateLifetime = true
+				   };
+				   options.Events = new JwtBearerEvents {
+					   OnAuthenticationFailed = context => {
+						   Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+						   return Task.CompletedTask;
+					   },
+					   OnTokenValidated = context => {
+						   Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+						   return Task.CompletedTask;
+					   }
+				   };
 			   });
-		builder.Services.AddAuthorizationBuilder();
+
+		builder.Services.AddAuthorization();
 		//.AddPolicy("ApiScope", policy => { policy.RequireAuthenticatedUser(); });
 
 		var appSettingsSection = builder.Configuration.GetSection("AppSettings");

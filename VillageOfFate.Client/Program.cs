@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,13 +17,19 @@ public class Program {
 		builder.RootComponents.Add<App>("#app");
 		builder.RootComponents.Add<HeadOutlet>("head::after");
 
+		var clientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("No Google Client Id configured");
+
 		var apiBaseUri = builder.Configuration.GetValue<string>("ApiBaseUri") ??
 						 throw new Exception("ApiBaseUri is not set in appsettings.json");
+
 		builder.Services.AddScoped(sp => {
-			var accessTokenProvider = sp.GetService<IAccessTokenProvider>() ??
-									  throw new NullReferenceException("IAccessTokenProvider");
-			return new ApiClient(apiBaseUri, accessTokenProvider);
+			// var auth = sp.GetService<AuthenticationStateProvider>() ??
+			// 		   throw new NullReferenceException("AuthenticationStateProvider");
+			var access = sp.GetService<ISessionStorageService>() ??
+						 throw new NullReferenceException("IAccessTokenProvider");
+			return new ApiClient(apiBaseUri, access, clientId);
 		});
+		builder.Services.AddBlazoredSessionStorage();
 		builder.Services.AddScoped<TimeApi>();
 		builder.Services.AddSingleton(new ItemsApi(apiBaseUri));
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
@@ -31,8 +37,6 @@ public class Program {
 		builder.Services.AddScoped<SectorsApi>();
 		builder.Services.AddScoped<Plurality>();
 		builder.Services.AddScoped<NavigationService>();
-
-		var clientId = builder.Configuration["GoogleClientId"] ?? throw new Exception("No Google Client Id configured");
 
 		builder.Services.AddOidcAuthentication(options => {
 			options.ProviderOptions.Authority = "https://accounts.google.com";
