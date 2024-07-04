@@ -28,29 +28,6 @@ public class ApiClient(string baseUrl, ISessionStorageService session, string go
 		}
 
 		return new AuthenticationHeaderValue("Bearer", oidcInfo.IdToken);
-		// var state = await auth.GetAuthenticationStateAsync();
-		// var user = state.User;
-		// foreach (var claim in user.Claims) {
-		// 	Console.WriteLine($"Claim: {claim.Type} {claim.Value}");
-		// }
-		//
-		// foreach (var id in user.Identities) {
-		// 	Console.WriteLine($"ID: {id.Name} {id.AuthenticationType} {id.IsAuthenticated} {id.Claims.Count()} {id.BootstrapContext}");
-		// }
-		// var idToken = user.FindFirst(c => c.Type == "id_token")?.Value;
-		// var header = idToken != null
-		// 				 ? new AuthenticationHeaderValue("Bearer", idToken)
-		// 				 : null;
-		//Console.WriteLine($"Bearer {idToken ?? "null"}");
-
-		// var result = await token.RequestAccessToken(new AccessTokenRequestOptions {
-		// 	Scopes = new[] { "openid", "profile", "email" }
-		// });
-		// var header = result.TryGetToken(out var idToken)
-		// 				 ? new AuthenticationHeaderValue("Bearer", idToken.Value)
-		// 				 : null;
-		// Console.WriteLine($"Bearer {idToken?.Value ?? null}");
-		// return header;
 	}
 
 	public async Task<T> GetAsync<T>(string requestUri) {

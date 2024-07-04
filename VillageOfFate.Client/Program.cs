@@ -23,8 +23,6 @@ public class Program {
 						 throw new Exception("ApiBaseUri is not set in appsettings.json");
 
 		builder.Services.AddScoped(sp => {
-			// var auth = sp.GetService<AuthenticationStateProvider>() ??
-			// 		   throw new NullReferenceException("AuthenticationStateProvider");
 			var access = sp.GetService<ISessionStorageService>() ??
 						 throw new NullReferenceException("IAccessTokenProvider");
 			return new ApiClient(apiBaseUri, access, clientId);

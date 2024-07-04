@@ -62,7 +62,6 @@ public class Program {
 			   });
 
 		builder.Services.AddAuthorization();
-		//.AddPolicy("ApiScope", policy => { policy.RequireAuthenticatedUser(); });
 
 		var appSettingsSection = builder.Configuration.GetSection("AppSettings");
 		builder.Services.Configure<AppSettings>(appSettingsSection);
