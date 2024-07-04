@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using VillageOfFate.Server.Services;
 
 namespace VillageOfFate.Server.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase {
+public class UserController(UserService users) : ControllerBase {
 	[HttpGet("Me")]
 	public string GetInfoAboutMe() {
-		List<string> result = [];
+		List<string> result = [
+			$"Email Address: {users.GetEmailAddress()}"
+		];
 
 		var user = HttpContext.User;
 		foreach (var id in user.Identities) {

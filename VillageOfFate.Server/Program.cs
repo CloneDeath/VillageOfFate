@@ -16,6 +16,7 @@ using VillageOfFate.DAL;
 using VillageOfFate.Localization;
 using VillageOfFate.Runners;
 using VillageOfFate.Server.Databases;
+using VillageOfFate.Server.Services;
 using VillageOfFate.Server.Settings;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
@@ -32,8 +33,10 @@ public class Program {
 			c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
 				Description = """
 							  JWT Authorization header using the Bearer scheme.
+
 							  Enter 'Bearer' [space] and then your token in the text input below.
-							  Example: 'Bearer 12345abcdef'
+
+							  Example: 'Bearer 12345abc'
 							  """,
 				Name = "Authorization",
 				In = ParameterLocation.Header,
@@ -108,6 +111,8 @@ public class Program {
 			ImageModel = ImageModel.Dall_E_2
 		});
 
+		builder.Services.AddHttpContextAccessor();
+		builder.Services.AddScoped<UserService>();
 		builder.Services.AddScoped<TimeService>();
 		builder.Services.AddScoped<SectorService>();
 		builder.Services.AddScoped<VillagerService>();
