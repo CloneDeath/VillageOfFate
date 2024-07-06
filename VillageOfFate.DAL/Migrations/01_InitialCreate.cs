@@ -154,21 +154,22 @@ namespace SouthernCrm.Dal.Migrations {
 		}
 
 		public override void Down() {
-			Delete.Table("Time");
-			Delete.Table("Items");
 			Delete.Table("Activities");
-			Delete.Table("Villagers");
-			Delete.Table("VillagerItems");
-			Delete.Table("Genders");
 			Delete.Table("Emotions");
 			Delete.Table("Events");
 			Delete.Table("EventWitnesses");
-			Delete.Table("Sectors");
-			Delete.Table("SectorItems");
-			Delete.Table("Relationships");
+			Delete.Table("Genders");
 			Delete.Table("GptUsage");
-			Delete.Table("VillagerActionErrors");
 			Delete.Table("Images");
+			Delete.Table("InteractActivityTargets");
+			Delete.Table("Items");
+			Delete.Table("Relationships");
+			Delete.Table("SectorItems");
+			Delete.Table("Sectors");
+			Delete.Table("Time");
+			Delete.Table("VillagerActionErrors");
+			Delete.Table("VillagerItems");
+			Delete.Table("Villagers");
 		}
 	}
 }
