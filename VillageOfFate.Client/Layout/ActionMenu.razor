@@ -1,17 +1,38 @@
-<button class="expand-button" @onclick="ToggleForm">
-    <i class="bi bi-journal-plus"></i>
-</button>
-<form class="text-entry-form" style="display: @FormDisplay;" @onsubmit="SubmitForm">
-    <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
-    <button type="submit" id="send-button">Send</button>
-</form>
+<div class="actions">
+    <button class="expand-button" title="Send Daily Command" @onclick="() => ToggleDisplay(ref FormDisplay)">
+        <i class="bi bi-journal-plus"></i>
+    </button>
+    <form class="float-left" style="display: @FormDisplay;" @onsubmit="SubmitForm">
+        <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
+        <button type="submit" id="send-button">Send</button>
+    </form>
+
+    <button class="expand-button" title="Perform Miracle" @onclick="() => ToggleDisplay(ref ActionDisplay)">
+        <i class="bi bi-cloud-lightning-rain-fill"></i>
+    </button>
+    <div class="actions float-left" style="display: @ActionDisplay;">
+        <button class="miracle">
+            <i class="bi bi-lightning-fill"></i>
+        </button>
+        <button class="miracle">
+            <i class="bi bi-heart-pulse"></i>
+        </button>
+        <button class="miracle">
+            <i class="bi bi-person-standing"></i>
+        </button>
+        <button class="miracle">
+            <i class="bi bi-cash-coin"></i>
+        </button>
+    </div>
+</div>
 
 @code {
-    private string FormDisplay { get; set; } = "none";
+    private string FormDisplay = "none";
+    private string ActionDisplay = "none";
     private string InputText { get; set; } = string.Empty;
 
-    private void ToggleForm() {
-        FormDisplay = FormDisplay == "none" ? "block" : "none";
+    private void ToggleDisplay(ref string display) {
+        display = display == "none" ? "block" : "none";
     }
 
     private void SubmitForm() {
