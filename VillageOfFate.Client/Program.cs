@@ -33,6 +33,7 @@ public class Program {
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
 		builder.Services.AddSingleton(new ImageApi(apiBaseUri));
 		builder.Services.AddScoped<SectorsApi>();
+		builder.Services.AddScoped<UserApi>();
 		builder.Services.AddScoped<Plurality>();
 		builder.Services.AddScoped<NavigationService>();
 

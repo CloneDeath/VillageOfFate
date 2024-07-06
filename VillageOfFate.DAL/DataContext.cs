@@ -30,6 +30,8 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 	public DbSet<VillagerActionErrorDto> VillagerActionErrors { get; set; } = null!;
 	public DbSet<ImageDto> Images { get; set; }
 
+	public DbSet<UserDto> Users { get; set; }
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
 

@@ -1,10 +1,12 @@
 ﻿@page "/authentication/{action}"
-@layout EmptyLayout
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using VillageOfFate.Client.Services.Api
+@layout EmptyLayout
 @inject NavigationManager NavigationManager
+@inject UserApi users
 @attribute [AllowAnonymous]
 
-<RemoteAuthenticatorView Action="@Action">
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="SetUpUser">
     <LogOutSucceeded>
         @{ NavigateToEntrance(); }
     </LogOutSucceeded>
@@ -15,5 +17,9 @@
 
     private void NavigateToEntrance() {
         NavigationManager.NavigateTo("entrance");
+    }
+
+    private async Task SetUpUser() {
+        await users.LoginAsync();
     }
 }

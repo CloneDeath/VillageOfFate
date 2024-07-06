@@ -30,6 +30,11 @@ public class ApiClient(string baseUrl, ISessionStorageService session, string go
 		return new AuthenticationHeaderValue("Bearer", oidcInfo.IdToken);
 	}
 
+	public async Task GetAsync(string requestUri) {
+		client.DefaultRequestHeaders.Authorization = await GetAuthenticationHeader();
+		await client.GetAsync(requestUri);
+	}
+
 	public async Task<T> GetAsync<T>(string requestUri) {
 		client.DefaultRequestHeaders.Authorization = await GetAuthenticationHeader();
 		return await client.GetFromJsonAsync<T>(requestUri)
