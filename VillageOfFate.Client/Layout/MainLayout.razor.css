@@ -12,6 +12,12 @@ main {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
 
+.action-menu {
+    position: fixed;
+    right: 2em;
+    top: 4em;
+}
+
 .top-row {
     justify-content: flex-end;
     height: 3.5rem;

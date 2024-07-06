@@ -1,0 +1,22 @@
+<button class="expand-button" @onclick="ToggleForm">
+    <i class="bi bi-journal-plus"></i>
+</button>
+<form class="text-entry-form" style="display: @FormDisplay;" @onsubmit="SubmitForm">
+    <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
+    <button type="submit" id="send-button">Send</button>
+</form>
+
+@code {
+    private string FormDisplay { get; set; } = "none";
+    private string InputText { get; set; } = string.Empty;
+
+    private void ToggleForm() {
+        FormDisplay = FormDisplay == "none" ? "block" : "none";
+    }
+
+    private void SubmitForm() {
+        Console.WriteLine($"Submitted: {InputText}");
+        InputText = string.Empty;
+        FormDisplay = "none";
+    }
+}
