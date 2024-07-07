@@ -6,6 +6,8 @@ using VillageOfFate.DAL.Entities;
 namespace VillageOfFate.Services.BIServices;
 
 public class UserService(IHttpContextAccessor httpContextAccessor, DataContext context) {
+	private IQueryable<UserDto> Users => context.Users.Include(u => u.Bible);
+
 	public string? GetEmailAddress() {
 		var httpContext = httpContextAccessor.HttpContext;
 		var claim = httpContext?.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
@@ -18,7 +20,7 @@ public class UserService(IHttpContextAccessor httpContextAccessor, DataContext c
 			throw new Exception("No email address found in claims.");
 		}
 
-		var user = await context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+		var user = await Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
 		if (user != null) return user;
 
 		var result = await context.Users.AddAsync(new UserDto {
