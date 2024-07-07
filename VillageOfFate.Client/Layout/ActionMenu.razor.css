@@ -9,6 +9,10 @@ button.action {
     font-size: x-large;
 }
 
+#divine-message {
+    width: 25vw;
+}
+
 .float-left {
     position: absolute;
     top: 0;

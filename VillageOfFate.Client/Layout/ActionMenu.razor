@@ -4,16 +4,24 @@
             type="button"
             title="Send Daily Command"
             data-bs-toggle="collapse"
-            data-bs-target="#daily-command">
+            data-bs-target="#divine-message">
         <i class="bi bi-journal-plus"></i>
     </button>
-    <form id="daily-command"
-          class="float-left collapse"
-          @onsubmit="SubmitForm"
-          data-bs-parent="#primary-actions">
-        <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
-        <button type="submit" id="send-button">Send</button>
-    </form>
+    <div id="divine-message"
+         class="card float-left collapse"
+         data-bs-parent="#primary-actions">
+        <div class="card-header">
+            <span>
+                Divine Message
+                <i class="bi bi-info-circle" title="Once per day, you may bestow a Divine Message to your villagers through the Priest's Bible."></i>
+            </span>
+            <a href="#" class="card-link float-end">Locate Bible</a>
+        </div>
+        <div class="card-body">
+            <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
+            <button type="button" class="btn btn-primary">Send</button>
+        </div>
+    </div>
 
     <!-- Perform Miracle -->
     <button class="action btn btn-outline-light"

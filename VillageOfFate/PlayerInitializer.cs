@@ -47,10 +47,10 @@ public class PlayerInitializer(
 			Hunger = 5
 		});
 		user.Bible = await villagerItems.AddAsync(chem, new ItemDto {
-			Name = "Chemm's Holy Bible of the God of Fate",
-			Description = "This bible will glow when the God of Fate performs a miracle. " +
-						  "Whenever the God of Fate leaves a new message, you will feel it. As a priestess, you should" +
-						  " read this message aloud to all other villagers.",
+			Name = "Holy Bible of the God of Fate",
+			Description = "This Bible will glow whenever the God of Fate performs a Miracle or sends a Divine Message. " +
+						  "When the God of Fate sends a new Divine Message, you will feel it; As a Priestess, you should" +
+						  " read this Divine Message aloud for all other villagers to hear.",
 			Quantity = 1,
 			Edible = false, HungerRestored = 0
 		});
