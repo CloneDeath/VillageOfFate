@@ -1,6 +1,8 @@
+@using VillageOfFate.Client.Services
 @using VillageOfFate.Client.Services.Api
 @using VillageOfFate.WebModels
 @inject UserApi users
+@inject ItemsApi items
 
 <div id="primary-actions" class="btn-group-vertical" role="group" aria-label="Actions">
     <!-- Daily Command -->
@@ -21,8 +23,12 @@
             </span>
             @if (CurrentUser == null) {
                 <span class="placeholder col-7"></span>
+            } else if (CurrentUser.BibleId == null) {
+                <span class="text-warning-emphasis">Bible not found!</span>
+            } else if (BibleLocation == null) {
+                <span class="placeholder col-7"></span>
             } else {
-                <a href="#@CurrentUser.BibleId" class="card-link float-end">Locate Bible</a>
+                <a href="@NavigationService.GetUrl(BibleLocation)" class="card-link float-end">Locate Bible</a>
             }
         </div>
         <div class="card-body">
@@ -61,10 +67,14 @@
 
 @code {
     private WebUser? CurrentUser { get; set; } = null;
+    private WebItemLocation? BibleLocation { get; set; } = null;
 
     protected override async Task OnInitializedAsync() {
         await base.OnInitializedAsync();
         CurrentUser = await users.GetCurrentUserAsync();
+        if (CurrentUser.BibleId.HasValue) {
+            BibleLocation = await items.GetItemLocationAsync(CurrentUser.BibleId.Value);
+        }
     }
 
     private string InputText { get; set; } = string.Empty;

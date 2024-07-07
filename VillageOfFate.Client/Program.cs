@@ -29,7 +29,7 @@ public class Program {
 		});
 		builder.Services.AddBlazoredSessionStorage();
 		builder.Services.AddScoped<TimeApi>();
-		builder.Services.AddSingleton(new ItemsApi(apiBaseUri));
+		builder.Services.AddScoped<ItemsApi>();
 		builder.Services.AddSingleton(new VillagersApi(apiBaseUri));
 		builder.Services.AddSingleton(new ImageApi(apiBaseUri));
 		builder.Services.AddScoped<SectorsApi>();
