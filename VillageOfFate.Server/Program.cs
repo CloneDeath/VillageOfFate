@@ -126,6 +126,7 @@ public class Program {
 		builder.Services.AddScoped<ImageService>();
 		builder.Services.AddScoped<GptUsageService>();
 		builder.Services.AddSingleton<RandomProvider>();
+		builder.Services.AddScoped<PlayerInitializer>();
 		builder.Services.AddScoped<WorldInitializer>();
 		builder.Services.AddScoped<WorldRunner>();
 		builder.Services.AddScoped<ImageGenerationRunner>();
