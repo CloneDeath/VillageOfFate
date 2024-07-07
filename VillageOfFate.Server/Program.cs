@@ -16,8 +16,8 @@ using VillageOfFate.DAL;
 using VillageOfFate.Localization;
 using VillageOfFate.Runners;
 using VillageOfFate.Server.Databases;
-using VillageOfFate.Server.Services;
 using VillageOfFate.Server.Settings;
+using VillageOfFate.Services.BIServices;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 

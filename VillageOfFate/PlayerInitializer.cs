@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Villagers;
+using VillageOfFate.Services.BIServices;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 using VillageOfFate.WebModels;
@@ -53,7 +54,7 @@ public class PlayerInitializer(
 			Quantity = 1,
 			Edible = false, HungerRestored = 0
 		});
-		users.SaveAsync(user);
+		await users.SaveAsync(user);
 		await villagerItems.AddAsync(chem, new ItemDto {
 			Name = "Healing Potion",
 			Description = "A small vial of red liquid that heals minor wounds.",

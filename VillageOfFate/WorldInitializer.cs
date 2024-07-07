@@ -18,7 +18,7 @@ public class WorldInitializer(
 		await PopulateSector();
 	}
 
-	private async Task<SectorDto> PopulateSector() {
+	private async Task PopulateSector() {
 		var sector = await sectors.GetOrCreateSectorAsync(Position.Zero, sector => {
 			sector.Description =
 				"A dense, lush forest filled with towering trees, diverse wildlife, and the sounds of nature. " +
@@ -46,6 +46,5 @@ public class WorldInitializer(
 				Quantity = 1, Edible = true, HungerRestored = 4
 			}
 		});
-		return sector;
 	}
 }

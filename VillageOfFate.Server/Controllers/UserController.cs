@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using VillageOfFate.Server.Services;
+using VillageOfFate.Services.BIServices;
 
 namespace VillageOfFate.Server.Controllers;
 

@@ -1,11 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities;
 
-namespace VillageOfFate.Server.Services;
+namespace VillageOfFate.Services.BIServices;
 
 public class UserService(IHttpContextAccessor httpContextAccessor, DataContext context) {
 	public string? GetEmailAddress() {
@@ -27,5 +25,10 @@ public class UserService(IHttpContextAccessor httpContextAccessor, DataContext c
 			EmailAddress = emailAddress
 		});
 		return result.Entity;
+	}
+
+	public async Task SaveAsync(UserDto user) {
+		context.Users.Update(user);
+		await context.SaveChangesAsync();
 	}
 }
