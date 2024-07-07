@@ -8,9 +8,14 @@
         <NavMenu/>
     </div>
 
-    <div class="action-menu">
-        <ActionMenu/>
-    </div>
+
+    <AuthorizeView>
+        <Authorized>
+            <div class="action-menu">
+                <ActionMenu/>
+            </div>
+        </Authorized>
+    </AuthorizeView>
 
     <main>
         <div class="top-row px-4 auth dp1">
