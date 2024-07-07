@@ -23,7 +23,9 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Quantity").AsInt32().NotNullable()
 				  .WithColumn("Edible").AsBoolean().NotNullable()
 				  .WithColumn("HungerRestored").AsInt32().NotNullable()
-				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
+				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id")
+				  .WithColumn("VillagerId").AsGuid().Nullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("SectorId").AsGuid().Nullable().ForeignKey("Sectors", "Id");
 
 			Create.Table("Activities")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
@@ -62,14 +64,6 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
 				  .WithColumn("EmotionsId").AsGuid().NotNullable().ForeignKey("Emotions", "Id")
 				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
-
-			Create.Table("VillagerItems")
-				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
-				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
-				  .WithColumn("ItemId").AsGuid().NotNullable().ForeignKey("Items", "Id");
-			Create.UniqueConstraint()
-				  .OnTable("VillagerItems")
-				  .Columns("VillagerId", "ItemId");
 
 			Create.Table("Genders")
 				  .WithColumn("Id").AsInt32().NotNullable().PrimaryKey()
@@ -110,14 +104,6 @@ namespace SouthernCrm.Dal.Migrations {
 			Create.UniqueConstraint()
 				  .OnTable("Sectors")
 				  .Columns("X", "Y");
-
-			Create.Table("SectorItems")
-				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
-				  .WithColumn("SectorId").AsGuid().NotNullable().ForeignKey("Sectors", "Id")
-				  .WithColumn("ItemId").AsGuid().NotNullable().ForeignKey("Items", "Id");
-			Create.UniqueConstraint()
-				  .OnTable("SectorItems")
-				  .Columns("SectorId", "ItemId");
 
 			Create.Table("Relationships")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()

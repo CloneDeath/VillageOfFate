@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
-                                                                                                                                                                                                                                                                                                           using VillageOfFate.DAL.Entities.Events;
+using VillageOfFate.DAL.Entities.Events;
 using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.DAL.Entities;
@@ -24,23 +24,16 @@ public class ItemDto {
 	public Guid? ImageId { get; set; }
 	public ImageDto? Image { get; set; }
 
-	public List<VillagerDto> Villagers { get; } = [];
-	public List<SectorDto> Sectors { get; } = [];
+	public Guid? VillagerId { get; set; }
+	public VillagerDto? Villager { get; }
+
+	public Guid? SectorId { get; set; }
+	public SectorDto? Sector { get; }
 	public IEnumerable<EventDto> ActorEvents { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<ItemDto>()
 					.Navigation(i => i.Image).AutoInclude();
-
-		modelBuilder.Entity<ItemDto>()
-					.HasMany(v => v.Villagers)
-					.WithMany(v => v.Items)
-					.UsingEntity<VillagerItemDto>();
-
-		modelBuilder.Entity<ItemDto>()
-					.HasMany(v => v.Sectors)
-					.WithMany(v => v.Items)
-					.UsingEntity<SectorItemDto>();
 	}
 
 	public string GetSummary() {
