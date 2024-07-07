@@ -24,7 +24,7 @@ public class VillagerDto {
 	public int Hunger { get; set; }
 
 	public Guid SectorId { get; set; }
-	[ForeignKey("SectorId")] public required SectorDto Sector { get; set; }
+	[ForeignKey(nameof(SectorId))] public required SectorDto Sector { get; set; }
 
 	public Guid EmotionsId { get; set; }
 	public EmotionDto Emotions { get; set; } = new();

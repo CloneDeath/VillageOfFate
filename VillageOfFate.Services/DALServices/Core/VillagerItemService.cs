@@ -6,11 +6,10 @@ namespace VillageOfFate.Services.DALServices.Core;
 
 public class VillagerItemService(DataContext context) {
 	public async Task<ItemDto> AddAsync(VillagerDto villager, ItemDto item) {
-		var result = await context.VillagerItems.AddAsync(new VillagerItemDto {
-			Villager = villager,
-			Item = item
-		});
+		item.VillagerId = villager.Id;
+		item.SectorId = null;
+		var result = await context.Items.AddAsync(item);
 		await context.SaveChangesAsync();
-		return result.Entity.Item;
+		return result.Entity;
 	}
 }

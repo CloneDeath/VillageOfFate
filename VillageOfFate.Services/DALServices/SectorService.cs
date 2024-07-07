@@ -36,10 +36,8 @@ public class SectorService(DataContext context, ItemService items) {
 	public async Task AddItemRangeToSectorAsync(SectorDto sector, IEnumerable<ItemDto> itemsToAdd) {
 		foreach (var itemDto in itemsToAdd) {
 			var dbItem = await items.EnsureExistsAsync(itemDto);
-			await context.SectorItems.AddAsync(new SectorItemDto {
-				Item = dbItem,
-				Sector = sector
-			});
+			dbItem.VillagerId = null;
+			dbItem.SectorId = sector.Id;
 			await context.SaveChangesAsync();
 		}
 	}

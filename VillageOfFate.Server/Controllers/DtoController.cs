@@ -19,8 +19,11 @@ public class DtoController(DataContext context) : ControllerBase {
 			result.Add($"TABLE {entityType.GetTableName()} ({entityType.Name})");
 
 			foreach (var property in entityType.GetProperties()) {
+				var propertyType = property.IsNullable
+									   ? $"{property.ClrType.GenericTypeArguments.First()}?"
+									   : $"{property.ClrType.Name}";
 				result.Add(
-					$"\t{property.GetColumnType()} {property.Name} ({property.ClrType.Name}{(property.IsNullable ? "?" : "")})");
+					$"\t{property.GetColumnType()} {property.Name} ({propertyType}) -> {property.PropertyInfo?.Name}");
 			}
 
 			var foreignKeys = entityType.GetForeignKeys().ToList();

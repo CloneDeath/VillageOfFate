@@ -16,7 +16,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 	public DbSet<ActivityDto> Activities { get; set; } = null!;
 
 	public DbSet<VillagerDto> Villagers { get; set; } = null!;
-	public DbSet<VillagerItemDto> VillagerItems { get; set; } = null!;
 	public DbSet<RelationshipDto> Relationships { get; set; } = null!;
 	public DbSet<EmotionDto> Emotions { get; set; } = null!;
 
@@ -24,7 +23,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 	public DbSet<EventWitnessDto> EventWitnesses { get; set; } = null!;
 
 	public DbSet<SectorDto> Sectors { get; set; } = null!;
-	public DbSet<SectorItemDto> SectorItems { get; set; } = null!;
 
 	public DbSet<GptUsageDto> GptUsage { get; set; } = null!;
 	public DbSet<VillagerActionErrorDto> VillagerActionErrors { get; set; } = null!;

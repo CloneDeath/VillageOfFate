@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Entities.Events;
@@ -25,10 +26,10 @@ public class ItemDto {
 	public ImageDto? Image { get; set; }
 
 	public Guid? VillagerId { get; set; }
-	public VillagerDto? Villager { get; }
+	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; }
 
 	public Guid? SectorId { get; set; }
-	public SectorDto? Sector { get; }
+	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; }
 	public IEnumerable<EventDto> ActorEvents { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
