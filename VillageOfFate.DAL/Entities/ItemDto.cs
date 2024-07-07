@@ -26,10 +26,11 @@ public class ItemDto {
 	public ImageDto? Image { get; set; }
 
 	public Guid? VillagerId { get; set; }
-	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; }
+	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }
 
 	public Guid? SectorId { get; set; }
-	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; }
+	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; set; }
+
 	public IEnumerable<EventDto> ActorEvents { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {

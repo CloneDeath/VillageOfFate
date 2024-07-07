@@ -20,10 +20,11 @@ public class DtoController(DataContext context) : ControllerBase {
 
 			foreach (var property in entityType.GetProperties()) {
 				var propertyType = property.IsNullable
-									   ? $"{property.ClrType.GenericTypeArguments.First()}?"
+									   ? $"{property.ClrType.GenericTypeArguments.First().Name}?"
 									   : $"{property.ClrType.Name}";
+				var hostField = property.PropertyInfo == null ? null : $"Field: {property.PropertyInfo.Name}";
 				result.Add(
-					$"\t{property.GetColumnType()} {property.Name} ({propertyType}) -> {property.PropertyInfo?.Name}");
+					$"\t{property.GetColumnType()} {property.Name} ({propertyType}) -> {hostField ?? "Nav?"}");
 			}
 
 			var foreignKeys = entityType.GetForeignKeys().ToList();
