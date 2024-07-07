@@ -14,17 +14,18 @@ public class UserService(IHttpContextAccessor httpContextAccessor, DataContext c
 		return claim?.Value;
 	}
 
-	public async Task EnsureUserExistsAsync() {
+	public async Task<UserDto> GetUserAsync() {
 		var emailAddress = GetEmailAddress();
 		if (string.IsNullOrEmpty(emailAddress)) {
 			throw new Exception("No email address found in claims.");
 		}
 
 		var user = await context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
-		if (user != null) return;
+		if (user != null) return user;
 
-		await context.Users.AddAsync(new UserDto {
+		var result = await context.Users.AddAsync(new UserDto {
 			EmailAddress = emailAddress
 		});
+		return result.Entity;
 	}
 }

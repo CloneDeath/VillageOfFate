@@ -9,7 +9,10 @@ namespace VillageOfFate.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController(UserService users) : ControllerBase {
+public class UserController(
+	UserService users,
+	PlayerInitializer initializer
+) : ControllerBase {
 	[AllowAnonymous]
 	[HttpGet("Me")]
 	public string GetInfoAboutMe() {
@@ -36,6 +39,7 @@ public class UserController(UserService users) : ControllerBase {
 	[Authorize]
 	[HttpGet("Login")]
 	public async Task Login() {
-		await users.EnsureUserExistsAsync();
+		var user = await users.GetUserAsync();
+		await initializer.PopulatePlayerAsync(user);
 	}
 }

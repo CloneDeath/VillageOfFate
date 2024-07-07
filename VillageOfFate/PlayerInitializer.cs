@@ -10,11 +10,22 @@ namespace VillageOfFate;
 
 public class PlayerInitializer(
 	TimeService time,
+	SectorService sectors,
 	VillagerService villagers,
 	RelationshipService relations,
 	VillagerItemService villagerItems,
-	EventsService events) {
-	public async Task PopulateVillagers(SectorDto sector) {
+	EventsService events,
+	UserService users
+) {
+	public async Task PopulatePlayerAsync(UserDto user) {
+		if (user.Bible != null) return;
+
+		var sector = await sectors.TryGetAsync(Position.Zero)
+					 ?? throw new NullReferenceException("Sector Zero is not found");
+		await PopulateVillagers(sector, user);
+	}
+
+	private async Task PopulateVillagers(SectorDto sector, UserDto user) {
 		var gamz = await villagers.CreateAsync(new VillagerDto {
 			Name = "Gamz", Age = 26, Gender = Gender.Male,
 			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
@@ -34,7 +45,7 @@ public class PlayerInitializer(
 			Sector = sector,
 			Hunger = 5
 		});
-		await villagerItems.AddAsync(chem, new ItemDto {
+		user.Bible = await villagerItems.AddAsync(chem, new ItemDto {
 			Name = "Chemm's Holy Bible of the God of Fate",
 			Description = "This bible will glow when the God of Fate performs a miracle. " +
 						  "Whenever the God of Fate leaves a new message, you will feel it. As a priestess, you should" +
@@ -42,6 +53,7 @@ public class PlayerInitializer(
 			Quantity = 1,
 			Edible = false, HungerRestored = 0
 		});
+		users.SaveAsync(user);
 		await villagerItems.AddAsync(chem, new ItemDto {
 			Name = "Healing Potion",
 			Description = "A small vial of red liquid that heals minor wounds.",
