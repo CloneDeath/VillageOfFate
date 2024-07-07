@@ -1,43 +1,53 @@
-<div class="actions">
-    <button class="expand-button" title="Send Daily Command" @onclick="() => ToggleDisplay(ref FormDisplay)">
+<div id="primary-actions" class="btn-group-vertical" role="group" aria-label="Actions">
+    <!-- Daily Command -->
+    <button class="action btn btn-outline-light"
+            type="button"
+            title="Send Daily Command"
+            data-bs-toggle="collapse"
+            data-bs-target="#daily-command">
         <i class="bi bi-journal-plus"></i>
     </button>
-    <form class="float-left" style="display: @FormDisplay;" @onsubmit="SubmitForm">
+    <form id="daily-command"
+          class="float-left collapse"
+          @onsubmit="SubmitForm"
+          data-bs-parent="#primary-actions">
         <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
         <button type="submit" id="send-button">Send</button>
     </form>
 
-    <button class="expand-button" title="Perform Miracle" @onclick="() => ToggleDisplay(ref ActionDisplay)">
+    <!-- Perform Miracle -->
+    <button class="action btn btn-outline-light"
+            type="button"
+            title="Perform Miracle"
+            data-bs-toggle="collapse"
+            data-bs-target="#miracles">
         <i class="bi bi-cloud-lightning-rain-fill"></i>
     </button>
-    <div class="actions float-left" style="display: @ActionDisplay;">
-        <button class="miracle">
+    <div id="miracles"
+         class="btn-group-vertical float-left collapse"
+         role="group"
+         aria-label="Miracles"
+         data-bs-parent="#primary-actions">
+        <button class="btn miracle btn-outline-light" type="button">
             <i class="bi bi-lightning-fill"></i>
         </button>
-        <button class="miracle">
+        <button class="btn miracle btn-outline-light" type="button">
             <i class="bi bi-heart-pulse"></i>
         </button>
-        <button class="miracle">
+        <button class="btn miracle btn-outline-light" type="button">
             <i class="bi bi-person-standing"></i>
         </button>
-        <button class="miracle">
+        <button class="btn miracle btn-outline-light" type="button">
             <i class="bi bi-cash-coin"></i>
         </button>
     </div>
 </div>
 
 @code {
-    private string FormDisplay = "none";
-    private string ActionDisplay = "none";
     private string InputText { get; set; } = string.Empty;
-
-    private void ToggleDisplay(ref string display) {
-        display = display == "none" ? "block" : "none";
-    }
 
     private void SubmitForm() {
         Console.WriteLine($"Submitted: {InputText}");
         InputText = string.Empty;
-        FormDisplay = "none";
     }
 }
