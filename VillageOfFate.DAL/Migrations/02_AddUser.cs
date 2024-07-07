@@ -9,7 +9,8 @@ public class AddUser : Migration {
 	public override void Up() {
 		Create.Table("Users")
 			  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
-			  .WithColumn("EmailAddress").AsString(MaxEmailAddressLength).NotNullable();
+			  .WithColumn("EmailAddress").AsString(MaxEmailAddressLength).NotNullable()
+			  .WithColumn("BibleId").AsGuid().Nullable();
 	}
 
 	public override void Down() {

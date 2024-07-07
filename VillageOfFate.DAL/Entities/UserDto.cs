@@ -9,4 +9,7 @@ public class UserDto {
 	[MaxLength(AddUser.MaxEmailAddressLength)]
 	[EmailAddress]
 	public string EmailAddress { get; set; } = string.Empty;
+
+	public Guid? BibleId { get; set; }
+	public ItemDto? Bible { get; set; }
 }
