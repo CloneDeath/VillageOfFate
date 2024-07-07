@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VillageOfFate.Services.BIServices;
+using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Server.Controllers;
 
@@ -14,7 +15,7 @@ public class UserController(
 	PlayerInitializer initializer
 ) : ControllerBase {
 	[AllowAnonymous]
-	[HttpGet("Me")]
+	[HttpGet("Identity")]
 	public string GetInfoAboutMe() {
 		List<string> result = [
 			$"Email Address: {users.GetEmailAddress()}"
@@ -41,5 +42,12 @@ public class UserController(
 	public async Task Login() {
 		var user = await users.GetUserAsync();
 		await initializer.PopulatePlayerAsync(user);
+	}
+
+	[Authorize]
+	[HttpGet("Me")]
+	public async Task<WebUser> GetSelf() {
+		var user = await users.GetUserAsync();
+		return user.AsWebUser();
 	}
 }

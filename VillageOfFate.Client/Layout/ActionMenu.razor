@@ -1,3 +1,7 @@
+@using VillageOfFate.Client.Services.Api
+@using VillageOfFate.WebModels
+@inject UserApi users
+
 <div id="primary-actions" class="btn-group-vertical" role="group" aria-label="Actions">
     <!-- Daily Command -->
     <button class="action btn btn-outline-light"
@@ -15,7 +19,11 @@
                 Divine Message
                 <i class="bi bi-info-circle" title="Once per day, you may bestow a Divine Message to your villagers through the Priest's Bible."></i>
             </span>
-            <a href="#" class="card-link float-end">Locate Bible</a>
+            @if (CurrentUser == null) {
+                <span class="placeholder col-7"></span>
+            } else {
+                <a href="#@CurrentUser.BibleId" class="card-link float-end">Locate Bible</a>
+            }
         </div>
         <div class="card-body">
             <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
@@ -52,6 +60,13 @@
 </div>
 
 @code {
+    private WebUser? CurrentUser { get; set; } = null;
+
+    protected override async Task OnInitializedAsync() {
+        await base.OnInitializedAsync();
+        CurrentUser = await users.GetCurrentUserAsync();
+    }
+
     private string InputText { get; set; } = string.Empty;
 
     private void SubmitForm() {

@@ -123,4 +123,11 @@ public static class WebModelConversions {
 			ItemActorId = e.ItemActorId,
 			WitnessIds = e.Witnesses.Select(w => w.Id).ToArray()
 		};
+
+	public static WebUser AsWebUser(this UserDto user) =>
+		new() {
+			Id = user.Id,
+			EmailAddress = user.EmailAddress,
+			BibleId = user.BibleId
+		};
 }
