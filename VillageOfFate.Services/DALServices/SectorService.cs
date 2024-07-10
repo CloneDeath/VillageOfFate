@@ -22,7 +22,8 @@ public class SectorService(DataContext context, ItemService items) {
 
 		var result = await context.Sectors.AddAsync(new SectorDto {
 			X = position.X,
-			Y = position.Y
+			Y = position.Y,
+			Image = new ImageDto()
 		});
 		await context.SaveChangesAsync();
 		if (sectorConstructor == null) return result.Entity;

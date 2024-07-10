@@ -23,7 +23,7 @@ public class ItemDto {
 	public int HungerRestored { get; set; }
 
 	public Guid ImageId { get; set; }
-	public ImageDto Image { get; set; } = null!;
+	public required ImageDto Image { get; set; }
 
 	public Guid? VillagerId { get; set; }
 	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }

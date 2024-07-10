@@ -31,20 +31,23 @@ public class PlayerInitializer(
 			Name = "Gamz", Age = 26, Gender = Gender.Male,
 			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
 			Sector = sector,
-			Hunger = 6
+			Hunger = 6,
+			Image = new ImageDto()
 		});
 		await villagerItems.AddAsync(gamz, new ItemDto {
 			Name = "Sword",
 			Description = "A well-crafted sword with a leather-wrapped hilt.",
 			Quantity = 1,
-			Edible = false, HungerRestored = 0
+			Edible = false, HungerRestored = 0,
+			Image = new ImageDto()
 		});
 
 		var chem = await villagers.CreateAsync(new VillagerDto {
 			Name = "Chemm", Age = 19, Gender = Gender.Female,
 			Summary = "Gamz's little sister. A priestess who believes in the god of fate.",
 			Sector = sector,
-			Hunger = 5
+			Hunger = 5,
+			Image = new ImageDto()
 		});
 		user.Bible = await villagerItems.AddAsync(chem, new ItemDto {
 			Name = "Holy Bible of the God of Fate",
@@ -52,53 +55,61 @@ public class PlayerInitializer(
 						  "When the God of Fate sends a new Divine Message, you will feel it; As a Priestess, you should" +
 						  " read this Divine Message aloud for all other villagers to hear.",
 			Quantity = 1,
-			Edible = false, HungerRestored = 0
+			Edible = false, HungerRestored = 0,
+			Image = new ImageDto()
 		});
 		await users.SaveAsync(user);
 		await villagerItems.AddAsync(chem, new ItemDto {
 			Name = "Healing Potion",
 			Description = "A small vial of red liquid that heals minor wounds.",
 			Quantity = 1,
-			Edible = false, HungerRestored = 0
+			Edible = false, HungerRestored = 0,
+			Image = new ImageDto()
 		});
 
 		var carol = await villagers.CreateAsync(new VillagerDto {
 			Name = "Carol", Age = 7, Gender = Gender.Female,
 			Summary = "A cheerful child, although quite mature for her age.",
 			Sector = sector,
-			Hunger = 8
+			Hunger = 8,
+			Image = new ImageDto()
 		});
 		await villagerItems.AddAsync(carol, new ItemDto {
 			Name = "Doll",
 			Description = "A small, handmade doll with a stitched-on smile.",
 			Quantity = 1,
-			Edible = false, HungerRestored = 0
+			Edible = false, HungerRestored = 0,
+			Image = new ImageDto()
 		});
 
 		var lyra = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lyra", Age = 30, Gender = Gender.Female,
 			Summary = "A younger wife than her husband, but capable of keeping him in check.",
 			Sector = sector,
-			Hunger = 4
+			Hunger = 4,
+			Image = new ImageDto()
 		});
 		await villagerItems.AddAsync(lyra, new ItemDto {
 			Name = "Lyra's Wedding Ring",
 			Description = "A simple gold band that symbolizes the bond between you and your husband.",
 			Quantity = 1,
-			Edible = false, HungerRestored = 0
+			Edible = false, HungerRestored = 0,
+			Image = new ImageDto()
 		});
 
 		var lodis = await villagers.CreateAsync(new VillagerDto {
 			Name = "Lodis", Age = 33, Gender = Gender.Male,
 			Summary = "The father of a family of three that ran a general store in the village.",
 			Sector = sector,
-			Hunger = 5
+			Hunger = 5,
+			Image = new ImageDto()
 		});
 		await villagerItems.AddAsync(lodis, new ItemDto {
 			Name = "Lodis' Wedding Ring",
 			Description = "A simple gold band that symbolizes the bond between you and your wife.",
 			Quantity = 1,
-			Edible = false, HungerRestored = 0
+			Edible = false, HungerRestored = 0,
+			Image = new ImageDto()
 		});
 
 		await relations.AddRelationAsync(gamz, chem, "Younger Sister");

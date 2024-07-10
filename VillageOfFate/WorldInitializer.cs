@@ -28,22 +28,26 @@ public class WorldInitializer(
 			new() {
 				Name = "Ration",
 				Description = "A small bag of dried fruit and nuts.",
-				Quantity = 3, Edible = true, HungerRestored = 2
+				Quantity = 3, Edible = true, HungerRestored = 2,
+				Image = new ImageDto()
 			},
 			new() {
 				Name = "Apple",
 				Description = "A juicy, red apple. Perfect for a quick snack.",
-				Quantity = 1, Edible = true, HungerRestored = 5
+				Quantity = 1, Edible = true, HungerRestored = 5,
+				Image = new ImageDto()
 			},
 			new() {
 				Name = "Mushroom",
 				Description = "A common forest mushroom. Make sure it's not poisonous before eating!",
-				Quantity = 1, Edible = true, HungerRestored = 3
+				Quantity = 1, Edible = true, HungerRestored = 3,
+				Image = new ImageDto()
 			},
 			new() {
 				Name = "Berries",
 				Description = "A handful of wild berries. Sweet and nutritious.",
-				Quantity = 1, Edible = true, HungerRestored = 4
+				Quantity = 1, Edible = true, HungerRestored = 4,
+				Image = new ImageDto()
 			}
 		});
 	}
