@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.JavaScript;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +16,7 @@ using VillageOfFate.DAL;
 using VillageOfFate.Localization;
 using VillageOfFate.Runners;
 using VillageOfFate.Server.Databases;
+using VillageOfFate.Server.Exceptions;
 using VillageOfFate.Server.Settings;
 using VillageOfFate.Services.BIServices;
 using VillageOfFate.Services.DALServices;
@@ -145,6 +145,7 @@ public class Program {
 		builder.Services.AddScoped<LookoutAction>();
 		builder.Services.AddScoped<SleepAction>();
 		builder.Services.AddScoped<SpeakAction>();
+		builder.Services.AddSingleton<ExceptionHandler>();
 
 		var app = builder.Build();
 		if (app.Environment.IsDevelopment()) {
@@ -153,6 +154,7 @@ public class Program {
 			app.UseDeveloperExceptionPage(new DeveloperExceptionPageOptions { SourceCodeLineCount = 100 });
 		}
 
+		app.UseMiddleware<ExceptionHandler>();
 		app.UseHttpsRedirection();
 		app.UseCors("AllowMyOrigin");
 		app.UseAuthentication();

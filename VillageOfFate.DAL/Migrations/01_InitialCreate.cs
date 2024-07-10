@@ -132,10 +132,10 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Error").AsString(MaxDescriptionLength).NotNullable();
 
 			Create.Table("Images")
-					  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
-					  .WithColumn("Created").AsDateTime().NotNullable()
-					  .WithColumn("Base64Image").AsString(ImageDto.MaxBase64ImageLength).NotNullable()
-					  .WithColumn("Prompt").AsString(MaxDescriptionLength).NotNullable();
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("Created").AsDateTime().Nullable()
+				  .WithColumn("Base64Image").AsString(ImageDto.MaxBase64ImageLength).Nullable()
+				  .WithColumn("Prompt").AsString(MaxDescriptionLength).Nullable();
 
 		}
 

@@ -1,11 +1,7 @@
 @page "/villagers/{Id:guid}"
-@using VillageOfFate.Client.Components
-@using VillageOfFate.Client.Services.Api
 @using VillageOfFate.Localization
-@using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
 @inject SectorsApi SectorsApi
-@inject ImageApi ImageApi
 @inject Plurality Plurality
 
 <nav aria-label="breadcrumb">
@@ -33,7 +29,7 @@
     </p>
 } else {
     <div class="profile">
-        <img src="@ImageApi.GetImageUrl(villager.ImageId)" alt=""/>
+        <ImageComponent ImageId="villager.ImageId" alt=""/>
 
         <div>
             <h1>@villager.Name</h1>

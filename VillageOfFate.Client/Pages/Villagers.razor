@@ -1,7 +1,4 @@
 ﻿@page "/villagers"
-@using VillageOfFate.Client.Components
-@using VillageOfFate.Client.Services.Api
-@using VillageOfFate.WebModels
 @inject VillagersApi VillagersService
 
 <PageTitle>Villagers</PageTitle>
@@ -28,5 +25,4 @@
     protected override async Task OnInitializedAsync() {
         villagers = await VillagersService.GetVillagers();
     }
-
 }

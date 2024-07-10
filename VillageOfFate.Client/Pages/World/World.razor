@@ -1,7 +1,5 @@
 @page "/world"
 @page "/"
-@using VillageOfFate.Client.Services.Api
-@using VillageOfFate.WebModels
 @inject SectorsApi SectorsApi
 
 <title>The World</title>
@@ -28,5 +26,4 @@
     protected override async Task OnInitializedAsync() {
         Sectors = await SectorsApi.GetAllAsync();
     }
-
 }

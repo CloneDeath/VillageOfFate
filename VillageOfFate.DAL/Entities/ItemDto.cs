@@ -22,8 +22,8 @@ public class ItemDto {
 	public bool Edible { get; set; }
 	public int HungerRestored { get; set; }
 
-	public Guid? ImageId { get; set; }
-	public ImageDto? Image { get; set; }
+	public Guid ImageId { get; set; }
+	public ImageDto Image { get; set; } = null!;
 
 	public Guid? VillagerId { get; set; }
 	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }
@@ -34,8 +34,8 @@ public class ItemDto {
 	public IEnumerable<EventDto> ActorEvents { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
-		modelBuilder.Entity<ItemDto>()
-					.Navigation(i => i.Image).AutoInclude();
+		// modelBuilder.Entity<ItemDto>()
+		// 			.Navigation(i => i.Image).AutoInclude();
 	}
 
 	public string GetSummary() {

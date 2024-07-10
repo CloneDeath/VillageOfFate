@@ -10,7 +10,7 @@ public class WebItem {
 	public int Quantity { get; set; } = 1;
 	public bool Edible { get; set; }
 	public int HungerRestored { get; set; }
-	public Guid? ImageId { get; set; }
+	public required Guid ImageId { get; init; }
 
 	public string GetSummary() {
 		var edibleString = Edible ? $"Edible (-{HungerRestored} hunger)" : "";

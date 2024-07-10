@@ -1,9 +1,5 @@
 @page "/world/sectors/{Id:guid}"
-@using VillageOfFate.Client.Components
-@using VillageOfFate.Client.Services.Api
-@using VillageOfFate.WebModels
 @inject SectorsApi SectorsApi
-@inject ImageApi ImageApi
 
 <title>Sector @sector?.Position</title>
 
@@ -22,7 +18,7 @@
     </p>
 } else {
     <div class="d-flex">
-        <img src="@ImageApi.GetImageUrl(sector.ImageId)" alt=""/>
+        <ImageComponent ImageId="sector.ImageId" alt=""/>
         <p>@sector.Description</p>
     </div>
 

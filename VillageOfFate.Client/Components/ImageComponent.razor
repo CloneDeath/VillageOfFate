@@ -1,0 +1,26 @@
+@inject ImageApi ImageApi
+
+@if (string.IsNullOrEmpty(ImageUrl)) {
+    <em>Loading...</em>
+} else {
+    <img src="@ImageUrl" alt="@alt" @attributes="@CapturedAttributes"
+         width="@width" height="@height"/>
+}
+
+@code {
+    [Parameter] public required Guid ImageId { get; set; }
+    protected string? ImageUrl { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        await base.OnInitializedAsync();
+        ImageUrl = await ImageApi.GetImageUrlAsync(ImageId);
+    }
+
+    #region ParameterForwarding
+    [Parameter] public required string alt { get; set; } = string.Empty;
+    [Parameter] public int? width { get; set; }
+    [Parameter] public int? height { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> CapturedAttributes { get; set; } = new();
+    #endregion
+}

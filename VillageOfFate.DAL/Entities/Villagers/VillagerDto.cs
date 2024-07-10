@@ -29,8 +29,8 @@ public class VillagerDto {
 	public Guid EmotionsId { get; set; }
 	public EmotionDto Emotions { get; set; } = new();
 
-	public Guid? ImageId { get; set; }
-	public ImageDto? Image { get; set; }
+	public Guid ImageId { get; set; }
+	public ImageDto Image { get; set; } = null!;
 
 	[NotMapped]
 	public ActivityDto? CurrentActivity => Activities.FirstOrDefault(a => a.Status == ActivityStatus.InProgress);

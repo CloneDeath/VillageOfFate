@@ -1,10 +1,8 @@
-@using VillageOfFate.Client.Services.Api
-@using VillageOfFate.WebModels
 @inject ImageApi ImageApi
 @inject NavigationManager NavigationManager
 
 <div class="villager dp2" @onclick="GoToVillagerPage">
-    <img src="@ImageApi.GetImageUrl(Villager.ImageId)" alt=""/>
+    <ImageComponent alt="" ImageId="Villager.ImageId"/>
     <div>
         <div>
             <strong>@Villager.Name</strong>

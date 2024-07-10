@@ -1,9 +1,7 @@
-@using VillageOfFate.Client.Services.Api
-@using VillageOfFate.WebModels
 @inject ImageApi ImageApi
 
 <div class="item dp2">
-    <img src="@ImageApi.GetImageUrl(Item.ImageId)" alt=""/>
+    <ImageComponent ImageId="@Item.ImageId" alt=""/>
     <div>
         <div>
             <strong>@Item.Name</strong> @QuantityText

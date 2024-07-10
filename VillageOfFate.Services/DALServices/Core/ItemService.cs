@@ -15,7 +15,7 @@ public class ItemService(DataContext context) {
 	}
 
 	public async Task<IEnumerable<ItemDto>> GetItemsWithoutImagesAsync() {
-		return await context.Items.Where(i => i.ImageId == null).ToListAsync();
+		return await context.Items.Where(i => i.Image.Base64Image == null).ToListAsync();
 	}
 
 	public async Task<ItemDto> GetAsync(Guid itemId) => await context.Items.FirstAsync(i => i.Id == itemId);

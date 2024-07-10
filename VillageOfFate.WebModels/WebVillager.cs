@@ -11,9 +11,9 @@ public class WebVillager {
 	public string Summary { get; init; } = string.Empty;
 	public Gender Gender { get; init; } = Gender.Male;
 	public WebVillagerEmotions Emotions { get; init; } = new();
-	public Position SectorLocation { get; init; }
-	public int Hunger { get; init; }
-	public Guid? ImageId { get; init; }
+	public required Position SectorLocation { get; init; }
+	public required int Hunger { get; init; }
+	public required Guid ImageId { get; init; }
 	public WebActivity? CurrentActivity { get; init; }
 	public Stack<WebActivity> ActivityQueue { get; init; } = new();
 	public List<WebItem> Inventory { get; init; } = [];
