@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -161,11 +162,15 @@ public class Program {
 		await InitializeWorld(app);
 
 		var cancellationTokenSource = new CancellationTokenSource();
-		var appTask = app.RunAsync(cancellationTokenSource.Token);
-		var worldRunnerTask = ExecuteRunner<WorldRunner>(app, cancellationTokenSource.Token);
-		var imageGenRunnerTask = ExecuteRunner<ImageGenerationRunner>(app, cancellationTokenSource.Token);
+		var tasks = new List<Task> {
+			app.RunAsync(cancellationTokenSource.Token),
+			ExecuteRunner<WorldRunner>(app, cancellationTokenSource.Token)
+		};
+		if (appSettings.GenerateImages) {
+			tasks.Add(ExecuteRunner<ImageGenerationRunner>(app, cancellationTokenSource.Token));
+		}
 
-		await Task.WhenAny(appTask, worldRunnerTask, imageGenRunnerTask);
+		await Task.WhenAny(tasks.ToArray());
 		await cancellationTokenSource.CancelAsync();
 	}
 
