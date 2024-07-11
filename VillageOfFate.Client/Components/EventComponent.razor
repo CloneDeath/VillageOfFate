@@ -10,7 +10,8 @@
         } else {
             <ImageComponent
                 class="event-image clickable"
-                ImageId="Villager.ImageId" width="45" height="45" alt=""
+                ImageId="Villager.ImageId"
+                width="45" height="45" alt=""
                 @onclick="() => Navigate.ToVillager(Event.VillagerActorId.Value)"/>
         }
     } else if (Event.ItemActorId.HasValue) {
@@ -18,7 +19,8 @@
             <em>Loading...</em>
         } else {
             <ImageComponent class="event-image"
-                            ImageId="Item.ImageId" width="45" height="45" alt=""/>
+                            ImageId="Item.ImageId"
+                            width="45" height="45" alt=""/>
         }
     }
 

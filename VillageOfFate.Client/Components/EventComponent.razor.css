@@ -5,7 +5,7 @@
     border-radius: 4px;
 }
 
-.event .event-image {
+::deep .event-image {
     border-radius: 4px;
     margin-right: 10px;
 }

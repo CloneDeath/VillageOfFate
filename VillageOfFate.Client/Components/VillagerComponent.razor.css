@@ -7,7 +7,7 @@
     cursor: pointer;
 }
 
-.villager img {
+::deep img {
     width: 3em;
     height: 3em;
     margin-right: 10px;
