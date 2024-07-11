@@ -13,7 +13,7 @@ public class ImageApi(string baseUrl) {
 	public async Task<string> GetImageUrlAsync(Guid imageId) {
 		var response = await client.GetAsync($"Images/{imageId}");
 		return response.StatusCode == HttpStatusCode.Accepted
-				   ? "/images/placeholder.png"
+				   ? "/images/placeholder.webp"
 				   : $"{baseUrl}/Images/{imageId}";
 	}
 }
