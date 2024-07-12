@@ -144,18 +144,30 @@ public class WorldRunner(
 			Content = "Please choose an action befitting your character."
 		});
 
-		var response = await openApi.GetChatGptResponseAsync(messages.ToArray(),
-						   actionFactory.Actions.Select(a => new GptFunction {
-							   Name = a.Name,
-							   Description = a.Description,
-							   Parameters = a.Parameters
-						   }), ToolChoice.Required);
+		var actionChoices = actionFactory.Actions.Select(a => new GptFunction {
+			Name = a.Name,
+			Description = a.Description,
+			Parameters = a.Parameters
+		}).ToList();
+		const string DoNotReactName = "DoNotReact";
+		if (reaction != null) {
+			actionChoices.Add(new GptFunction {
+				Name = DoNotReactName,
+				Description = "Unlike Do Nothing, this action is specifically for when you want to ignore a reaction."
+				 + "No time will be wasted on this action, and you can continue with your planned actions."
+			});
+		}
+		var response = await openApi.GetChatGptResponseAsync(messages.ToArray(), actionChoices, ToolChoice.Required);
 		await gptUsage.AddUsageAsync(response);
 
 		var calls = response.Choices.First().Message.ToolCalls ?? [];
 		var details = new List<ActivityDto>();
 		for (var index = 0; index < calls.Length; index++) {
 			var call = calls[index];
+			if (reaction != null && call.Function.Name == DoNotReactName) {
+				await events.AddAsync(villager, $"Decides to ignore {reaction.Actor.Name}'s {reaction.Action.Name.ToActiveString()}");
+				continue;
+			}
 			var action = actionFactory.Get(call.Function.Name);
 			if (action == null) {
 				await villagerActionErrors.LogInvalidAction(villager, call.Function.Name, call.Function.Arguments);
