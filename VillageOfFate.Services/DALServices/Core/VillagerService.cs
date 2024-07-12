@@ -30,7 +30,7 @@ public class VillagerService(DataContext context) {
 	public async Task<VillagerDto> GetAsync(Guid id) => await Villagers
 															.FirstAsync(v => v.Id == id);
 
-	public async Task<IEnumerable<VillagerDto>> GetManyAsync(VillagerDto[] villagers) {
+	public async Task<IEnumerable<VillagerDto>> GetManyAsync(IEnumerable<VillagerDto> villagers) {
 		var ids = villagers.Select(v => v.Id).ToArray();
 		return await GetManyAsync(ids);
 	}

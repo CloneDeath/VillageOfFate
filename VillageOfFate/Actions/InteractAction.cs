@@ -27,7 +27,7 @@ public class InteractAction(EventsService events, VillagerService villagers) : I
 		return new InteractActivityDto {
 			TotalDuration = TimeSpan.FromSeconds(args.DurationInSeconds),
 			Action = args.Action,
-			Targets = targets.ToArray()
+			Targets = targets.ToList()
 		};
 	}
 
