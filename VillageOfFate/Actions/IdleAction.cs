@@ -15,7 +15,7 @@ public class IdleAction(
 ) : IAction {
 	public string Name => "DoNothing";
 	public ActivityName ActivityName => ActivityName.Idle;
-	public string Description => "You will do nothing, sit idle, and wait for something to happen.";
+	public string Description => "You will do nothing, sit idle, relax, and wait for something to happen.";
 	public object Parameters => ParameterBuilder.GenerateJsonSchema<IdleArguments>();
 
 	public Task<ActivityDto> ParseArguments(string arguments) {
