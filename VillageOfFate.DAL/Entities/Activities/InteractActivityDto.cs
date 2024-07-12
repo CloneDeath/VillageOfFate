@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
@@ -8,7 +9,7 @@ using VillageOfFate.WebModels;
 namespace VillageOfFate.DAL.Entities.Activities;
 
 public class InteractActivityDto() : ActivityDto(ActivityName.Interact) {
-	public VillagerDto[] Targets { get; set; } = [];
+	public List<VillagerDto> Targets { get; set; } = [];
 
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Action { get; set; } = string.Empty;
