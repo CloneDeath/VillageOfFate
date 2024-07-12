@@ -15,7 +15,7 @@
          data-bs-parent="#primary-actions">
         <div class="card-header">
             <span>
-                Divine Message
+                <label for="divine-message-text">Divine Message</label>
                 <i class="bi bi-info-circle" title="Once per day, you may bestow a Divine Message to your villagers through the Priest's Bible."></i>
             </span>
             @if (CurrentUser == null) {
@@ -29,8 +29,9 @@
             }
         </div>
         <div class="card-body">
-            <input type="text" id="text-input" @bind="InputText" placeholder="Type something...">
-            <button type="button" class="btn btn-primary">Send</button>
+            <textarea class="form-control" id="divine-message-text" rows="3" @bind="InputText"></textarea>
+
+            <button class="btn btn-primary mt-3" type="button">Send</button>
         </div>
     </div>
 
