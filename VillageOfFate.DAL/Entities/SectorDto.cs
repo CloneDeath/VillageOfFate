@@ -28,7 +28,7 @@ public class SectorDto {
 		modelBuilder.Entity<SectorDto>()
 					.HasMany(v => v.Items)
 					.WithOne()
-					.HasForeignKey(nameof(ItemLocationDto.SectorId));
+					.HasForeignKey("SectorId");
 
 		modelBuilder.Entity<SectorDto>()
 					.HasMany(v => v.Villagers)

@@ -62,6 +62,6 @@ public class VillagerDto {
 		modelBuilder.Entity<VillagerDto>()
 					.HasMany(v => v.Items)
 					.WithOne()
-					.HasForeignKey(nameof(ItemLocationDto.VillagerId));
+					.HasForeignKey("VillagerId");
 	}
 }
