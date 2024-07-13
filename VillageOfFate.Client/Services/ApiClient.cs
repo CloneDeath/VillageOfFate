@@ -22,12 +22,11 @@ public class ApiClient(string baseUrl, ISessionStorageService session, string go
 
 		var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 		var expires = epoch.AddSeconds(oidcInfo.ExpiresAt);
-		if (expires < DateTime.UtcNow) {
-			Console.WriteLine("Token Expired");
-			return null;
+		if (expires >= DateTime.UtcNow) {
+			return new AuthenticationHeaderValue("Bearer", oidcInfo.IdToken);
 		}
-
-		return new AuthenticationHeaderValue("Bearer", oidcInfo.IdToken);
+		Console.WriteLine("Token Expired");
+		return null;
 	}
 
 	public async Task GetAsync(string requestUri) {
