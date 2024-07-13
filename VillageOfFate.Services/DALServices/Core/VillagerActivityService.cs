@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
-using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.Services.DALServices.Core;

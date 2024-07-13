@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Attributes;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.DAL.Entities.Events;

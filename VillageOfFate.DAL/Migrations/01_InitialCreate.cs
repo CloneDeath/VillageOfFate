@@ -3,6 +3,7 @@ using FluentMigrator;
 using FluentMigrator.Expressions;
 using FluentMigrator.SqlServer;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.WebModels;
 
 namespace SouthernCrm.Dal.Migrations {

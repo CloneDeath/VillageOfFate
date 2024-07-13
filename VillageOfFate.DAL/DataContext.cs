@@ -5,6 +5,7 @@ using VillageOfFate.DAL.Attributes;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.DAL.Entities.Events;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.DAL;
@@ -41,11 +42,6 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 								.HasConversion(new ValueConverter<DateTime, DateTime>(
 									v => v.ToUniversalTime(),
 									v => DateTime.SpecifyKind(v, DateTimeKind.Utc)));
-				} else if (Attribute.IsDefined(property.PropertyInfo, typeof(TimeSpanTicksAttribute))) {
-					modelBuilder.Entity(entityType.Name).Property(property.Name)
-								.HasConversion(new ValueConverter<TimeSpan, long>(
-									v => v.Ticks,
-									v => new TimeSpan(v)));
 				}
 			}
 		}

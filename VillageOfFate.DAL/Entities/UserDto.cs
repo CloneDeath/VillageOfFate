@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SouthernCrm.Dal.Migrations;
+using VillageOfFate.DAL.Entities.Items;
 
 namespace VillageOfFate.DAL.Entities;
 

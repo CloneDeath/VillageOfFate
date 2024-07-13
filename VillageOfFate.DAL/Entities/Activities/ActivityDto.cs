@@ -2,11 +2,10 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL.Attributes;
-using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.WebModels;
 
-namespace VillageOfFate.DAL.Entities;
+namespace VillageOfFate.DAL.Entities.Activities;
 
 public abstract class ActivityDto(ActivityName name) {
 	public Guid Id { get; set; } = Guid.NewGuid();
@@ -15,9 +14,7 @@ public abstract class ActivityDto(ActivityName name) {
 	public ActivityStatus Status { get; set; } = ActivityStatus.Pending;
 	public int Priority { get; set; } = int.MaxValue;
 
-	//[TimeSpanTicks]
 	public required TimeSpan TotalDuration { get; init; }
-	//[TimeSpanTicks]
 	public TimeSpan DurationRemaining { get; set; }
 
 	[UtcDateTime] public DateTime? StartTime { get; set; }

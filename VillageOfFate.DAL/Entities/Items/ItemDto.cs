@@ -7,7 +7,7 @@ using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Entities.Events;
 using VillageOfFate.DAL.Entities.Villagers;
 
-namespace VillageOfFate.DAL.Entities;
+namespace VillageOfFate.DAL.Entities.Items;
 
 public class ItemDto {
 	public Guid Id { get; set; } = Guid.NewGuid();

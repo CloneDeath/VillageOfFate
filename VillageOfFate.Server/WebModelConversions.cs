@@ -4,6 +4,7 @@ using System.Linq;
 using VillageOfFate.DAL.Entities;
 using VillageOfFate.DAL.Entities.Activities;
 using VillageOfFate.DAL.Entities.Events;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.WebModels;
 using VillageOfFate.WebModels.Activities;

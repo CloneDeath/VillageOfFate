@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.Services.BIServices;
 using VillageOfFate.Services.DALServices;

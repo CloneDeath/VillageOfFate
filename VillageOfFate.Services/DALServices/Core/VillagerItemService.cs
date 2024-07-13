@@ -1,5 +1,5 @@
 using VillageOfFate.DAL;
-using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.Services.DALServices.Core;

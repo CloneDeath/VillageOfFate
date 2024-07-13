@@ -1,4 +1,5 @@
 using System;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.WebModels;
 
 namespace VillageOfFate.DAL.Entities.Activities;

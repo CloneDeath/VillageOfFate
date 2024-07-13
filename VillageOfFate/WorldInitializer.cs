@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VillageOfFate.DAL.Entities;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
 using VillageOfFate.WebModels;
