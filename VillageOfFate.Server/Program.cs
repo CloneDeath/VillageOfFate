@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,6 +19,7 @@ using VillageOfFate.Runners;
 using VillageOfFate.Server.Databases;
 using VillageOfFate.Server.Exceptions;
 using VillageOfFate.Server.Settings;
+using VillageOfFate.Services;
 using VillageOfFate.Services.BIServices;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
@@ -133,6 +135,7 @@ public class Program {
 		builder.Services.AddScoped<ImageGenerationRunner>();
 		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
+		RegisterApiServices(builder);
 
 		// Localization
 		builder.Services.AddScoped<Plurality>();
@@ -174,6 +177,21 @@ public class Program {
 
 		await Task.WhenAny(tasks.ToArray());
 		await cancellationTokenSource.CancelAsync();
+	}
+
+	private static void RegisterApiServices(WebApplicationBuilder builder) {
+		var assembly = typeof(RegisterApiServiceAttribute).Assembly;
+		foreach (var type in assembly.GetTypes()) {
+			if (type.GetCustomAttribute<RegisterApiServiceAttribute>() == null) continue;
+			var interfaces = type.GetInterfaces();
+			if (interfaces.Length == 0) {
+				builder.Services.AddScoped(type);
+			} else {
+				foreach (var i in interfaces) {
+					builder.Services.AddScoped(i, type);
+				}
+			}
+		}
 	}
 
 	private static async Task ExecuteRunner<T>(WebApplication app, CancellationToken token) where T : IRunner {

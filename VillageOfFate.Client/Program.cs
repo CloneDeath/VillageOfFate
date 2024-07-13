@@ -36,6 +36,7 @@ public class Program {
 		builder.Services.AddScoped<UserApi>();
 		builder.Services.AddScoped<Plurality>();
 		builder.Services.AddScoped<NavigationService>();
+		RegisterClientServices(builder);
 
 		builder.Services.AddOidcAuthentication(options => {
 			options.ProviderOptions.Authority = "https://accounts.google.com";
@@ -49,5 +50,20 @@ public class Program {
 		});
 
 		await builder.Build().RunAsync();
+	}
+
+	private static void RegisterClientServices(WebAssemblyHostBuilder builder) {
+		var assembly = typeof(RegisterClientServiceAttribute).Assembly;
+		foreach (var type in assembly.GetTypes()) {
+			if (type.GetCustomAttribute<RegisterClientServiceAttribute>() == null) continue;
+			var interfaces = type.GetInterfaces();
+			if (interfaces.Length == 0) {
+				builder.Services.AddScoped(type);
+			} else {
+				foreach (var i in interfaces) {
+					builder.Services.AddScoped(i, type);
+				}
+			}
+		}
 	}
 }

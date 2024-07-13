@@ -42,7 +42,7 @@ public class VillagerDto {
 															 .OrderBy(a => a.Priority)
 															 .ToList();
 
-	public List<ItemDto> Items { get; } = [];
+	public List<ItemDto> Items { get; set; } = [];
 	public List<ActivityDto> Activities { get; set; } = [];
 
 	public List<EventDto> ActorEvents { get; set; } = [];

@@ -31,7 +31,7 @@ public class ItemDto {
 	public Guid? SectorId { get; set; }
 	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; set; }
 
-	public IEnumerable<EventDto> ActorEvents { get; set; } = [];
+	public List<EventDto> ActorEvents { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
 		// modelBuilder.Entity<ItemDto>()

@@ -16,7 +16,7 @@ public class EventsService(DataContext context, TimeService timeService) {
 
 	public Task AddAsync(SectorDto sector, IEnumerable<VillagerDto> witnesses, string description,
 						 DateTime? eventTime = null) =>
-		AddAsync(null, sector, witnesses, description, eventTime);
+		AddAsync((VillagerDto?)null, sector, witnesses, description, eventTime);
 
 	public Task AddAsync(VillagerDto actor, string description, DateTime? eventTime = null) =>
 		AddAsync(actor, actor.Sector, [], description, eventTime);
@@ -43,6 +43,28 @@ public class EventsService(DataContext context, TimeService timeService) {
 		}
 
 		foreach (var witness in witnessesToAdd.DistinctBy(v => v.Id)) {
+			await context.EventWitnesses.AddAsync(new EventWitnessDto {
+				Event = eventEntity.Entity,
+				Villager = witness
+			});
+		}
+
+		await context.SaveChangesAsync();
+	}
+
+	public async Task AddAsync(ItemDto item, SectorDto sector, IEnumerable<VillagerDto> witnesses, string description,
+							   DateTime? eventTime = null) {
+		var time = eventTime ?? await timeService.GetAsync(TimeLabel.World);
+		var order = await context.Events.CountAsync(e => e.Time == time);
+		var eventEntity = await context.Events.AddAsync(new EventDto {
+			Time = time,
+			ItemActorId = item.Id,
+			Sector = sector,
+			Description = description,
+			Order = order
+		});
+
+		foreach (var witness in witnesses.DistinctBy(v => v.Id)) {
 			await context.EventWitnesses.AddAsync(new EventWitnessDto {
 				Event = eventEntity.Entity,
 				Villager = witness
