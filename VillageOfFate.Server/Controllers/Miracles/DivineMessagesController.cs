@@ -22,13 +22,13 @@ public class DivineMessagesController(
 		if (!user.BibleId.HasValue) throw new NotFoundException("You must have a Bible to post a message.");
 
 		var bible = await items.GetWithLocationAsync(user.BibleId.Value);
-		var location = bible.Sector ?? bible.Villager?.Sector;
+		var location = bible.Location.Sector ?? bible.Location.Villager?.Sector;
 		if (location == null) throw new NotFoundException("Your bible could not be found!");
 
 		var witnesses = await villagers.GetVillagersInSectorAsync(location.Id);
 		await events.AddAsync(bible, location, witnesses, "The Bible begins to glow");
 
-		var owner = bible.Villager;
+		var owner = bible.Location.Villager;
 		if (owner == null) return;
 
 		await events.AddAsync(owner, location, [],

@@ -14,7 +14,7 @@ public class ItemsController(ItemService items) : ControllerBase {
 
 	[HttpGet("Location")]
 	public async Task<WebItemLocation> GetItemLocation(Guid id) {
-		var item = await items.GetWithLocationAsync(id);
+		var item = await items.GetItemLocationAsync(id);
 		return new WebItemLocation {
 			Villager = item.Villager == null
 						   ? null

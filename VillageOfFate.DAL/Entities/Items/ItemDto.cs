@@ -5,12 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Entities.Events;
-using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.DAL.Entities.Items;
 
+[Table("Items")]
 public class ItemDto {
-	public Guid Id { get; set; } = Guid.NewGuid();
+	[Key] public Guid Id { get; set; } = Guid.NewGuid();
 
 	[MaxLength(InitialCreate.MaxNameLength)]
 	public string Name { get; set; } = string.Empty;
@@ -25,17 +25,15 @@ public class ItemDto {
 	public Guid ImageId { get; set; }
 	public required ImageDto Image { get; set; }
 
-	public Guid? VillagerId { get; set; }
-	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }
-
-	public Guid? SectorId { get; set; }
-	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; set; }
-
 	public List<EventDto> ActorEvents { get; set; } = [];
 
+	[ForeignKey(nameof(Id))] public ItemLocationDto Location { get; set; } = null!;
+
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
-		// modelBuilder.Entity<ItemDto>()
-		// 			.Navigation(i => i.Image).AutoInclude();
+		modelBuilder.Entity<ItemDto>()
+					.HasOne(i => i.Location)
+					.WithOne(i => i.Item)
+					.HasForeignKey<ItemLocationDto>(i => i.Id);
 	}
 
 	public string GetSummary() {

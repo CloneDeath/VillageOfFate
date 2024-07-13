@@ -58,5 +58,10 @@ public class VillagerDto {
 					.HasMany(v => v.WitnessedEvents)
 					.WithMany(v => v.Witnesses)
 					.UsingEntity<EventWitnessDto>();
+
+		modelBuilder.Entity<VillagerDto>()
+					.HasMany(v => v.Items)
+					.WithOne()
+					.HasForeignKey(nameof(ItemLocationDto.VillagerId));
 	}
 }

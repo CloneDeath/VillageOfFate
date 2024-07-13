@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
@@ -22,4 +23,16 @@ public class SectorDto {
 
 	public List<ItemDto> Items { get; set; } = [];
 	public List<VillagerDto> Villagers { get; set; } = [];
+
+	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<SectorDto>()
+					.HasMany(v => v.Items)
+					.WithOne()
+					.HasForeignKey(nameof(ItemLocationDto.SectorId));
+
+		modelBuilder.Entity<SectorDto>()
+					.HasMany(v => v.Villagers)
+					.WithOne(v => v.Sector)
+					.HasForeignKey(v => v.SectorId);
+	}
 }
