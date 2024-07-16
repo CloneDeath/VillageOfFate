@@ -19,7 +19,11 @@ public class ItemService(DataContext context) {
 	}
 
 	public async Task<ItemDto> GetAsync(Guid itemId) => await context.Items.FirstAsync(i => i.Id == itemId);
-	public async Task<ItemDto> GetWithLocationAsync(Guid itemId) => await context.Items.FirstAsync(i => i.Id == itemId);
+	public async Task<ItemDto> GetWithLocationAsync(Guid itemId) => await context.Items
+																		.Include(i => i.Villager)
+																		.ThenInclude(v => v!.Sector)
+																		.Include(i => i.Sector)
+																		.FirstAsync(i => i.Id == itemId);
 
 	public async Task ConsumeSingle(VillagerDto villager, ItemDto item) {
 		villager = context.Villagers.Entry(villager).Entity;

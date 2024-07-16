@@ -20,11 +20,11 @@
                 <i class="bi bi-info-circle" title="Once per day, you may bestow a Divine Message to your villagers through the Priest's Bible."></i>
             </span>
             @if (CurrentUser == null) {
-                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4 float-end"></span>
             } else if (CurrentUser.BibleId == null) {
                 <span class="text-warning-emphasis">Bible not found!</span>
             } else if (BibleLocation == null) {
-                <span class="placeholder col-7"></span>
+                <span class="placeholder col-4 float-end"></span>
             } else {
                 <a href="@NavigationService.GetUrl(BibleLocation)" class="card-link float-end">Locate Bible</a>
             }
