@@ -8,7 +8,14 @@
         <li class="breadcrumb-item">
             <a href="/world">World</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">Sector @sector?.Position</li>
+        <li class="breadcrumb-item active" aria-current="page">
+            <span>Sector</span>
+            @if (sector?.Position == null) {
+                <span class="placeholder placeholder-position"></span>
+            } else {
+                <span>@sector.Position</span>
+            }
+        </li>
     </ol>
 </nav>
 

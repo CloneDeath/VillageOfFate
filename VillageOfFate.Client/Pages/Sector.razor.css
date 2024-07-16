@@ -6,3 +6,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.placeholder-position {
+    width: 2em;
+}
