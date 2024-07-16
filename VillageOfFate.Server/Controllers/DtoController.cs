@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using VillageOfFate.DAL;
 
 namespace VillageOfFate.Server.Controllers;
@@ -42,7 +43,8 @@ public class DtoController(DataContext context) : ControllerBase {
 				foreach (var props in entityType.GetNavigations()) {
 					var shadow = props.IsShadowProperty() ? "(Shadow) " : "";
 					var array = props.IsCollection ? "[]" : "";
-					result.Add($"\t\t{shadow}{props.TargetEntityType.ClrType.Name}{array} {props.Name}");
+					var fkInfo = GetForeignKeyInfo(props.ForeignKey);
+					result.Add($"\t\t{shadow}{props.TargetEntityType.ClrType.Name}{array} {props.Name} => {fkInfo}");
 				}
 			}
 
@@ -51,18 +53,30 @@ public class DtoController(DataContext context) : ControllerBase {
 
 			result.Add("\tForeign Keys:");
 			foreach (var fk in entityType.GetForeignKeys()) {
-				var key = fk.Properties.Count == 1
-							  ? fk.Properties.First().Name
-							  : $"[ {string.Join(", ", fk.Properties.Select(x => x.Name))} ]";
-				var outNavigation = fk.GetNavigation(true);
-				var outNav = outNavigation == null ? null : $"<{outNavigation.Name}>";
-				var inNavigation = fk.GetNavigation(false);
-				var inNav = inNavigation == null ? null : $">{inNavigation.DeclaringEntityType} {inNavigation.Name}<";
+				var fkProperties = fk.Properties.ToList();
+				var key = fkProperties.Count == 1
+							  ? fkProperties.First().Name
+							  : $"[ {string.Join(", ", fkProperties.Select(x => x.Name))} ]";
+				var fkInfo = GetForeignKeyInfo(fk);
 				result.Add(
-					$"\t\t{key} {fk.PrincipalEntityType.GetTableName()} ({fk.PrincipalEntityType.DisplayName()}) => {outNav ?? inNav ?? "????"}");
+					$"\t\t{key} {fk.PrincipalEntityType.GetTableName()} ({fk.PrincipalEntityType.DisplayName()}) => {fkInfo}");
 			}
 		}
 
 		return string.Join(Environment.NewLine, result);
+	}
+
+	private static string GetForeignKeyInfo(IForeignKey fk) {
+		var tableName = fk.DeclaringEntityType.GetTableName();
+		var fkProperties = fk.Properties.ToList();
+		var tableColumns = fkProperties.Count == 1
+					  ? fkProperties.First().GetColumnName()
+					  : $"[ {string.Join(", ", fkProperties.Select(x => x.GetColumnName()))} ]";
+
+		var outNavigation = fk.GetNavigation(true);
+		var outNav = outNavigation == null ? null : $"<{outNavigation.Name}>";
+		var inNavigation = fk.GetNavigation(false);
+		var inNav = inNavigation == null ? null : $">{inNavigation.DeclaringEntityType.Name} {inNavigation.Name}<";
+		return $"{outNav ?? inNav ?? "????"} @ {tableName}.{tableColumns}";
 	}
 }
