@@ -34,13 +34,13 @@ public class EatAction(ItemService items, EventsService events, VillagerService 
 
 		var item = eatActivity.TargetItem;
 		if (!item.Edible) {
-			throw new Exception($"Item {item.Name} is not Edible!");
+			throw new Exception($"Item {item.ItemDefinition.Name} is not Edible!");
 		}
 
 		var villager = eatActivity.Villager;
 		await items.ConsumeSingle(villager, item);
 
-		var activity = $"{villager.Name} starts to eat {GetNameWithArticle(item.Name)}";
+		var activity = $"{villager.Name} starts to eat {GetNameWithArticle(item.ItemDefinition.Name)}";
 		await events.AddAsync(villager, villager.Sector.Villagers, activity);
 
 		return new ActionResults();
@@ -57,7 +57,7 @@ public class EatAction(ItemService items, EventsService events, VillagerService 
 		await villagers.DecreaseHungerAsync(villager, item.HungerRestored);
 
 		var completionActivity =
-			$"{villager.Name} finishes eating {GetNameWithArticle(item.Name)} (Hunger -{item.HungerRestored})";
+			$"{villager.Name} finishes eating {GetNameWithArticle(item.ItemDefinition.Name)} (Hunger -{item.HungerRestored})";
 		await events.AddAsync(villager, villager.Sector.Villagers, completionActivity);
 
 		return new ActionResults();

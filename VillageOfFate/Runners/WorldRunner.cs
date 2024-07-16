@@ -138,7 +138,7 @@ public class WorldRunner(
 		messages.AddRange(villager.WitnessedEvents.Select(e => new Message {
 			Role = Role.User,
 			Content =
-				$"[{e.Time}]@{e.Sector.Position} {e.VillagerActor?.Name ?? e.ItemActor?.Name ?? "World Event"}: {e.Description}"
+				$"[{e.Time}]@{e.Sector.Position} {e.VillagerActor?.Name ?? e.ItemActor?.ItemDefinition.Name ?? "World Event"}: {e.Description}"
 		}));
 		messages.Add(new Message {
 			Role = Role.User,

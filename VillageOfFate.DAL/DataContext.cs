@@ -13,6 +13,7 @@ namespace VillageOfFate.DAL;
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options) {
 	public DbSet<TimeDto> Time { get; set; } = null!;
 	public DbSet<ItemDto> Items { get; set; } = null!;
+	public DbSet<ItemDefinitionDto> ItemDefinitions { get; set; } = null!;
 
 	public DbSet<ActivityDto> Activities { get; set; } = null!;
 
@@ -50,6 +51,7 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 		SectorDto.OnModelCreating(modelBuilder);
 		EventDto.OnModelCreating(modelBuilder);
 		TimeDto.OnModelCreating(modelBuilder);
+		ItemDefinitionDto.OnModelCreating(modelBuilder);
 		ItemDto.OnModelCreating(modelBuilder);
 		ActivityDto.OnModelCreating(modelBuilder);
 		InteractActivityTargetDto.OnModelCreating(modelBuilder);

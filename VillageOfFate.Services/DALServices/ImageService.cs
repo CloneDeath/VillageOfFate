@@ -21,9 +21,9 @@ public class ImageService(DataContext context, OpenApi api) {
 		await context.SaveChangesAsync();
 	}
 
-	public async Task GenerateImageFor(ItemDto item) {
-		await GenerateImageAsync(item.Image, $"Generate an image for this item, with a solid white background: " +
-											 $"{item.Name}, {item.Description}");
+	public async Task GenerateImageFor(ItemDefinitionDto itemDefinition) {
+		await GenerateImageAsync(itemDefinition.Image, $"Generate an image for this item, with a solid white background: " +
+													   $"{itemDefinition.Name}, {itemDefinition.Description}");
 	}
 
 	public async Task GenerateImageFor(SectorDto sector) {

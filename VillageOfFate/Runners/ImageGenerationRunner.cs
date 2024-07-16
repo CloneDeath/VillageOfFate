@@ -9,7 +9,7 @@ namespace VillageOfFate.Runners;
 public class ImageGenerationRunner(
 	VillagerService villagers,
 	SectorService sectors,
-	ItemService items,
+	ItemDefinitionService itemDefinitions,
 	ImageService image
 ) : IRunner {
 	private readonly TimeSpan Interval = TimeSpan.FromSeconds(1);
@@ -51,7 +51,7 @@ public class ImageGenerationRunner(
 	}
 
 	private async Task GenerateMissingItemImages() {
-		foreach (var item in await items.GetItemsWithoutImagesAsync()) {
+		foreach (var item in await itemDefinitions.GetItemDefinitionsWithoutImagesAsync()) {
 			await image.GenerateImageFor(item);
 		}
 	}

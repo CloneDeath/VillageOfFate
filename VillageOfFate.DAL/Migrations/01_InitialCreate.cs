@@ -17,14 +17,18 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Label").AsString(MaxNameLength).NotNullable().PrimaryKey()
 				  .WithColumn("Time").AsDateTime().NotNullable();
 
-			Create.Table("Items")
+			Create.Table("ItemDefinitions")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
+				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
+
+			Create.Table("Items")
+				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+				  .WithColumn("ItemDefinitionId").AsGuid().NotNullable().ForeignKey("ItemDefinitions", "Id")
 				  .WithColumn("Quantity").AsInt32().NotNullable()
 				  .WithColumn("Edible").AsBoolean().NotNullable()
 				  .WithColumn("HungerRestored").AsInt32().NotNullable()
-				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id")
 				  .WithColumn("VillagerId").AsGuid().Nullable().ForeignKey("Villagers", "Id")
 				  .WithColumn("SectorId").AsGuid().Nullable().ForeignKey("Sectors", "Id");
 

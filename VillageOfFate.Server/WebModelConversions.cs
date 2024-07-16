@@ -30,12 +30,12 @@ public static class WebModelConversions {
 
 	public static WebItem AsWebItem(this ItemDto item) => new() {
 		Id = item.Id,
-		Name = item.Name,
-		Description = item.Description,
+		Name = item.ItemDefinition.Name,
+		Description = item.ItemDefinition.Description,
 		Edible = item.Edible,
 		HungerRestored = item.HungerRestored,
 		Quantity = item.Quantity,
-		ImageId = item.ImageId
+		ImageId = item.ItemDefinition.ImageId
 	};
 
 	public static WebVillagerEmotions AsWebVillagerEmotions(this EmotionDto emotions) =>

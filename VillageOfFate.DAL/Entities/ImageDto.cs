@@ -17,7 +17,7 @@ public class ImageDto {
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string? Prompt { get; set; } = string.Empty;
 
-	public ItemDto? Item { get; set; }
+	public ItemDefinitionDto? ItemDefinition { get; set; }
 	public SectorDto? Sector { get; set; }
 	public VillagerDto? Villager { get; set; }
 }
