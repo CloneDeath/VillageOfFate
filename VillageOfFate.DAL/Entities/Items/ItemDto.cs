@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Entities.Events;
+using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.DAL.Entities.Items;
 
@@ -25,15 +26,29 @@ public class ItemDto {
 	public Guid ImageId { get; set; }
 	public required ImageDto Image { get; set; }
 
-	public List<EventDto> ActorEvents { get; set; } = [];
+	[Column(nameof(VillagerId))] public Guid? VillagerId { get; set; }
+	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }
 
-	[ForeignKey(nameof(Id))] public ItemLocationDto Location { get; set; } = null!;
+	[Column(nameof(SectorId))] public Guid? SectorId { get; set; }
+	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; set; }
+
+	public List<EventDto> ActorEvents { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<ItemDto>()
-					.HasOne(i => i.Location)
-					.WithOne(i => i.Item)
-					.HasForeignKey<ItemLocationDto>(i => i.Id);
+					.HasOne(i => i.Villager)
+					.WithMany(v => v.Items)
+					.HasForeignKey(i => i.VillagerId);
+
+		modelBuilder.Entity<ItemDto>()
+					.HasOne(i => i.Sector)
+					.WithMany(s => s.Items)
+					.HasForeignKey(i => i.SectorId);
+
+		modelBuilder.Entity<ItemDto>()
+					.HasMany(i => i.ActorEvents)
+					.WithOne(e => e.ItemActor)
+					.HasForeignKey(e => e.ItemActorId);
 	}
 
 	public string GetSummary() {
