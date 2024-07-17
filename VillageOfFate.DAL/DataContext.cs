@@ -80,14 +80,4 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 		// InteractActivityDto.OnModelCreating(modelBuilder);
 		// AdjustEmotionalStateActivityDto.OnModelCreating(modelBuilder);
 	}
-
-	private class comparer : IEqualityComparer<IMutableEntityType> {
-		public bool Equals(IMutableEntityType? x, IMutableEntityType? y) {
-			if (ReferenceEquals(x, y)) return true;
-			if (x is null || y is null) return false;
-			return x.ClrType == y.ClrType;
-		}
-
-		public int GetHashCode(IMutableEntityType obj) => obj.GetHashCode();
-	}
 }
