@@ -40,7 +40,7 @@ public class ItemService(DataContext context) {
 				sector.Items.Remove(item);
 			}
 		} else {
-			throw new Exception($"Villager {villager.Name} does not have access to {item.ItemDefinition.Name}!");
+			throw new Exception($"Villager {villager.Name} does not have access to {item.Definition.Name}!");
 		}
 
 		await context.SaveChangesAsync();

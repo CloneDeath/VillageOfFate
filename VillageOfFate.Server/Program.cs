@@ -169,7 +169,7 @@ public class Program {
 		var cancellationTokenSource = new CancellationTokenSource();
 		var tasks = new List<Task> {
 			app.RunAsync(cancellationTokenSource.Token),
-			ExecuteRunner<WorldRunner>(app, cancellationTokenSource.Token)
+			//ExecuteRunner<WorldRunner>(app, cancellationTokenSource.Token)
 		};
 		if (appSettings.GenerateImages) {
 			tasks.Add(ExecuteRunner<ImageGenerationRunner>(app, cancellationTokenSource.Token));

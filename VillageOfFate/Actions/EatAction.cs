@@ -22,7 +22,7 @@ public class EatAction(ItemService items, EventsService events, VillagerService 
 				   ?? throw new NullReferenceException();
 		var item = await items.GetAsync(args.TargetItemId);
 		return new EatActivityDto {
-			TotalDuration = TimeSpan.FromMinutes(7) * item.HungerRestored,
+			TotalDuration = TimeSpan.FromMinutes(7) * item.Definition.HungerRestored,
 			TargetItem = item
 		};
 	}
@@ -33,14 +33,14 @@ public class EatAction(ItemService items, EventsService events, VillagerService 
 		}
 
 		var item = eatActivity.TargetItem;
-		if (!item.Edible) {
-			throw new Exception($"Item {item.ItemDefinition.Name} is not Edible!");
+		if (!item.Definition.Edible) {
+			throw new Exception($"Item {item.Definition.Name} is not Edible!");
 		}
 
 		var villager = eatActivity.Villager;
 		await items.ConsumeSingle(villager, item);
 
-		var activity = $"{villager.Name} starts to eat {GetNameWithArticle(item.ItemDefinition.Name)}";
+		var activity = $"{villager.Name} starts to eat {GetNameWithArticle(item.Definition.Name)}";
 		await events.AddAsync(villager, villager.Sector.Villagers, activity);
 
 		return new ActionResults();
@@ -54,10 +54,10 @@ public class EatAction(ItemService items, EventsService events, VillagerService 
 		var villager = eatActivity.Villager;
 		var item = eatActivity.TargetItem;
 
-		await villagers.DecreaseHungerAsync(villager, item.HungerRestored);
+		await villagers.DecreaseHungerAsync(villager, item.Definition.HungerRestored);
 
 		var completionActivity =
-			$"{villager.Name} finishes eating {GetNameWithArticle(item.ItemDefinition.Name)} (Hunger -{item.HungerRestored})";
+			$"{villager.Name} finishes eating {GetNameWithArticle(item.Definition.Name)} (Hunger -{item.Definition.HungerRestored})";
 		await events.AddAsync(villager, villager.Sector.Villagers, completionActivity);
 
 		return new ActionResults();

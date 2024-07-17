@@ -21,14 +21,14 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
 				  .WithColumn("Description").AsString(MaxDescriptionLength).NotNullable()
+				  .WithColumn("Edible").AsBoolean().NotNullable()
+				  .WithColumn("HungerRestored").AsInt32().NotNullable()
 				  .WithColumn("ImageId").AsGuid().Nullable().ForeignKey("Images", "Id");
 
 			Create.Table("Items")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("ItemDefinitionId").AsGuid().NotNullable().ForeignKey("ItemDefinitions", "Id")
 				  .WithColumn("Quantity").AsInt32().NotNullable()
-				  .WithColumn("Edible").AsBoolean().NotNullable()
-				  .WithColumn("HungerRestored").AsInt32().NotNullable()
 				  .WithColumn("VillagerId").AsGuid().Nullable().ForeignKey("Villagers", "Id")
 				  .WithColumn("SectorId").AsGuid().Nullable().ForeignKey("Sectors", "Id");
 
@@ -153,6 +153,7 @@ namespace SouthernCrm.Dal.Migrations {
 			Delete.Table("GptUsage");
 			Delete.Table("Images");
 			Delete.Table("InteractActivityTargets");
+			Delete.Table("ItemDefinitions");
 			Delete.Table("Items");
 			Delete.Table("Relationships");
 			Delete.Table("SectorItems");

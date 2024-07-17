@@ -13,8 +13,6 @@ public class ItemDto {
 	[Key] public Guid Id { get; set; } = Guid.NewGuid();
 
 	public int Quantity { get; set; } = 1;
-	public bool Edible { get; set; }
-	public int HungerRestored { get; set; }
 
 	[Column(nameof(VillagerId))] public Guid? VillagerId { get; set; }
 	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }
@@ -23,13 +21,13 @@ public class ItemDto {
 	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; set; }
 
 	public Guid ItemDefinitionId { get; set; }
-	public ItemDefinitionDto ItemDefinition { get; set; } = null!;
+	[ForeignKey(nameof(ItemDefinitionId))] public ItemDefinitionDto Definition { get; set; } = null!;
 
 	public List<EventDto> ActorEvents { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<ItemDto>()
-					.Navigation(i => i.ItemDefinition)
+					.Navigation(i => i.Definition)
 					.AutoInclude();
 
 		modelBuilder.Entity<ItemDto>()
@@ -49,7 +47,7 @@ public class ItemDto {
 	}
 
 	public string GetSummary() {
-		var edibleString = Edible ? $"Edible (-{HungerRestored} hunger)" : "";
-		return $"{ItemDefinition.Name} (Id: {Id}): {ItemDefinition.Description} Quantity: {Quantity} {edibleString}";
+		var edibleString = Definition.Edible ? $"Edible (-{Definition.HungerRestored} hunger)" : "";
+		return $"{Definition.Name} (Id: {Id}): {Definition.Description} Quantity: {Quantity} {edibleString}";
 	}
 }

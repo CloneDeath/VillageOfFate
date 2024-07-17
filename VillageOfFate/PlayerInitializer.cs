@@ -37,10 +37,10 @@ public class PlayerInitializer(
 		});
 		await villagerItems.AddAsync(gamz, new ItemDto {
 			Quantity = 1,
-			Edible = false, HungerRestored = 0,
-			ItemDefinition = new ItemDefinitionDto {
+			Definition = new ItemDefinitionDto {
 				Name = "Sword",
 				Description = "A well-crafted sword with a leather-wrapped hilt.",
+				Edible = false, HungerRestored = 0,
 				Image = new ImageDto()
 			}
 		});
@@ -54,24 +54,23 @@ public class PlayerInitializer(
 		});
 		user.Bible = await villagerItems.AddAsync(chem, new ItemDto {
 			Quantity = 1,
-			Edible = false, HungerRestored = 0,
-			ItemDefinition = new ItemDefinitionDto {
+			Definition = new ItemDefinitionDto {
 				Name = "Holy Bible of the God of Fate",
 				Description =
 					"This Bible will glow whenever the God of Fate performs a Miracle or sends a Divine Message. " +
 					"When the God of Fate sends a new Divine Message, you will feel it; As a Priestess, you should" +
 					" read this Divine Message aloud for all other villagers to hear.",
-
+				Edible = false, HungerRestored = 0,
 				Image = new ImageDto()
 			}
 		});
 		await users.SaveAsync(user);
 		await villagerItems.AddAsync(chem, new ItemDto {
 			Quantity = 1,
-			Edible = false, HungerRestored = 0,
-			ItemDefinition = new ItemDefinitionDto {
+			Definition = new ItemDefinitionDto {
 				Name = "Healing Potion",
 				Description = "A small vial of red liquid that heals minor wounds.",
+				Edible = false, HungerRestored = 0,
 				Image = new ImageDto()
 			}
 		});
@@ -85,10 +84,10 @@ public class PlayerInitializer(
 		});
 		await villagerItems.AddAsync(carol, new ItemDto {
 			Quantity = 1,
-			Edible = false, HungerRestored = 0,
-			ItemDefinition = new ItemDefinitionDto {
+			Definition = new ItemDefinitionDto {
 				Name = "Doll",
 				Description = "A small, handmade doll with a stitched-on smile.",
+				Edible = false, HungerRestored = 0,
 				Image = new ImageDto()
 			}
 		});
@@ -102,10 +101,10 @@ public class PlayerInitializer(
 		});
 		await villagerItems.AddAsync(lyra, new ItemDto {
 			Quantity = 1,
-			Edible = false, HungerRestored = 0,
-			ItemDefinition = new ItemDefinitionDto {
+			Definition = new ItemDefinitionDto {
 				Name = "Lyra's Wedding Ring",
 				Description = "A simple gold band that symbolizes the bond between you and your husband.",
+				Edible = false, HungerRestored = 0,
 				Image = new ImageDto()
 			}
 		});
@@ -119,10 +118,10 @@ public class PlayerInitializer(
 		});
 		await villagerItems.AddAsync(lodis, new ItemDto {
 			Quantity = 1,
-			Edible = false, HungerRestored = 0,
-			ItemDefinition = new ItemDefinitionDto {
+			Definition = new ItemDefinitionDto {
 				Name = "Lodis' Wedding Ring",
 				Description = "A simple gold band that symbolizes the bond between you and your wife.",
+				Edible = false, HungerRestored = 0,
 				Image = new ImageDto()
 			}
 		});

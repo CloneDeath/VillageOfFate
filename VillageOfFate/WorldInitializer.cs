@@ -27,34 +27,38 @@ public class WorldInitializer(
 		});
 		await sectors.AddItemRangeToSectorAsync(sector, new List<ItemDto> {
 			new() {
-				Quantity = 3, Edible = true, HungerRestored = 2,
-				ItemDefinition = new ItemDefinitionDto {
+				Quantity = 3,
+				Definition = new ItemDefinitionDto {
 					Name = "Ration",
 					Description = "A small bag of dried fruit and nuts.",
+					Edible = true, HungerRestored = 2,
 					Image = new ImageDto()
 				}
 			},
 			new() {
-				Quantity = 1, Edible = true, HungerRestored = 5,
-				ItemDefinition = new ItemDefinitionDto {
+				Quantity = 1,
+				Definition = new ItemDefinitionDto {
 					Name = "Apple",
 					Description = "A juicy, red apple. Perfect for a quick snack.",
+					Edible = true, HungerRestored = 5,
 					Image = new ImageDto()
 				}
 			},
 			new() {
-				Quantity = 1, Edible = true, HungerRestored = 3,
-				ItemDefinition = new ItemDefinitionDto {
+				Quantity = 1,
+				Definition = new ItemDefinitionDto {
 					Name = "Mushroom",
 					Description = "A common forest mushroom. Make sure it's not poisonous before eating!",
+					Edible = true, HungerRestored = 3,
 					Image = new ImageDto()
 				}
 			},
 			new() {
-				Quantity = 1, Edible = true, HungerRestored = 4,
-				ItemDefinition = new ItemDefinitionDto {
+				Quantity = 1,
+				Definition = new ItemDefinitionDto {
 					Name = "Berries",
 					Description = "A handful of wild berries. Sweet and nutritious.",
+					Edible = true, HungerRestored = 4,
 					Image = new ImageDto()
 				}
 			}

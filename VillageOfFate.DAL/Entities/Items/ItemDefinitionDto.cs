@@ -14,6 +14,9 @@ public class ItemDefinitionDto {
 
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Description { get; set; } = string.Empty;
+	
+	public bool Edible { get; set; }
+	public int HungerRestored { get; set; }
 
 	public Guid ImageId { get; set; }
 	public required ImageDto Image { get; set; }
@@ -23,7 +26,7 @@ public class ItemDefinitionDto {
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<ItemDefinitionDto>()
 					.HasMany(i => i.Items)
-					.WithOne(i => i.ItemDefinition)
+					.WithOne(i => i.Definition)
 					.HasForeignKey(i => i.ItemDefinitionId);
 
 		modelBuilder.Entity<ItemDefinitionDto>()
