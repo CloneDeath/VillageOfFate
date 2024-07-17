@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Entities.Villagers;
@@ -13,8 +14,16 @@ public class InteractActivityDto() : ActivityDto(ActivityName.Interact) {
 
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Action { get; set; } = string.Empty;
+
+	public new static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<InteractActivityDto>()
+					.HasMany(v => v.Targets)
+					.WithMany()
+					.UsingEntity<InteractActivityTargetDto>();
+	}
 }
 
+[Table("InteractActivityTargets")]
 public class InteractActivityTargetDto {
 	public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -23,11 +32,4 @@ public class InteractActivityTargetDto {
 
 	public Guid VillagerId { get; set; } = Guid.Empty;
 	public VillagerDto Villager { get; set; } = null!;
-
-	public static void OnModelCreating(ModelBuilder modelBuilder) {
-		modelBuilder.Entity<InteractActivityDto>()
-					.HasMany(v => v.Targets)
-					.WithMany()
-					.UsingEntity<InteractActivityTargetDto>();
-	}
 }

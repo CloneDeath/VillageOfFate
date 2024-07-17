@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VillageOfFate.DAL.Attributes;
 using VillageOfFate.DAL.Entities;
@@ -47,14 +51,43 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 			}
 		}
 
-		VillagerDto.OnModelCreating(modelBuilder);
-		SectorDto.OnModelCreating(modelBuilder);
-		EventDto.OnModelCreating(modelBuilder);
-		TimeDto.OnModelCreating(modelBuilder);
-		ItemDefinitionDto.OnModelCreating(modelBuilder);
-		ItemDto.OnModelCreating(modelBuilder);
-		ActivityDto.OnModelCreating(modelBuilder);
-		InteractActivityTargetDto.OnModelCreating(modelBuilder);
-		AdjustEmotionalStateActivityDto.OnModelCreating(modelBuilder);
+		var typesToProcess = new Stack<IMutableEntityType>(modelBuilder.Model.GetEntityTypes().ToList());
+		var processedTypes = new List<IMutableEntityType>();
+
+		while (typesToProcess.Any()) {
+			var entityType = typesToProcess.Pop();
+			processedTypes.Add(entityType);
+			var method = entityType.ClrType.GetMethod(nameof(OnModelCreating),
+				BindingFlags.Public | BindingFlags.Static,
+				null, [typeof(ModelBuilder)], null);
+			method?.Invoke(null, [modelBuilder]);
+
+			var newEntityTypes = modelBuilder.Model.GetEntityTypes().ToList();
+			var difference = newEntityTypes.Except(processedTypes).Except(typesToProcess);
+			foreach (var diff in difference) {
+				typesToProcess.Push(diff);
+			}
+		}
+
+		//
+		// VillagerDto.OnModelCreating(modelBuilder);
+		// SectorDto.OnModelCreating(modelBuilder);
+		// EventDto.OnModelCreating(modelBuilder);
+		// TimeDto.OnModelCreating(modelBuilder);
+		// ItemDefinitionDto.OnModelCreating(modelBuilder);
+		// ItemDto.OnModelCreating(modelBuilder);
+		// ActivityDto.OnModelCreating(modelBuilder);
+		// InteractActivityDto.OnModelCreating(modelBuilder);
+		// AdjustEmotionalStateActivityDto.OnModelCreating(modelBuilder);
+	}
+
+	private class comparer : IEqualityComparer<IMutableEntityType> {
+		public bool Equals(IMutableEntityType? x, IMutableEntityType? y) {
+			if (ReferenceEquals(x, y)) return true;
+			if (x is null || y is null) return false;
+			return x.ClrType == y.ClrType;
+		}
+
+		public int GetHashCode(IMutableEntityType obj) => obj.GetHashCode();
 	}
 }
