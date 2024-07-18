@@ -20,6 +20,9 @@ public class ItemDto {
 	[Column(nameof(SectorId))] public Guid? SectorId { get; set; }
 	[ForeignKey(nameof(SectorId))] public SectorDto? Sector { get; set; }
 
+	[Column(nameof(ItemId))] public Guid? ItemId { get; set; }
+	[ForeignKey(nameof(ItemId))] public ItemDto? Item { get; set; }
+
 	public Guid ItemDefinitionId { get; set; }
 	[ForeignKey(nameof(ItemDefinitionId))] public ItemDefinitionDto Definition { get; set; } = null!;
 
