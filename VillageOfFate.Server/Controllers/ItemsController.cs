@@ -16,10 +16,13 @@ public class ItemsController(ItemService items) : ControllerBase {
 	public async Task<WebItemLocation> GetItemLocation(Guid id) {
 		var item = await items.GetWithLocationAsync(id);
 		return new WebItemLocation {
+			Id = item.Id,
+			Name = item.Definition.Name,
 			Villager = item.Villager == null
 						   ? null
 						   : new WebVillagerLocation {
 							   Id = item.Villager.Id,
+							   Name = item.Villager.Name,
 							   Sector = new WebSectorLocation {
 								   Id = item.Villager.SectorId,
 								   Position = item.Villager.Sector.Position
@@ -30,7 +33,10 @@ public class ItemsController(ItemService items) : ControllerBase {
 						 : new WebSectorLocation {
 							 Id = item.Sector.Id,
 							 Position = item.Sector.Position
-						 }
+						 },
+			Item = item.Item == null
+					   ? null
+					   : await GetItemLocation(item.Item.Id)
 		};
 	}
 }

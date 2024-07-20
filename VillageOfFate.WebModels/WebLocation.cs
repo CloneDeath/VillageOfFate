@@ -3,12 +3,16 @@ using System;
 namespace VillageOfFate.WebModels;
 
 public class WebItemLocation {
+	public required Guid Id { get; init; }
+	public required string Name { get; init; }
 	public required WebVillagerLocation? Villager { get; init; }
 	public required WebSectorLocation? Sector { get; init; }
+	public required WebItemLocation? Item { get; init; }
 }
 
 public class WebVillagerLocation {
 	public required Guid Id { get; init; }
+	public required string Name { get; init; }
 	public required WebSectorLocation Sector { get; init; }
 }
 

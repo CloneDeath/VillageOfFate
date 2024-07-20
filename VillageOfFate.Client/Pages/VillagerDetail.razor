@@ -23,7 +23,6 @@
 </nav>
 
 @if (villager == null) {
-    <title>Villager</title>
     <p>
         <em>Loading...</em>
     </p>
@@ -128,6 +127,7 @@
     private WebEvent[]? events;
 
     protected override async Task OnParametersSetAsync() {
+        await base.OnParametersSetAsync();
         villager = await VillagersService.GetVillagerAsync(Id);
         if (SectorId.HasValue) {
             sector = await SectorsApi.GetSectorAsync(SectorId.Value);

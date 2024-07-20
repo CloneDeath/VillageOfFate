@@ -1,0 +1,16 @@
+.profile {
+    display: flex;
+}
+
+::deep .profile-image {
+    padding-right: 1em;
+    padding-bottom: 1em;
+}
+
+.placeholder-path {
+    width: 6em;
+}
+
+.placeholder-item {
+    width: 4em;
+}

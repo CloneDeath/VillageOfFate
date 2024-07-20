@@ -23,10 +23,8 @@
                 <span class="placeholder col-4 float-end"></span>
             } else if (CurrentUser.BibleId == null) {
                 <span class="text-warning-emphasis">Bible not found!</span>
-            } else if (BibleLocation == null) {
-                <span class="placeholder col-4 float-end"></span>
             } else {
-                <a href="@NavigationService.GetUrl(BibleLocation)" class="card-link float-end">Locate Bible</a>
+                <a href="@NavigationService.GetUrl(CurrentUser.BibleId.Value)" class="card-link float-end">Locate Bible</a>
             }
         </div>
         <div class="card-body">

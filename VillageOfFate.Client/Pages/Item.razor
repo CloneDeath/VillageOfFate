@@ -1,0 +1,127 @@
+@page "/items/{Id:guid}"
+@inject ItemsApi items
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <!-- World -->
+        <li class="breadcrumb-item">
+            <a href="/world">World</a>
+        </li>
+
+        <!-- Containers -->
+        @if (itemLocation == null) {
+            <li class="breadcrumb-item">
+                <span class="placeholder placeholder-path"></span>
+            </li>
+        } else {
+            @foreach (var location in GetLocationStack()) {
+                <li class="breadcrumb-item">
+                    <a href="@location.Url">@location.Name</a>
+                </li>
+            }
+        }
+
+        <!-- Item -->
+        <li class="breadcrumb-item active" aria-current="page">
+            @if (item == null) {
+                <span class="placeholder placeholder-item"></span>
+            } else {
+                <span>@item.Name</span>
+            }
+        </li>
+    </ol>
+</nav>
+
+
+@if (item == null) {
+    <p>
+        <em>Loading...</em>
+    </p>
+} else {
+    <div class="profile">
+        <ImageComponent class="profile-image"
+                        ImageId="item.ImageId"
+                        width="256" height="256"
+                        alt=""/>
+
+        <div>
+            <h1>
+                @item.Name
+                @QuantityText
+                @if (item.Edible) {
+                    <span class="badge text-bg-secondary">Edible</span>
+                }
+            </h1>
+            <p>@item.Description</p>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    private WebItem? item { get; set; }
+    private WebItemLocation? itemLocation { get; set; }
+
+    private string QuantityText => item == null || item.Quantity == 1 ? string.Empty : $" (x{item.Quantity})";
+
+    protected override async Task OnParametersSetAsync() {
+        await base.OnParametersSetAsync();
+        item = await items.GetItemAsync(Id);
+        itemLocation = await items.GetItemLocationAsync(Id);
+    }
+
+    private Location[] GetLocationStack() => itemLocation == null ? [] : GetLocationStack(itemLocation).Skip(1).Reverse().ToArray();
+
+    private static Location[] GetLocationStack(WebItemLocation location) {
+        var stack = new List<Location> {
+            new() {
+                Type = EntityType.Item,
+                Name = location.Name,
+                Url = $"/items/{location.Id}"
+            }
+        };
+
+        if (location.Sector != null) {
+            stack.AddRange(GetLocationStack(location.Sector));
+        } else if (location.Villager != null) {
+            stack.AddRange(GetLocationStack(location.Villager));
+        } else if (location.Item != null) {
+            stack.AddRange(GetLocationStack(location.Item));
+        }
+
+        return stack.ToArray();
+    }
+
+    private static Location[] GetLocationStack(WebVillagerLocation location) {
+        var stack = new List<Location> {
+            new() {
+                Type = EntityType.Villager,
+                Name = location.Name,
+                Url = $"/villagers/{location.Id}"
+            }
+        };
+        stack.AddRange(GetLocationStack(location.Sector));
+        return stack.ToArray();
+    }
+
+    private static Location[] GetLocationStack(WebSectorLocation location) => [
+        new Location {
+            Type = EntityType.Sector,
+            Name = $"Sector {location.Position}",
+            Url = $"/world/sectors/{location.Id}"
+        }
+    ];
+
+    class Location {
+        public required EntityType Type { get; init; }
+        public required string Name { get; init; }
+        public required string Url { get; init; }
+    }
+
+    enum EntityType {
+        Villager,
+        Sector,
+        Item
+    }
+}

@@ -1,6 +1,7 @@
 @inject ImageApi ImageApi
+@inject NavigationManager NavigationManager
 
-<div class="item dp2">
+<div class="item dp2" @onclick="GoToItemPage">
     <ImageComponent ImageId="@Item.ImageId" alt=""/>
     <div>
         <div>
@@ -16,4 +17,8 @@
 @code {
     [Parameter] public required WebItem Item { get; set; }
     public string QuantityText => Item.Quantity > 1 ? $"x{Item.Quantity}" : "";
+
+    private void GoToItemPage() {
+        NavigationManager.NavigateTo($"/items/{Item.Id}");
+    }
 }
