@@ -2,10 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
 using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
+using VillageOfFate.Services.DALServices.Core;
 
-namespace VillageOfFate.Services.DALServices.Core;
+namespace VillageOfFate.Services.DALServices;
 
-public class ItemService(DataContext context) {
+public class ItemService(DataContext context, ItemDefinitionService itemDefinitions) {
 	public async Task<ItemDto> EnsureExistsAsync(ItemDto item) {
 		var result = await context.Items.FirstOrDefaultAsync(i => i.Id == item.Id)
 					 ?? (await context.Items.AddAsync(item)).Entity;
@@ -44,5 +45,16 @@ public class ItemService(DataContext context) {
 		}
 
 		await context.SaveChangesAsync();
+	}
+
+	public async Task<ItemDto> CreateBiblePageAsync(string message, ItemDto bible) {
+		var pageDefinition = await itemDefinitions.GetOrCreateBiblePageAsync();
+		var entry = await context.Items.AddAsync(new ItemDto {
+			Definition = pageDefinition,
+			Content = message,
+			ItemId = bible.Id
+		});
+		await context.SaveChangesAsync();
+		return entry.Entity;
 	}
 }

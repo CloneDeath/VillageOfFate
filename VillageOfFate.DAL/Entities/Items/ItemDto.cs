@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Entities.Events;
 using VillageOfFate.DAL.Entities.Villagers;
 
@@ -13,6 +14,9 @@ public class ItemDto {
 	[Key] public Guid Id { get; set; } = Guid.NewGuid();
 
 	public int Quantity { get; set; } = 1;
+
+	[MaxLength(InitialCreate.MaxDescriptionLength)]
+	public string Content { get; set; } = string.Empty;
 
 	[Column(nameof(VillagerId))] public Guid? VillagerId { get; set; }
 	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }

@@ -14,16 +14,22 @@ public class ItemDefinitionDto {
 
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Description { get; set; } = string.Empty;
-	
+
 	public bool Edible { get; set; }
 	public int HungerRestored { get; set; }
 
 	public Guid ImageId { get; set; }
 	public required ImageDto Image { get; set; }
 
+	public ItemCategory Category { get; set; } = ItemCategory.Unknown;
+
 	public List<ItemDto> Items { get; set; } = [];
 
 	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<ItemDefinitionDto>()
+					.Property(d => d.Category )
+					.HasConversion<string>();
+
 		modelBuilder.Entity<ItemDefinitionDto>()
 					.HasMany(i => i.Items)
 					.WithOne(i => i.Definition)
@@ -34,4 +40,15 @@ public class ItemDefinitionDto {
 					.WithOne(i => i.ItemDefinition)
 					.HasForeignKey<ItemDefinitionDto>(i => i.ImageId);
 	}
+}
+
+public enum ItemCategory {
+	Unknown,
+	Page
+	// Tool,
+	// Consumable,
+	// Weapon,
+	// Armor,
+	// Accessory,
+	// Other
 }

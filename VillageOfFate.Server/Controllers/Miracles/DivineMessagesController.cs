@@ -15,7 +15,8 @@ public class DivineMessagesController(
 	UserService users,
 	EventsService events,
 	ItemService items,
-	VillagerService villagers) : ControllerBase {
+	VillagerService villagers
+) : ControllerBase {
 	[HttpPost]
 	public async Task PostMessage([FromBody] string message) {
 		var user = await users.GetUserAsync();
@@ -25,6 +26,8 @@ public class DivineMessagesController(
 		var location = bible.Sector ?? bible.Villager?.Sector;
 		if (location == null) throw new NotFoundException("Your bible could not be found!");
 
+		var page = await items.CreateBiblePageAsync(message, bible);
+
 		var witnesses = await villagers.GetVillagersInSectorAsync(location.Id);
 		await events.AddAsync(bible, location, witnesses, "The Bible begins to glow");
 
@@ -32,6 +35,6 @@ public class DivineMessagesController(
 		if (owner == null) return;
 
 		await events.AddAsync(owner, location, [],
-			"You feel that the God of Fate has sent a new Divine Message to your Bible. You feel compelled to read it aloud!");
+			$"You feel that the God of Fate has sent a new Divine Message to your Bible. You feel compelled to read it aloud! (Item.Id: {page.Id})");
 	}
 }
