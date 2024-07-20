@@ -57,4 +57,9 @@ public class ItemService(DataContext context, ItemDefinitionService itemDefiniti
 		await context.SaveChangesAsync();
 		return entry.Entity;
 	}
+
+	public async Task<IEnumerable<ItemDto>> GetChildItemPagesAsync(Guid itemId) {
+		return await context.Items.Where(i => i.ItemId == itemId && i.Definition.Category == ItemCategory.Page)
+							.ToListAsync();
+	}
 }

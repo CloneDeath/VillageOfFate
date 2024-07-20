@@ -35,7 +35,8 @@ public static class WebModelConversions {
 		Edible = item.Definition.Edible,
 		HungerRestored = item.Definition.HungerRestored,
 		Quantity = item.Quantity,
-		ImageId = item.Definition.ImageId
+		ImageId = item.Definition.ImageId,
+		Content = item.Content
 	};
 
 	public static WebVillagerEmotions AsWebVillagerEmotions(this EmotionDto emotions) =>

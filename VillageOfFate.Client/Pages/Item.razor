@@ -57,11 +57,23 @@
     </div>
 }
 
+@if (pages != null) {
+    @foreach(var p in pages) {
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Page</h2>
+                <p class="card-text">@p.Content</p>
+            </div>
+        </div>
+    }
+}
+
 @code {
     [Parameter] public Guid Id { get; set; }
 
     private WebItem? item { get; set; }
     private WebItemLocation? itemLocation { get; set; }
+    private WebItem[]? pages { get; set; }
 
     private string QuantityText => item == null || item.Quantity == 1 ? string.Empty : $" (x{item.Quantity})";
 
@@ -69,6 +81,7 @@
         await base.OnParametersSetAsync();
         item = await items.GetItemAsync(Id);
         itemLocation = await items.GetItemLocationAsync(Id);
+        pages = await items.GetPagesInItem(Id);
     }
 
     private Location[] GetLocationStack() => itemLocation == null ? [] : GetLocationStack(itemLocation).Skip(1).Reverse().ToArray();

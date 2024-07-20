@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VillageOfFate.Services.DALServices;
@@ -7,14 +9,14 @@ using VillageOfFate.WebModels;
 namespace VillageOfFate.Server.Controllers;
 
 [ApiController]
-[Route("[controller]/{id:guid}")]
+[Route("[controller]/{itemId:guid}")]
 public class ItemsController(ItemService items) : ControllerBase {
 	[HttpGet]
-	public async Task<WebItem> GetItem(Guid id) => (await items.GetAsync(id)).AsWebItem();
+	public async Task<WebItem> GetItem(Guid itemId) => (await items.GetAsync(itemId)).AsWebItem();
 
-	[HttpGet("Location")]
-	public async Task<WebItemLocation> GetItemLocation(Guid id) {
-		var item = await items.GetWithLocationAsync(id);
+	[HttpGet("location")]
+	public async Task<WebItemLocation> GetItemLocation(Guid itemId) {
+		var item = await items.GetWithLocationAsync(itemId);
 		return new WebItemLocation {
 			Id = item.Id,
 			Name = item.Definition.Name,
@@ -38,5 +40,11 @@ public class ItemsController(ItemService items) : ControllerBase {
 					   ? null
 					   : await GetItemLocation(item.Item.Id)
 		};
+	}
+
+	[HttpGet("pages")]
+	public async Task<IEnumerable<WebItem>> GetPagesInItem(Guid itemId) {
+		var pages = await items.GetChildItemPagesAsync(itemId);
+		return pages.Select(p => p.AsWebItem());
 	}
 }

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +32,7 @@ public class Program {
 		var builder = WebApplication.CreateBuilder(args);
 
 		builder.Services.AddControllers();
+		builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 		builder.Services.AddEndpointsApiExplorer();
 		builder.Services.AddSwaggerGen(c => {
 			c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
