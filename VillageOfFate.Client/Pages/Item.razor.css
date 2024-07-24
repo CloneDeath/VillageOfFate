@@ -14,3 +14,7 @@
 .placeholder-item {
     width: 4em;
 }
+
+.page-date {
+    opacity: 50%;
+}

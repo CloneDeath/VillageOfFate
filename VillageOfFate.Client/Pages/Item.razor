@@ -58,11 +58,12 @@
 }
 
 @if (pages != null) {
-    @foreach(var p in pages) {
+    @foreach (var p in pages) {
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title">Page</h2>
-                <p class="card-text">@p.Content</p>
+                <p class="card-text">
+                    <span class="page-date">@p.CreationDate</span>@p.Content
+                </p>
             </div>
         </div>
     }

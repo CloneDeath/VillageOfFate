@@ -15,6 +15,8 @@ public class ItemDto {
 
 	public int Quantity { get; set; } = 1;
 
+	public DateTime? CreationDate { get; set; }
+
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Content { get; set; } = string.Empty;
 
