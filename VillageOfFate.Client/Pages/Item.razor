@@ -127,13 +127,13 @@
         }
     ];
 
-    class Location {
+    public class Location {
         public required EntityType Type { get; init; }
         public required string Name { get; init; }
         public required string Url { get; init; }
     }
 
-    enum EntityType {
+    public enum EntityType {
         Villager,
         Sector,
         Item
