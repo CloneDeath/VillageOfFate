@@ -50,9 +50,9 @@ public class ItemService(DataContext context, ItemDefinitionService itemDefiniti
 
 	public async Task<ItemDto> CreateBiblePageAsync(string message, ItemDto bible) {
 		var pageDefinition = await itemDefinitions.GetOrCreateBiblePageAsync();
-		var pageNumber = await context.Items.Where(i => i.ItemId == bible.Id && i.PageNumber != null)
+		var pageNumber = await context.Items.Where(i => i.ItemId == bible.Id)
 									  .Select(i => i.PageNumber ?? 0)
-									  .DefaultIfEmpty(0)
+									  .DefaultIfEmpty()
 									  .MaxAsync() + 1;
 		var entry = await context.Items.AddAsync(new ItemDto {
 			Definition = pageDefinition,
