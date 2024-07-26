@@ -1,6 +1,8 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using SouthernCrm.Dal.Migrations;
 using VillageOfFate.DAL.Attributes;
 using VillageOfFate.DAL.Entities.Villagers;
 using VillageOfFate.WebModels;
@@ -12,6 +14,10 @@ public abstract class ActivityDto(ActivityName name) {
 
 	public ActivityName Name { get; } = name;
 	public ActivityStatus Status { get; set; } = ActivityStatus.Pending;
+
+	[MaxLength(InitialCreate.MaxDescriptionLength)]
+	public string Arguments { get; set; } = string.Empty;
+
 	public int Priority { get; set; } = int.MaxValue;
 
 	public required TimeSpan TotalDuration { get; init; }
@@ -53,5 +59,6 @@ public enum ActivityStatus {
 	Pending,
 	InProgress,
 	OnHold,
-	Complete
+	Complete,
+	Error
 }

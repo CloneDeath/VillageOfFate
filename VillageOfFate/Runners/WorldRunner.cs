@@ -103,7 +103,17 @@ public class WorldRunner(
 			nextActivity.StartTime = currentTime;
 			nextActivity.Status = ActivityStatus.InProgress;
 			await activities.SaveAsync(nextActivity);
-			var beginResult = await action.Begin(nextActivity);
+			IActionResults beginResult;
+			try {
+				beginResult = await action.Begin(nextActivity);
+			}
+			catch (Exception ex) {
+				await villagerActionErrors.LogActionBeginError(villager, nextActivity, ex);
+				nextActivity.Status = ActivityStatus.Error;
+				await activities.SaveAsync(nextActivity);
+				return;
+			}
+
 			await HandleResult(beginResult, new ReactionData {
 				Actor = villager,
 				Action = nextActivity
@@ -179,7 +189,6 @@ public class WorldRunner(
 			}
 
 			ActivityDto activity;
-
 			try {
 				activity = await action.ParseArguments(call.Function.Arguments);
 			}
@@ -189,6 +198,7 @@ public class WorldRunner(
 				continue;
 			}
 
+			activity.Arguments = call.Function.Arguments;
 			activity.DurationRemaining = activity.TotalDuration;
 			activity.Villager = villager;
 			activity.Priority = index;

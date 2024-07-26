@@ -68,16 +68,5 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 				typesToProcess.Push(diff);
 			}
 		}
-
-		//
-		// VillagerDto.OnModelCreating(modelBuilder);
-		// SectorDto.OnModelCreating(modelBuilder);
-		// EventDto.OnModelCreating(modelBuilder);
-		// TimeDto.OnModelCreating(modelBuilder);
-		// ItemDefinitionDto.OnModelCreating(modelBuilder);
-		// ItemDto.OnModelCreating(modelBuilder);
-		// ActivityDto.OnModelCreating(modelBuilder);
-		// InteractActivityDto.OnModelCreating(modelBuilder);
-		// AdjustEmotionalStateActivityDto.OnModelCreating(modelBuilder);
 	}
 }

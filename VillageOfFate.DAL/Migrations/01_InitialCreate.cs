@@ -41,6 +41,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("Name").AsString(MaxNameLength).NotNullable()
 				  .WithColumn("Status").AsString(MaxNameLength).NotNullable().WithDefaultValue(nameof(ActivityStatus.Pending))
+				  .WithColumn("Arguments").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Priority").AsInt32().NotNullable().WithDefaultValue(int.MaxValue)
 				  .WithColumn("StartTime").AsDateTime().Nullable()
 				  .WithColumn("TotalDuration").AsTime().NotNullable()
@@ -137,6 +138,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("WorldTime").AsDateTime().NotNullable()
 				  .WithColumn("EarthTime").AsDateTime().NotNullable()
 				  .WithColumn("VillagerId").AsGuid().NotNullable().ForeignKey("Villagers", "Id")
+				  .WithColumn("ActivityId").AsGuid().Nullable().ForeignKey("Activities", "Id")
 				  .WithColumn("ActionName").AsString(MaxNameLength).NotNullable()
 				  .WithColumn("Arguments").AsString(MaxDescriptionLength).NotNullable()
 				  .WithColumn("Error").AsString(MaxDescriptionLength).NotNullable();
