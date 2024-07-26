@@ -21,6 +21,6 @@
     [Parameter] public int? width { get; set; }
     [Parameter] public int? height { get; set; }
     [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> CapturedAttributes { get; set; } = new();
+    public Dictionary<string, object?> CapturedAttributes { get; set; } = new();
     #endregion
 }

@@ -25,7 +25,7 @@ public class Program {
 
 		builder.Services.AddScoped(sp => {
 			var access = sp.GetService<ISessionStorageService>() ??
-						 throw new NullReferenceException("IAccessTokenProvider");
+						 throw new NullReferenceException("ISessionStorageService");
 			return new ApiClient(apiBaseUri, access, clientId);
 		});
 		builder.Services.AddBlazoredSessionStorage();

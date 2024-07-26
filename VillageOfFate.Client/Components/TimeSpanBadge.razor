@@ -1,12 +1,9 @@
 <span @attributes="@CapturedAttributes"
-      class="badge text-bg-secondary @CapturedAttributes.GetValueOrDefault("class", "")">
+      class="badge text-bg-secondary @CapturedAttributes.GetValueOrDefault("class")">
     @TimeText
 </span>
 
 @code {
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> CapturedAttributes { get; set; } = new();
-
     [Parameter] public required Func<TimeSpan> GetTimeSpan { get; init; }
 
     private TimeSpan TimeSpan => GetTimeSpan();
@@ -16,4 +13,9 @@
         : TimeSpan.TotalHours < 1 ? $"{TimeSpan.TotalMinutes:0}m"
         : TimeSpan.TotalDays < 1 ? $"{TimeSpan.TotalHours:0}h"
         : $"{TimeSpan.TotalDays:0}d";
+
+    #region ParameterForwarding
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object?> CapturedAttributes { get; set; } = new();
+    #endregion
 }
