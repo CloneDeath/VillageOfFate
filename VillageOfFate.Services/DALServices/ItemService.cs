@@ -50,11 +50,16 @@ public class ItemService(DataContext context, ItemDefinitionService itemDefiniti
 
 	public async Task<ItemDto> CreateBiblePageAsync(string message, ItemDto bible) {
 		var pageDefinition = await itemDefinitions.GetOrCreateBiblePageAsync();
+		var pageNumber = await context.Items.Where(i => i.ItemId == bible.Id && i.PageNumber != null)
+									  .Select(i => i.PageNumber ?? 0)
+									  .DefaultIfEmpty(0)
+									  .MaxAsync() + 1;
 		var entry = await context.Items.AddAsync(new ItemDto {
 			Definition = pageDefinition,
 			Content = message,
 			ItemId = bible.Id,
-			CreationDate = await time.GetAsync(TimeLabel.World)
+			CreationDate = await time.GetAsync(TimeLabel.World),
+			PageNumber = pageNumber
 		});
 		await context.SaveChangesAsync();
 		return entry.Entity;

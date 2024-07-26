@@ -20,6 +20,8 @@ public class ItemDto {
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Content { get; set; } = string.Empty;
 
+	public int? PageNumber { get; set; }
+
 	[Column(nameof(VillagerId))] public Guid? VillagerId { get; set; }
 	[ForeignKey(nameof(VillagerId))] public VillagerDto? Villager { get; set; }
 

@@ -31,6 +31,7 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("ItemDefinitionId").AsGuid().NotNullable().ForeignKey("ItemDefinitions", "Id")
 				  .WithColumn("Quantity").AsInt32().NotNullable()
 				  .WithColumn("CreationDate").AsDateTime().Nullable()
+				  .WithColumn("PageNumber").AsInt32().Nullable()
 				  .WithColumn("Content").AsString(MaxDescriptionLength).Nullable()
 				  .WithColumn("VillagerId").AsGuid().Nullable().ForeignKey("Villagers", "Id")
 				  .WithColumn("SectorId").AsGuid().Nullable().ForeignKey("Sectors", "Id")

@@ -12,6 +12,7 @@ public class WebItem {
 	public int HungerRestored { get; set; }
 	public required Guid ImageId { get; init; }
 	public required string? Content { get; init; }
+	public int? PageNumber { get; set; }
 	public required DateTime? CreationDate { get; init; }
 
 	public string GetSummary() {

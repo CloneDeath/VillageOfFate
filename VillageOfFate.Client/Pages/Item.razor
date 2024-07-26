@@ -58,13 +58,19 @@
 }
 
 @if (pages != null) {
-    @foreach (var p in pages) {
+    @foreach (var p in pages.OrderBy(p => p.PageNumber ?? int.MaxValue)) {
         <div class="card">
             <div class="card-body">
-                <p class="card-text">
-                    <span class="page-date">@p.CreationDate</span>@p.Content
-                </p>
+                @if (p.CreationDate.HasValue) {
+                    <h6 class="card-subtitle mb-2 text-muted">@p.CreationDate.Value.Date @p.CreationDate.Value.TimeOfDay</h6>
+                }
+                <p class="card-text">@p.Content</p>
             </div>
+            @if (p.PageNumber.HasValue) {
+                <div class="card-footer text-muted">
+                    @p.PageNumber.Value
+                </div>
+            }
         </div>
     }
 }
