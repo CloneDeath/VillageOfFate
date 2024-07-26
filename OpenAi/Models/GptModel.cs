@@ -7,5 +7,6 @@ namespace OpenAi.Models;
 public enum GptModel {
 	[JsonPropertyName("gpt-3.5-turbo")] Gpt_35_Turbo,
 	[JsonPropertyName("gpt-4-turbo")] Gpt_4_Turbo,
-	[JsonPropertyName("gpt-4o")] Gpt_4_Omni
+	[JsonPropertyName("gpt-4o")] Gpt_4_Omni,
+	[JsonPropertyName("gpt-4o-mini")] Gpt_4_Omni_Mini
 }

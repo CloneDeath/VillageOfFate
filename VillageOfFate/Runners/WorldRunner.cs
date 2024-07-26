@@ -73,7 +73,7 @@ public class WorldRunner(
 	public async Task SetWorldTimeAsync(DateTime value) => await time.SetAsync(TimeLabel.World, value);
 
 	public async Task<DateTime> GetEndTimeAsync() =>
-		await time.GetAsync(TimeLabel.End, await GetWorldTimeAsync() + TimeSpan.FromMinutes(2));
+		await time.GetAsync(TimeLabel.End, await GetWorldTimeAsync() + TimeSpan.FromMinutes(30));
 
 	private async Task EnsureVillagersHaveActivities() {
 		var idleVillagers = await villagers.GetVillagersWithoutActivities();
@@ -155,9 +155,10 @@ public class WorldRunner(
 			actionChoices.Add(new GptFunction {
 				Name = DoNotReactName,
 				Description = "Unlike Do Nothing, this action is specifically for when you want to ignore a reaction."
-				 + "No time will be wasted on this action, and you can continue with your planned actions."
+							  + "No time will be wasted on this action, and you can continue with your planned actions."
 			});
 		}
+
 		var response = await openApi.GetChatGptResponseAsync(messages.ToArray(), actionChoices, ToolChoice.Required);
 		await gptUsage.AddUsageAsync(response);
 
@@ -166,9 +167,11 @@ public class WorldRunner(
 		for (var index = 0; index < calls.Length; index++) {
 			var call = calls[index];
 			if (reaction != null && call.Function.Name == DoNotReactName) {
-				await events.AddAsync(villager, $"Decides to ignore {reaction.Actor.Name}'s {reaction.Action.Name.ToActiveString()}");
+				await events.AddAsync(villager,
+					$"Decides to ignore {reaction.Actor.Name}'s {reaction.Action.Name.ToActiveString()}");
 				continue;
 			}
+
 			var action = actionFactory.Get(call.Function.Name);
 			if (action == null) {
 				await villagerActionErrors.LogInvalidAction(villager, call.Function.Name, call.Function.Arguments);
