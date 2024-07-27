@@ -70,13 +70,88 @@ public class DtoController(DataContext context) : ControllerBase {
 		var tableName = fk.DeclaringEntityType.GetTableName();
 		var fkProperties = fk.Properties.ToList();
 		var tableColumns = fkProperties.Count == 1
-					  ? fkProperties.First().GetColumnName()
-					  : $"[ {string.Join(", ", fkProperties.Select(x => x.GetColumnName()))} ]";
+							   ? fkProperties.First().GetColumnName()
+							   : $"[ {string.Join(", ", fkProperties.Select(x => x.GetColumnName()))} ]";
 
 		var outNavigation = fk.GetNavigation(true);
 		var outNav = outNavigation == null ? null : $"<{outNavigation.Name}>";
 		var inNavigation = fk.GetNavigation(false);
 		var inNav = inNavigation == null ? null : $">{inNavigation.DeclaringEntityType.Name} {inNavigation.Name}<";
 		return $"{outNav ?? inNav ?? "????"} @ {tableName}.{tableColumns}";
+	}
+
+	[HttpGet("model")]
+	public string GetModelDebug() {
+		List<string> result = [];
+
+		var model = context.Model;
+		result.Add(model.ToDebugString());
+		return string.Join(Environment.NewLine, result);
+	}
+
+	[HttpGet("entity")]
+	public string GetEntityDebugDescriptions() {
+		List<string> result = [];
+
+		var model = context.Model;
+		foreach (var entityType in model.GetEntityTypes()) {
+			result.Add($"{entityType.ToDebugString()}");
+		}
+
+		return string.Join(Environment.NewLine, result);
+	}
+
+	[HttpGet("debug")]
+	public string GetDetailedDebugDescription() {
+		List<string> result = [];
+
+		var model = context.Model;
+		foreach (var entityType in model.GetEntityTypes()) {
+			result.Add($"{entityType.ToDebugString()}");
+
+			var properties = entityType.GetProperties().ToList();
+			if (properties.Any()) {
+				result.Add("\tProperties:");
+				result.AddRange(properties.Select(property => $"\t\t{property.ToDebugString()}"));
+			}
+
+			var complex = entityType.GetComplexProperties().ToList();
+			if (complex.Any()) {
+				result.Add("\tComplex:");
+				result.AddRange(complex.Select(p => $"\t\t{p.ToDebugString()}"));
+			}
+
+			var navigations = entityType.GetNavigations().ToList();
+			if (navigations.Any()) {
+				result.Add("\tNavigation Properties:");
+				result.AddRange(navigations.Select(p => $"\t\t{p.ToDebugString()}"));
+			}
+
+			var foreignKeys = entityType.GetForeignKeys().ToList();
+			if (foreignKeys.Any()) {
+				result.Add("\tForeign Keys:");
+				result.AddRange(foreignKeys.Select(p => $"\t\t{p.ToDebugString()}"));
+			}
+
+			var serviceProperties = entityType.GetServiceProperties().ToList();
+			if (serviceProperties.Any()) {
+				result.Add("\tService Properties:");
+				result.AddRange(serviceProperties.Select(p => $"\t\t{p.ToDebugString()}"));
+			}
+
+			var skipNavigations = entityType.GetSkipNavigations().ToList();
+			if (skipNavigations.Any()) {
+				result.Add("\tSkip Navigations:");
+				result.AddRange(skipNavigations.Select(p => $"\t\t{p.ToDebugString()}"));
+			}
+
+			var sqlMappings = entityType.GetSqlQueryMappings().ToList();
+			if (sqlMappings.Any()) {
+				result.Add("\tSql Query Navigations:");
+				result.AddRange(sqlMappings.Select(p => $"\t\t{p.ToDebugString()}"));
+			}
+		}
+
+		return string.Join(Environment.NewLine, result);
 	}
 }

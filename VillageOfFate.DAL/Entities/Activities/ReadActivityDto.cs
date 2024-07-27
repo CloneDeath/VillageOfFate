@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.WebModels;
@@ -6,7 +7,7 @@ using VillageOfFate.WebModels;
 namespace VillageOfFate.DAL.Entities.Activities;
 
 public class ReadActivityDto() : ActivityDto(ActivityName.Read) {
-	public Guid TargetItemId { get; set; }
+	[Column(nameof(TargetItemId))] public Guid TargetItemId { get; set; }
 	public ItemDto TargetItem { get; set; } = null!;
 	public ReadingMode ReadingMode { get; set; }
 

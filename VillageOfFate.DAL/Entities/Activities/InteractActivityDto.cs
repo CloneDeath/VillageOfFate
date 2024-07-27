@@ -16,10 +16,16 @@ public class InteractActivityDto() : ActivityDto(ActivityName.Interact) {
 	public string Action { get; set; } = string.Empty;
 
 	public new static void OnModelCreating(ModelBuilder modelBuilder) {
-		modelBuilder.Entity<InteractActivityDto>()
-					.HasMany(v => v.Targets)
-					.WithMany()
-					.UsingEntity<InteractActivityTargetDto>();
+		var join = modelBuilder.Entity<InteractActivityDto>()
+							   .HasMany(v => v.Targets)
+							   .WithMany()
+							   .UsingEntity<InteractActivityTargetDto>();
+		join.HasOne(x => x.Villager)
+			.WithMany()
+			.HasForeignKey(x => x.VillagerId);
+		join.HasOne(x => x.Activity)
+			.WithMany()
+			.HasForeignKey(x => x.ActivityId);
 	}
 }
 
