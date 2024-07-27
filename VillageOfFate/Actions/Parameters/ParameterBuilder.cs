@@ -55,6 +55,9 @@ public static class ParameterBuilder {
 										 ?? throw new NullReferenceException("Found an array, without an element type"),
 					description)
 			},
+			{ IsGenericType: true, Name: "Nullable`1" } when type.GetGenericArguments()[0].Name == "Int32" => new JsonNumber {
+				Description = description
+			},
 			_ => throw new NotSupportedException($"Unsupported property type: {type.Name}")
 		};
 	}
