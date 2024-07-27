@@ -9,6 +9,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
+[RegisterAction]
 public class SleepAction(EventsService events) : IAction {
 	public string Name => "Sleep";
 	public ActivityName ActivityName => ActivityName.Sleep;

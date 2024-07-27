@@ -9,6 +9,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
+[RegisterAction]
 public class LookoutAction(EventsService events) : IAction {
 	public string Name => "Lookout";
 	public ActivityName ActivityName => ActivityName.Lookout;

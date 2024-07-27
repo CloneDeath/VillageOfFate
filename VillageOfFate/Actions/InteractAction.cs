@@ -12,6 +12,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
+[RegisterAction]
 public class InteractAction(EventsService events, VillagerService villagers) : IAction {
 	public string Name => "Interact";
 	public ActivityName ActivityName => ActivityName.Interact;

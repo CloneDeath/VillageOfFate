@@ -65,8 +65,23 @@ public class ItemService(DataContext context, ItemDefinitionService itemDefiniti
 		return entry.Entity;
 	}
 
-	public async Task<IEnumerable<ItemDto>> GetChildItemPagesAsync(Guid itemId) {
-		return await context.Items.Where(i => i.ItemId == itemId && i.Definition.Category == ItemCategory.Page)
+	public async Task<IEnumerable<ItemDto>> GetChildItemPagesAsync(Guid containerId) {
+		return await context.Items.Where(i => i.ItemId == containerId && i.Definition.Category == ItemCategory.Page)
 							.ToListAsync();
+	}
+
+	public async Task<ItemDto> GetChildItemPageAsync(Guid containerId, int pageNumber) {
+		var pages = context.Items.Where(i => i.ItemId == containerId && i.Definition.Category == ItemCategory.Page);
+		if (pageNumber >= 0) {
+			return await pages.FirstOrDefaultAsync(p => p.PageNumber == pageNumber)
+				   ?? throw new IndexOutOfRangeException(
+					   $"Could not locate page {pageNumber} in container {containerId}");
+		}
+
+		var max = await pages.MaxAsync(p => p.PageNumber ?? 0);
+		var page = max + 1 + pageNumber;
+		return await pages.FirstOrDefaultAsync(p => p.PageNumber == page)
+			   ?? throw new IndexOutOfRangeException(
+				   $"Could not locate page {page} ({pageNumber}) in container {containerId}");
 	}
 }

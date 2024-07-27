@@ -38,6 +38,7 @@ public abstract class ActivityDto(ActivityName name) {
 					.HasValue<EatActivityDto>(ActivityName.Eat)
 					.HasValue<InteractActivityDto>(ActivityName.Interact)
 					.HasValue<LookoutActivityDto>(ActivityName.Lookout)
+					.HasValue<ReadActivityDto>(ActivityName.Read)
 					.HasValue<SleepActivityDto>(ActivityName.Sleep)
 					.HasValue<SpeakActivityDto>(ActivityName.Speak);
 

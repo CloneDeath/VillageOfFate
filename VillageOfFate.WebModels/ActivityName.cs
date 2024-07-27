@@ -9,7 +9,8 @@ public enum ActivityName {
 	Interact,
 	Lookout,
 	Sleep,
-	Speak
+	Speak,
+	Read
 }
 
 public static class ActivityNameExtensions {
@@ -22,6 +23,7 @@ public static class ActivityNameExtensions {
 			ActivityName.Lookout => "On Lookout",
 			ActivityName.Sleep => "Sleeping",
 			ActivityName.Speak => "Speaking",
+			ActivityName.Read => "Reading",
 			_ => throw new ArgumentOutOfRangeException(nameof(activityName), activityName, null)
 		};
 	}
@@ -35,6 +37,7 @@ public static class ActivityNameExtensions {
 			ActivityName.Lookout => "Go on Lookout",
 			ActivityName.Sleep => "Sleep",
 			ActivityName.Speak => "Speak",
+			ActivityName.Read => "Read",
 			_ => throw new ArgumentOutOfRangeException(nameof(activityName), activityName, null)
 		};
 	}

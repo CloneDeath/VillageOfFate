@@ -10,6 +10,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
+[RegisterAction]
 public class AdjustEmotionalStateAction(
 	EventsService eventService,
 	VillagerEmotionService emotionService

@@ -55,8 +55,10 @@ namespace SouthernCrm.Dal.Migrations {
 				  .WithColumn("Content").AsString(MaxDescriptionLength).Nullable()
 				  // Interact
 				  .WithColumn("Action").AsString(MaxDescriptionLength).Nullable()
-				  // Eat
-				  .WithColumn("TargetItemId").AsGuid().Nullable().ForeignKey("Items", "Id");
+				  // Eat, Read
+				  .WithColumn("TargetItemId").AsGuid().Nullable().ForeignKey("Items", "Id")
+				  // Read
+				  .WithColumn("ReadingMode").AsString(MaxNameLength).Nullable();
 			Create.Table("InteractActivityTargets")
 				  .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
 				  .WithColumn("ActivityId").AsGuid().NotNullable().ForeignKey("Activities", "Id")

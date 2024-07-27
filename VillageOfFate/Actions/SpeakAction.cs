@@ -10,6 +10,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
+[RegisterAction]
 public class SpeakAction(EventsService events) : IAction {
 	public string Name => "Speak";
 	public ActivityName ActivityName => ActivityName.Speak;

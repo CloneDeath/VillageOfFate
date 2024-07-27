@@ -9,6 +9,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
+[RegisterAction]
 public class IdleAction(
 	EventsService eventService
 ) : IAction {

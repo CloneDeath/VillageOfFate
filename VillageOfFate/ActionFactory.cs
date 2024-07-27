@@ -11,10 +11,11 @@ public class ActionFactory(
 	IdleAction idle,
 	InteractAction interact,
 	LookoutAction lookout,
+	ReadAction read,
 	SleepAction sleep,
 	SpeakAction speak
 ) {
-	public IReadOnlyList<IAction> Actions => [adjustEmotionalState, eat, idle, interact, lookout, sleep, speak];
+	public IReadOnlyList<IAction> Actions => [adjustEmotionalState, eat, idle, interact, lookout, read, sleep, speak];
 
 	public IAction? Get(string actionName) => Actions.FirstOrDefault(a => a.Name == actionName);
 	public IAction Get(ActivityName activityName) => Actions.First(a => a.ActivityName == activityName);

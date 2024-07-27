@@ -13,7 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OpenAi;
 using OpenAi.Models;
-using VillageOfFate.Actions;
 using VillageOfFate.DAL;
 using VillageOfFate.Localization;
 using VillageOfFate.Runners;
@@ -138,18 +137,11 @@ public class Program {
 		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
 		RegisterApiServices(builder);
+		RegisterActions(builder);
 
 		// Localization
 		builder.Services.AddScoped<Plurality>();
 
-		// Actions
-		builder.Services.AddScoped<AdjustEmotionalStateAction>();
-		builder.Services.AddScoped<EatAction>();
-		builder.Services.AddScoped<IdleAction>();
-		builder.Services.AddScoped<InteractAction>();
-		builder.Services.AddScoped<LookoutAction>();
-		builder.Services.AddScoped<SleepAction>();
-		builder.Services.AddScoped<SpeakAction>();
 		builder.Services.AddSingleton<ExceptionHandler>();
 
 		var app = builder.Build();
@@ -179,6 +171,14 @@ public class Program {
 
 		await Task.WhenAny(tasks.ToArray());
 		await cancellationTokenSource.CancelAsync();
+	}
+
+	private static void RegisterActions(WebApplicationBuilder builder) {
+		var assembly = typeof(ActionFactory).Assembly;
+		foreach (var type in assembly.GetTypes()) {
+			if (type.GetCustomAttribute<RegisterActionAttribute>() == null) continue;
+			builder.Services.AddScoped(type);
+		}
 	}
 
 	private static void RegisterApiServices(WebApplicationBuilder builder) {

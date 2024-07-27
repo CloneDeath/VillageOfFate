@@ -35,6 +35,6 @@ public class DivineMessagesController(
 		if (owner == null) return;
 
 		await events.AddAsync(owner, location, [],
-			$"You feel that the God of Fate has sent a new Divine Message to your Bible. You feel compelled to read it aloud! (Item.Id: {page.Id})");
+			$"You feel that the God of Fate has sent a new Divine Message to your Bible. You feel compelled to read it aloud! (new page Item.Id: {page.Id})");
 	}
 }

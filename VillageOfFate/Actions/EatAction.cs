@@ -10,6 +10,7 @@ using VillageOfFate.WebModels;
 
 namespace VillageOfFate.Actions;
 
+[RegisterAction]
 public class EatAction(ItemService items, EventsService events, VillagerService villagers) : IAction {
 	public string Name => "Eat";
 	public ActivityName ActivityName => ActivityName.Eat;
