@@ -23,6 +23,7 @@ using VillageOfFate.Services;
 using VillageOfFate.Services.BIServices;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
+using VillageOfFate.WorldServices;
 
 namespace VillageOfFate.Server;
 
@@ -136,6 +137,7 @@ public class Program {
 		builder.Services.AddScoped<ImageGenerationRunner>();
 		builder.Services.AddScoped<StatusBuilder>();
 		builder.Services.AddScoped<ActionFactory>();
+		builder.Services.AddScoped<VillagerActionService>();
 		RegisterApiServices(builder);
 		RegisterActions(builder);
 

@@ -5,6 +5,7 @@ using VillageOfFate.Server.Exceptions.NotFound;
 using VillageOfFate.Services.BIServices;
 using VillageOfFate.Services.DALServices;
 using VillageOfFate.Services.DALServices.Core;
+using VillageOfFate.WorldServices;
 
 namespace VillageOfFate.Server.Controllers.Miracles;
 
@@ -15,7 +16,8 @@ public class DivineMessagesController(
 	UserService users,
 	EventsService events,
 	ItemService items,
-	VillagerService villagers
+	VillagerService villagers,
+	VillagerActionService villagerActions
 ) : ControllerBase {
 	[HttpPost]
 	public async Task PostMessage([FromBody] string message) {
@@ -36,5 +38,11 @@ public class DivineMessagesController(
 
 		await events.AddAsync(owner, location, [],
 			$"You feel that the God of Fate has sent a new Divine Message to your Bible. You feel compelled to read it aloud! (new page Item.Id: {page.Id})");
+
+		await villagerActions.QueueActionsForVillager(owner, new ReactionData {
+			Item = bible,
+			Actor = null,
+			ActiveActionName = "Divine Message"
+		});
 	}
 }
