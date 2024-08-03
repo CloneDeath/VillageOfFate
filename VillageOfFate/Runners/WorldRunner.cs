@@ -83,6 +83,16 @@ public class WorldRunner(
 
 	private async Task SimulateVillager(VillagerDto villager) {
 		var currentTime = await GetWorldTimeAsync();
+		if (villager.TriggerReaction) {
+			await TriggerReaction(villager);
+			await actionService.QueueActionsForVillager(villager, new ReactionData {
+				Actor = villager.TriggerReactionVillager,
+				Item = villager.TriggerReactionItem,
+				ActiveActionName = villager.TriggerReactionActiveActionName ?? "Unknown Action"
+			});
+			await villagers.ClearTriggerReactionsAsync(villager);
+		}
+
 		var currentActivity = villager.CurrentActivity;
 		if (currentActivity == null) {
 			if (!villager.ActivityQueue.Any()) {
@@ -132,16 +142,20 @@ public class WorldRunner(
 			return;
 		}
 
-		var currentTime = await GetWorldTimeAsync();
 		var selected = random.SelectOne(result.TriggerReactions);
-		var currentActivity = selected.CurrentActivity;
+		await TriggerReaction(selected, reaction);
+	}
+
+	private async Task TriggerReaction(VillagerDto villager, ReactionData? reaction = null) {
+		var currentActivity = villager.CurrentActivity;
 		if (currentActivity != null) {
 			if (!currentActivity.EndTime.HasValue) throw new NullReferenceException();
+			var currentTime = await GetWorldTimeAsync();
 			currentActivity.DurationRemaining = currentActivity.EndTime.Value - currentTime;
 			currentActivity.Status = ActivityStatus.OnHold;
 			await activities.SaveAsync(currentActivity);
 		}
 
-		await actionService.QueueActionsForVillager(selected, reaction);
+		await actionService.QueueActionsForVillager(villager, reaction);
 	}
 }

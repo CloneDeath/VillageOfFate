@@ -22,6 +22,15 @@ public class VillagerDto {
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
 	public string Summary { get; set; } = string.Empty;
 
+	public bool TriggerReaction { get; set; }
+	public Guid? TriggerReactionItemId { get; set; }
+	public ItemDto? TriggerReactionItem { get; set; }
+	public Guid? TriggerReactionVillagerId { get; set; }
+	public VillagerDto? TriggerReactionVillager { get; set; }
+
+	[MaxLength(InitialCreate.MaxNameLength)]
+	public string? TriggerReactionActiveActionName { get; set; }
+
 	public Gender Gender { get; set; }
 	public int Hunger { get; set; }
 
@@ -62,6 +71,16 @@ public class VillagerDto {
 		modelBuilder.Entity<VillagerDto>()
 					.HasMany(v => v.Items)
 					.WithOne()
-					.HasForeignKey("VillagerId");
+					.HasForeignKey(i => i.VillagerId);
+
+		modelBuilder.Entity<VillagerDto>()
+					.HasOne(v => v.TriggerReactionVillager)
+					.WithMany()
+					.HasForeignKey(v => v.TriggerReactionVillagerId);
+
+		modelBuilder.Entity<VillagerDto>()
+					.HasOne(v => v.TriggerReactionItem)
+					.WithMany()
+					.HasForeignKey(v => v.TriggerReactionItemId);
 	}
 }

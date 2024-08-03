@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VillageOfFate.DAL;
+using VillageOfFate.DAL.Entities.Items;
 using VillageOfFate.DAL.Entities.Villagers;
 
 namespace VillageOfFate.Services.DALServices.Core;
@@ -60,6 +61,24 @@ public class VillagerService(DataContext context) {
 	public async Task DecreaseHungerAsync(VillagerDto villager, int amount) {
 		villager = context.Villagers.Entry(villager).Entity;
 		villager.Hunger = Math.Max(0, villager.Hunger - amount);
+		await context.SaveChangesAsync();
+	}
+
+	public async Task QueueTriggerReactionsAsync(VillagerDto villager, ItemDto source, string activeActionName) {
+		context.Villagers.Update(villager);
+		villager.TriggerReaction = true;
+		villager.TriggerReactionItemId = source.Id;
+		villager.TriggerReactionVillagerId = null;
+		villager.TriggerReactionActiveActionName = activeActionName;
+		await context.SaveChangesAsync();
+	}
+
+	public async Task ClearTriggerReactionsAsync(VillagerDto villager) {
+		context.Villagers.Update(villager);
+		villager.TriggerReaction = false;
+		villager.TriggerReactionItemId = null;
+		villager.TriggerReactionVillagerId = null;
+		villager.TriggerReactionActiveActionName = null;
 		await context.SaveChangesAsync();
 	}
 }
