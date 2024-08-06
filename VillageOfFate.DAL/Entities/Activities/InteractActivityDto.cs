@@ -16,20 +16,23 @@ public class InteractActivityDto() : ActivityDto(ActivityName.Interact) {
 	public string Action { get; set; } = string.Empty;
 
 	public new static void OnModelCreating(ModelBuilder modelBuilder) {
-		var join = modelBuilder.Entity<InteractActivityDto>()
-							   .HasMany(v => v.Targets)
-							   .WithMany()
-							   .UsingEntity<InteractActivityTargetDto>();
-		join.HasOne(x => x.Villager)
-			.WithMany()
-			.HasForeignKey(x => x.VillagerId);
-		join.HasOne(x => x.Activity)
-			.WithMany()
-			.HasForeignKey(x => x.ActivityId);
+		modelBuilder.Entity<InteractActivityDto>()
+					.HasMany(v => v.Targets)
+					.WithMany()
+					.UsingEntity<InteractActivityTargetDto>(
+						r => r.HasOne(j => j.Villager)
+							  .WithMany()
+							  .HasForeignKey(j => j.VillagerId)
+							  .HasPrincipalKey(v => v.Id),
+						l => l.HasOne(j => j.Activity)
+							  .WithMany()
+							  .HasForeignKey(j => j.ActivityId)
+							  .HasPrincipalKey(a => a.Id));
 	}
 }
 
 [Table("InteractActivityTargets")]
+[PrimaryKey(nameof(Id))]
 public class InteractActivityTargetDto {
 	public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -38,4 +41,16 @@ public class InteractActivityTargetDto {
 
 	public Guid VillagerId { get; set; } = Guid.Empty;
 	public VillagerDto Villager { get; set; } = null!;
+
+	public static void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<InteractActivityTargetDto>()
+					.HasOne(v => v.Activity)
+					.WithMany()
+					.HasForeignKey(v => v.ActivityId);
+
+		modelBuilder.Entity<InteractActivityTargetDto>()
+					.HasOne(v => v.Villager)
+					.WithMany()
+					.HasForeignKey(v => v.VillagerId);
+	}
 }
