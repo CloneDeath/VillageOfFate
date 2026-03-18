@@ -12,6 +12,9 @@ public class SQLiteDataContext(string dataSource) : DataContext(BuildOptions(dat
 
 	public static void ConfigureOptionsBuilder(DbContextOptionsBuilder builder, string dataSource) {
 		builder.UseSqlite($"Data Source={dataSource}",
-			o => o.CommandTimeout(30));
+			o => {
+				o.CommandTimeout(30);
+				o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+			});
 	}
 }

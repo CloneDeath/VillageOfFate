@@ -51,7 +51,9 @@ public class SectorService(DataContext context, ItemService items) {
 	}
 
 	public async Task<IEnumerable<SectorDto>> GetSectorsWithoutImagesAsync() {
-		return await context.Sectors.Where(s => s.Image.Base64Image == null).ToListAsync();
+		return await context.Sectors.Where(s => s.Image.Base64Image == null)
+							.Include(s => s.Image)
+							.ToListAsync();
 	}
 
 	public async Task<SectorDto?> TryGetAsync(Position position) {

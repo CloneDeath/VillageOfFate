@@ -13,9 +13,9 @@ public class ImageDto {
 	public Guid Id { get; set; } = Guid.NewGuid();
 
 	[UtcDateTime] public DateTime? Created { get; set; }
-	[MaxLength(MaxBase64ImageLength)] public string? Base64Image { get; set; } = string.Empty;
+	[MaxLength(MaxBase64ImageLength)] public string? Base64Image { get; set; }
 	[MaxLength(InitialCreate.MaxDescriptionLength)]
-	public string? Prompt { get; set; } = string.Empty;
+	public string? Prompt { get; set; }
 
 	public ItemDefinitionDto? ItemDefinition { get; set; }
 	public SectorDto? Sector { get; set; }

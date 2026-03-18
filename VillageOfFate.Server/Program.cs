@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -105,6 +106,7 @@ public class Program {
 			if (appSettings.Database.EnableSensitiveDataLogging) {
 				b.EnableSensitiveDataLogging();
 			}
+			b.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
 		});
 
 		var openApiKey = builder.Configuration["OPENAI_API_KEY"]

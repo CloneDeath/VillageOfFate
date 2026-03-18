@@ -30,7 +30,7 @@ public class PlayerInitializer(
 	private async Task PopulateVillagers(SectorDto sector, UserDto user) {
 		var gamz = await villagers.CreateAsync(new VillagerDto {
 			Name = "Gamz", Age = 26, Gender = Gender.Male,
-			Summary = "Chemm's big brother. A warrior monk with multiple wounds on both his face and body.",
+			Summary = "Chemm's big brother. A warrior monk with multiple scars on both his face and body.",
 			Sector = sector,
 			Hunger = 6,
 			Image = new ImageDto()

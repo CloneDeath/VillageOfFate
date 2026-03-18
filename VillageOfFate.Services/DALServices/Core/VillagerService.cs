@@ -42,7 +42,9 @@ public class VillagerService(DataContext context) {
 	}
 
 	public async Task<IEnumerable<VillagerDto>> GetVillagersWithoutImages() {
-		return await context.Villagers.Where(v => v.Image.Base64Image == null).ToListAsync();
+		return await context.Villagers.Where(v => v.Image.Base64Image == null)
+							.Include(v => v.Image)
+							.ToListAsync();
 	}
 
 	public async Task<int> GetVillagerCountAsync(Guid id) {

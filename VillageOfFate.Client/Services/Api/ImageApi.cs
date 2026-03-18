@@ -14,6 +14,6 @@ public class ImageApi(string baseUrl) {
 		var response = await client.GetAsync($"Images/{imageId}");
 		return response.StatusCode == HttpStatusCode.Accepted
 				   ? "/images/placeholder.webp"
-				   : $"{baseUrl}/Images/{imageId}";
+				   : $"{baseUrl}Images/{imageId}";
 	}
 }
